@@ -8,13 +8,19 @@ import { Footer } from "@/components/layout/footer";
 export default function GetStartedPage() {
     const [activeTab, setActiveTab] = useState<'demo' | 'manual'>('demo');
     const [formState, setFormState] = useState({
-        name: '',
+        first_name: '',
+        last_name: '',
         email: '',
+        phone: '',
         company: '',
+        website: '',
+        country: '',
+        inquiry_type: 'Enterprise Architecture',
         message: ''
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [submitError, setSubmitError] = useState<string | null>(null);
 
     // Typing effect for the header
     const [text, setText] = useState("");
@@ -33,10 +39,40 @@ export default function GetStartedPage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
-        // Simulate network request
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        setIsSubmitting(false);
-        setIsSubmitted(true);
+        setSubmitError(null);
+
+        try {
+            const formSlug = "ledger1-ai-contact-us-55230247";
+            const apiEndpoint = "https://crm.ledger1.ai/api/forms/submit";
+
+            const payload = {
+                form_slug: formSlug,
+                data: formState,
+                source_url: window.location.href,
+                referrer: document.referrer
+            };
+
+            const response = await fetch(apiEndpoint, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                setIsSubmitted(true);
+                if (result.redirect_url) {
+                    window.location.href = result.redirect_url;
+                }
+            } else {
+                setSubmitError(result.error || "Submission failed. Please try again or contact command@ledger1.ai directly.");
+            }
+        } catch (error) {
+            setSubmitError("Network error. Transmission blocked.");
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -76,8 +112,8 @@ export default function GetStartedPage() {
                     <button
                         onClick={() => setActiveTab('demo')}
                         className={`group relative p-8 rounded-xl border text-left transition-all duration-300 overflow-hidden ${activeTab === 'demo'
-                                ? 'bg-teal-950/20 border-teal-500 shadow-[0_0_50px_rgba(20,184,166,0.1)]'
-                                : 'bg-[#050b10] border-cyan-900/30 hover:border-teal-500/50 hover:bg-teal-950/10'
+                            ? 'bg-teal-950/20 border-teal-500 shadow-[0_0_50px_rgba(20,184,166,0.1)]'
+                            : 'bg-[#050b10] border-cyan-900/30 hover:border-teal-500/50 hover:bg-teal-950/10'
                             }`}
                     >
                         <div className={`absolute top-0 right-0 p-4 opacity-50 transition-opacity ${activeTab === 'demo' ? 'opacity-100' : 'group-hover:opacity-100'}`}>
@@ -155,45 +191,111 @@ export default function GetStartedPage() {
 
                         {!isSubmitted ? (
                             <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+                                {/* Row 1: Names */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div className="space-y-2">
-                                        <label className="text-xs font-bold text-teal-500 uppercase tracking-wider">Operator Name</label>
+                                        <label className="text-xs font-bold text-teal-500 uppercase tracking-wider">First Name *</label>
                                         <input
                                             type="text"
                                             required
                                             className="w-full bg-black/50 border border-cyan-900/50 rounded p-4 text-white focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-all outline-none font-mono"
-                                            placeholder="Enter designation..."
-                                            value={formState.name}
-                                            onChange={(e) => setFormState({ ...formState, name: e.target.value })}
+                                            placeholder="Jane"
+                                            value={formState.first_name}
+                                            onChange={(e) => setFormState({ ...formState, first_name: e.target.value })}
                                         />
                                     </div>
                                     <div className="space-y-2">
-                                        <label className="text-xs font-bold text-teal-500 uppercase tracking-wider">Comms Freq (Email)</label>
+                                        <label className="text-xs font-bold text-teal-500 uppercase tracking-wider">Last Name *</label>
+                                        <input
+                                            type="text"
+                                            required
+                                            className="w-full bg-black/50 border border-cyan-900/50 rounded p-4 text-white focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-all outline-none font-mono"
+                                            placeholder="Doe"
+                                            value={formState.last_name}
+                                            onChange={(e) => setFormState({ ...formState, last_name: e.target.value })}
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Row 2: Contact */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold text-teal-500 uppercase tracking-wider">Comms Freq (Email) *</label>
                                         <input
                                             type="email"
                                             required
                                             className="w-full bg-black/50 border border-cyan-900/50 rounded p-4 text-white focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-all outline-none font-mono"
-                                            placeholder="name@corp.sys"
+                                            placeholder="name@company.com"
                                             value={formState.email}
                                             onChange={(e) => setFormState({ ...formState, email: e.target.value })}
                                         />
                                     </div>
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold text-teal-500 uppercase tracking-wider">Holonet (Phone)</label>
+                                        <input
+                                            type="tel"
+                                            className="w-full bg-black/50 border border-cyan-900/50 rounded p-4 text-white focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-all outline-none font-mono"
+                                            placeholder="+1 555-000-0000"
+                                            value={formState.phone}
+                                            onChange={(e) => setFormState({ ...formState, phone: e.target.value })}
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Row 3: Company Info */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold text-teal-500 uppercase tracking-wider">Organization ID (Company)</label>
+                                        <input
+                                            type="text"
+                                            className="w-full bg-black/50 border border-cyan-900/50 rounded p-4 text-white focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-all outline-none font-mono"
+                                            placeholder="Acme Corp"
+                                            value={formState.company}
+                                            onChange={(e) => setFormState({ ...formState, company: e.target.value })}
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold text-teal-500 uppercase tracking-wider">Domain (Website)</label>
+                                        <input
+                                            type="text"
+                                            className="w-full bg-black/50 border border-cyan-900/50 rounded p-4 text-white focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-all outline-none font-mono"
+                                            placeholder="https://acme.org"
+                                            value={formState.website}
+                                            onChange={(e) => setFormState({ ...formState, website: e.target.value })}
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Row 4: Country & Inquiry */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold text-teal-500 uppercase tracking-wider">Region (Country)</label>
+                                        <input
+                                            type="text"
+                                            className="w-full bg-black/50 border border-cyan-900/50 rounded p-4 text-white focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-all outline-none font-mono"
+                                            placeholder="United States"
+                                            value={formState.country}
+                                            onChange={(e) => setFormState({ ...formState, country: e.target.value })}
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold text-teal-500 uppercase tracking-wider">Integration Vector *</label>
+                                        <select
+                                            required
+                                            className="w-full bg-black/50 border border-cyan-900/50 rounded p-4 text-white focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-all outline-none font-mono appearance-none"
+                                            value={formState.inquiry_type}
+                                            onChange={(e) => setFormState({ ...formState, inquiry_type: e.target.value })}
+                                        >
+                                            <option value="Enterprise Architecture">Enterprise Architecture</option>
+                                            <option value="Protocol Licensing">Protocol Licensing</option>
+                                            <option value="Strategic Partnership">Strategic Partnership</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
                                 </div>
 
                                 <div className="space-y-2">
-                                    <label className="text-xs font-bold text-teal-500 uppercase tracking-wider">Organization ID</label>
-                                    <input
-                                        type="text"
-                                        required
-                                        className="w-full bg-black/50 border border-cyan-900/50 rounded p-4 text-white focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-all outline-none font-mono"
-                                        placeholder="Company Name"
-                                        value={formState.company}
-                                        onChange={(e) => setFormState({ ...formState, company: e.target.value })}
-                                    />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <label className="text-xs font-bold text-teal-500 uppercase tracking-wider">Mission Parameters</label>
+                                    <label className="text-xs font-bold text-teal-500 uppercase tracking-wider">Mission Parameters *</label>
                                     <textarea
                                         required
                                         rows={4}
@@ -203,6 +305,13 @@ export default function GetStartedPage() {
                                         onChange={(e) => setFormState({ ...formState, message: e.target.value })}
                                     />
                                 </div>
+
+                                {submitError && (
+                                    <div className="p-4 bg-red-950/30 border border-red-500/50 rounded text-red-200 text-sm font-mono flex items-center gap-2">
+                                        <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                                        ERROR: {submitError}
+                                    </div>
+                                )}
 
                                 <button
                                     type="submit"
