@@ -11,8 +11,8 @@ export function TeamSection() {
       role: "Chairman & CTO",
       description: "Technical visionary and chairman overseeing technology strategy and innovation across the enterprise.",
       image: "/team/member1.png",
-      twitter: "https://twitter.com/",
-      linkedin: "https://linkedin.com/in/"
+      twitter: "https://twitter.com/GenRevoeth",
+      linkedin: "https://www.linkedin.com/in/krishna-patel-89039120/"
     },
     {
       name: "Eric Turner",
@@ -27,24 +27,24 @@ export function TeamSection() {
       role: "Chief Marketing Officer",
       description: "Marketing leader building brand awareness and driving customer engagement strategies.",
       image: "/team/member3.png",
-      twitter: "https://twitter.com/",
-      linkedin: "https://linkedin.com/in/"
+      twitter: "https://twitter.com/mayordelmar",
+      linkedin: "https://www.linkedin.com/in/mayordelmar/"
     },
     {
       name: "Shahir Monjour",
       role: "Senior VP, Engineering",
       description: "Senior engineering executive leading teams to build scalable, robust enterprise systems.",
       image: "/team/member4.png",
-      twitter: "https://twitter.com/",
-      linkedin: "https://linkedin.com/in/"
+      twitter: "https://twitter.com/shahir1395",
+      linkedin: "https://www.linkedin.com/in/shahir-monjur/"
     },
     {
       name: "John Garcia",
       role: "Senior VP, AI Research",
       description: "Senior research executive advancing AI innovation and machine learning capabilities.",
       image: "/team/member5.png",
-      twitter: "https://twitter.com/",
-      linkedin: "https://linkedin.com/in/"
+      twitter: "https://twitter.com/JohnG1isit",
+      linkedin: "https://www.linkedin.com/in/john-garcia-54ab73398/"
     }
   ];
 
