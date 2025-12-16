@@ -15,12 +15,12 @@ export function TeamSection() {
       linkedin: "https://linkedin.com/in/"
     },
     {
-      name: "Patrick Gorrell",
+      name: "Eric Turner",
       role: "Chief Executive Officer",
       description: "Executive leader driving company vision, strategy, and growth for Main Street businesses.",
-      image: "/team/member2.png",
-      twitter: "https://twitter.com/",
-      linkedin: "https://linkedin.com/in/"
+      image: "/team/member6.png",
+      twitter: "https://twitter.com/sinisterxtwitr",
+      linkedin: "https://www.linkedin.com/in/ericturner85/"
     },
     {
       name: "Michael Milton",
