@@ -45,7 +45,6 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon.ico", sizes: "48x48" },
       { url: "/bssymbol.png", type: "image/png", sizes: "32x32" },
       { url: "/bssymbol.png", type: "image/png", sizes: "192x192" },
       { url: "/bssymbol.png", type: "image/png", sizes: "512x512" }
