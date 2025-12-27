@@ -15,7 +15,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       forcedTheme="dark"
       enableSystem={false}
       disableTransitionOnChange
-      storageKey="ledger1-theme"
+      storageKey="basalthq-theme"
     >
       {children}
     </NextThemesProvider>

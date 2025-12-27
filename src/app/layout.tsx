@@ -17,9 +17,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ledger1 – Neuromimetic Business Architecture",
+  title: "BasaltHQ – Neuromimetic Business Architecture",
   description: "The Operating System for Main Street. Initialize your Cognitive Enterprise with a living, breathing ontology that thinks, adapts, and executes at the speed of thought.",
-  applicationName: "Ledger1 Suite",
+  applicationName: "BasaltHQ Suite",
   keywords: [
     "Main Street Ontology",
     "Business Objects",
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     "Decision Intelligence",
     "AI ERP",
     "Business Suite",
-    "Ledger1CRM",
+    "BasaltCRM",
     "VoiceHub",
     "PortalPay",
     "AI module builder",
@@ -35,9 +35,9 @@ export const metadata: Metadata = {
     "Crypto payments",
     "enterprise resource planning software"
   ],
-  authors: [{ name: "Ledger1 Team" }],
-  creator: "Ledger1",
-  publisher: "Ledger1",
+  authors: [{ name: "BasaltHQ Team" }],
+  creator: "BasaltHQ",
+  publisher: "BasaltHQ",
   formatDetection: {
     email: false,
     address: false,
@@ -46,40 +46,40 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
-      { url: "/l1logows.png", type: "image/png", sizes: "512x512" }
+      { url: "/bssymbol.png", type: "image/png", sizes: "512x512" }
     ],
     apple: [
-      { url: "/l1logows.png", sizes: "180x180", type: "image/png" }
+      { url: "/bssymbol.png", sizes: "180x180", type: "image/png" }
     ],
-    shortcut: ["/l1logows.png"]
+    shortcut: ["/bssymbol.png"]
   },
   manifest: "/manifest.webmanifest",
-  metadataBase: new URL("https://ledger1.ai"),
+  metadataBase: new URL("https://basalthq.com"),
   alternates: {
-    canonical: "https://ledger1.ai",
+    canonical: "https://basalthq.com",
   },
   openGraph: {
-    title: "Ledger1 – Neuromimetic Business Architecture",
+    title: "BasaltHQ – Neuromimetic Business Architecture",
     description: "The Operating System for Main Street. Initialize your Cognitive Enterprise with a living, breathing ontology that thinks, adapts, and executes at the speed of thought.",
-    url: "https://ledger1.ai",
-    siteName: "Ledger1 Suite",
+    url: "https://basalthq.com",
+    siteName: "BasaltHQ Suite",
     type: "website",
     locale: "en_US",
     images: [
       {
-        url: "/l1logons.png",
+        url: "/BasaltHQWideD.png",
         width: 1200,
         height: 630,
-        alt: "Ledger1 Neuromimetic Business Architecture",
+        alt: "BasaltHQ Neuromimetic Business Architecture",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ledger1 – Neuromimetic Business Architecture",
+    title: "BasaltHQ – Neuromimetic Business Architecture",
     description: "The Operating System for Main Street. Initialize your Cognitive Enterprise with a living, breathing ontology that thinks, adapts, and executes at the speed of thought.",
-    images: ["/l1logons.png"],
-    creator: "@ledger1_ai",
+    images: ["/BasaltHQWideD.png"],
+    creator: "@basalthq",
   },
   robots: {
     index: true,
@@ -107,9 +107,9 @@ export default function RootLayout({
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "Ledger1 Suite",
+    "name": "BasaltHQ Suite",
     "description": "AI-powered Main Street Ontology including ERP, CRM, VoiceHub, and PortalPay.",
-    "url": "https://ledger1.ai",
+    "url": "https://basalthq.com",
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Web",
     "offers": {
@@ -121,14 +121,14 @@ export default function RootLayout({
     },
     "creator": {
       "@type": "Organization",
-      "name": "Ledger1",
-      "url": "https://ledger1.ai"
+      "name": "BasaltHQ",
+      "url": "https://basalthq.com"
     },
     "featureList": [
       "AI-assisted module builder (create/modify modules, panels, modals)",
       "Main Street Ontology: Objects, Actions, Decisions",
       "Pre-built industry packs (Restaurants, Hospitality, Child-Care, Self-Storage, Retail, Cannabis)",
-      "Ledger1CRM: Review generation, sales agents, social intelligence",
+      "BasaltCRM: Review generation, sales agents, social intelligence",
       "VoiceHub: Custom voice agents for meetings & streams",
       "PortalPay: Web3-native commerce & crypto payments",
       "Advanced analytics and reporting",

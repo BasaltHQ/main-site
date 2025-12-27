@@ -361,7 +361,7 @@ export default function HelpPage() {
                 <HelpArticleViewer
                   articles={guideArticles}
                   title="Guides"
-                  description="Comprehensive guides for using Ledger1"
+                  description="Comprehensive guides for using BasaltHQ"
                 />
               )}
 

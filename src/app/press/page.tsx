@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Footer } from "@/components/layout/footer";
 
 export const metadata: Metadata = {
-  title: "Press – Ledger1",
-  description: "Press resources and media inquiries for Ledger1.",
-  alternates: { canonical: "https://ledger1.ai/press" },
+  title: "Press – BasaltHQ",
+  description: "Press resources and media inquiries for BasaltHQ.",
+  alternates: { canonical: "https://basalthq.com/press" },
 };
 
 export default function PressPage() {
@@ -17,8 +17,8 @@ export default function PressPage() {
           <div className="glass-pane rounded-xl p-6">
             <h2 className="text-xl font-semibold mb-2">Brand Assets</h2>
             <ul className="list-disc pl-5 text-muted-foreground">
-              <li>Logos: /l1logows.png, /socialbanner.jpg</li>
-              <li>Company: Ledger1 (a Utility Company product)</li>
+              <li>Logos: /BasaltHQWide.png, /socialbanner.jpg</li>
+              <li>Company: BasaltHQ (a Utility Company product)</li>
               <li>Location: Santa Fe, New Mexico</li>
             </ul>
           </div>

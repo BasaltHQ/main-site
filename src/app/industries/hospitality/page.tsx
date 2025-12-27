@@ -3,11 +3,11 @@ import Link from "next/link";
 import { Hotel, Calendar, TrendingUp, Sparkles, Brain, CheckCircle } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "AI-Powered Hospitality ERP | 83% Higher RevPAR | Ledger1",
+  title: "AI-Powered Hospitality ERP | 83% Higher RevPAR | BasaltHQ",
   description: "Transform hotel operations with AI automation. 96% occupancy optimization, $395K average savings. Smart revenue management for hospitality businesses.",
   keywords: "AI hospitality ERP, hotel management software, AI revenue management, automated occupancy optimization, intelligent hospitality analytics",
   openGraph: {
-    title: "AI-Powered Hospitality ERP | Ledger1",
+    title: "AI-Powered Hospitality ERP | BasaltHQ",
     description: "83% higher RevPAR, 96% occupancy optimization",
     type: "website",
   },
@@ -209,7 +209,7 @@ export default function HospitalityIndustryPage() {
             Ready to Maximize Your Hospitality Revenue?
           </h2>
           <p className="text-lg text-muted-foreground mb-8">
-            Join hotels achieving 83% higher RevPAR with Ledger1's AI-first platform
+            Join hotels achieving 83% higher RevPAR with BasaltHQ's AI-first platform
           </p>
           <a
             href="https://calendly.com/founders-tuc/ledger1-info-session"

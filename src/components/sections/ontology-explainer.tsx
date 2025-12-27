@@ -22,7 +22,7 @@ export function OntologyExplainer() {
                         Construct Your <span className="text-teal-500">Digital Twin</span>
                     </h2>
                     <p className="text-lg text-cyan-200/60 max-w-2xl mx-auto">
-                        The Ledger1 Ontology is not just software. It is a living model of your business reality, composed of three fundamental atoms.
+                        The BasaltHQ Ontology is not just software. It is a living model of your business reality, composed of three fundamental atoms.
                     </p>
                 </div>
 

@@ -3,11 +3,11 @@ import Link from "next/link";
 import { Factory, Boxes, TrendingUp, Sparkles, Brain, CheckCircle } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "AI-Powered Manufacturing ERP | 65% Faster Production | Ledger1",
+  title: "AI-Powered Manufacturing ERP | 65% Faster Production | BasaltHQ",
   description: "Transform manufacturing operations with AI automation. 82% inventory accuracy, $520K average savings. Smart production management for manufacturers of all sizes.",
   keywords: "AI manufacturing ERP, smart factory software, automated inventory control, AI job costing, intelligent production planning",
   openGraph: {
-    title: "AI-Powered Manufacturing ERP | Ledger1",
+    title: "AI-Powered Manufacturing ERP | BasaltHQ",
     description: "65% faster production cycles, 82% inventory accuracy",
     type: "website",
   },
@@ -209,7 +209,7 @@ export default function ManufacturingIndustryPage() {
             Ready to Transform Your Manufacturing Operations?
           </h2>
           <p className="text-lg text-muted-foreground mb-8">
-            Join manufacturers achieving 65% faster production with Ledger1's AI-first platform
+            Join manufacturers achieving 65% faster production with BasaltHQ's AI-first platform
           </p>
           <a
             href="https://calendly.com/founders-tuc/ledger1-info-session"

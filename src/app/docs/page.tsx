@@ -44,7 +44,7 @@ export default function DocsPage() {
             Product Documentation
           </h1>
           <p className="text-base lg:text-lg text-muted-foreground max-w-3xl">
-            Complete guides, API references, and technical documentation for Ledger1
+            Complete guides, API references, and technical documentation for BasaltHQ
           </p>
         </div>
       </section>

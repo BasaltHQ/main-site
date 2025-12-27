@@ -3,11 +3,11 @@ import Link from "next/link";
 import { Code, Rocket, Users, Sparkles, Brain, CheckCircle } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "AI-Powered Tech Company ERP | 92% Faster Financial Close | Ledger1",
+  title: "AI-Powered Tech Company ERP | 92% Faster Financial Close | BasaltHQ",
   description: "Transform startup & SaaS operations with AI automation. 97% revenue recognition accuracy, $450K average savings. Smart financial management for tech companies.",
   keywords: "AI tech company ERP, startup accounting, SaaS billing automation, AI revenue recognition, intelligent financial software",
   openGraph: {
-    title: "AI-Powered Technology ERP | Ledger1",
+    title: "AI-Powered Technology ERP | BasaltHQ",
     description: "92% faster financial close, 97% accuracy",
     type: "website",
   },
@@ -209,7 +209,7 @@ export default function TechnologyIndustryPage() {
             Ready to Scale Your Tech Company?
           </h2>
           <p className="text-lg text-muted-foreground mb-8">
-            Join innovative startups achieving 92% faster close with Ledger1's AI-first platform
+            Join innovative startups achieving 92% faster close with BasaltHQ's AI-first platform
           </p>
           <a
             href="https://calendly.com/founders-tuc/ledger1-info-session"

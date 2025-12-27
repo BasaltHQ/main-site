@@ -3,19 +3,19 @@ import { Footer } from "@/components/layout/footer";
 import { Bot, MessageSquare, Users, Utensils, Square as SquareIcon, BookOpen } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Integrations – Ledger1",
-  description: "Connect Ledger1 to POS, ERP, HRIS, messaging, and analytics stacks. Toast, 7shifts, QuickBooks, Square, Slack, Teams, and more.",
-  alternates: { canonical: "https://ledger1.ai/integrations" },
+  title: "Integrations – BasaltHQ",
+  description: "Connect Basalt to POS, ERP, HRIS, messaging, and analytics stacks. Toast, 7shifts, QuickBooks, Square, Slack, Teams, and more.",
+  alternates: { canonical: "https://basalt.com/integrations" },
   openGraph: {
-    title: "Integrations – Ledger1",
-    description: "Connect Ledger1 to POS, ERP, HRIS, messaging, and analytics stacks.",
-    url: "https://ledger1.ai/integrations",
+    title: "Integrations – BasaltHQ",
+    description: "Connect Basalt to POS, ERP, HRIS, messaging, and analytics stacks.",
+    url: "https://basalt.com/integrations",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Integrations – Ledger1",
-    description: "Connect Ledger1 to POS, ERP, HRIS, messaging, and analytics stacks.",
+    title: "Integrations – BasaltHQ",
+    description: "Connect Basalt to POS, ERP, HRIS, messaging, and analytics stacks.",
   },
 };
 

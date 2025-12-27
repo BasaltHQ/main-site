@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Footer } from "@/components/layout/footer";
 
 export const metadata: Metadata = {
-  title: "System Status – Ledger1",
+  title: "System Status – BasaltHQ",
   description: "Current system status and uptime information.",
-  alternates: { canonical: "https://ledger1.ai/status" },
+  alternates: { canonical: "https://basalthq.com/status" },
 };
 
 export default function StatusPage() {

@@ -3,11 +3,11 @@ import Link from "next/link";
 import { ShoppingBag, Store, TrendingUp, Sparkles, Brain, CheckCircle } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "AI-Powered Retail ERP | 89% Inventory Accuracy | Ledger1",
+  title: "AI-Powered Retail ERP | 89% Inventory Accuracy | BasaltHQ",
   description: "Transform retail operations with AI automation. 73% faster checkout, $380K average savings. Smart POS integration and predictive analytics for modern retailers.",
   keywords: "AI retail ERP, smart POS integration, automated inventory sync, AI demand forecasting, intelligent retail analytics",
   openGraph: {
-    title: "AI-Powered Retail ERP | Ledger1",
+    title: "AI-Powered Retail ERP | BasaltHQ",
     description: "89% inventory accuracy, 73% faster operations",
     type: "website",
   },
@@ -209,7 +209,7 @@ export default function RetailIndustryPage() {
             Ready to Transform Your Retail Business?
           </h2>
           <p className="text-lg text-muted-foreground mb-8">
-            Join retailers achieving 89% inventory accuracy with Ledger1's AI-first platform
+            Join retailers achieving 89% inventory accuracy with BasaltHQ's AI-first platform
           </p>
           <a
             href="https://calendly.com/founders-tuc/ledger1-info-session"

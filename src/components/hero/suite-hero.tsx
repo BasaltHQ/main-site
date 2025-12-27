@@ -30,44 +30,44 @@ export function SuiteHero() {
 
   const products = [
     {
-      name: "Ledger1ERP",
-      logo: "/erplogowide.png",
-      url: "https://erp.ledger1.ai",
+      name: "BasaltERP",
+      logo: "/BasaltERPWide.png",
+      url: "https://erp.basalthq.com",
       tagline: "AI-Assisted Universal ERP",
       description: "Industry-specific ERP with AI module builder"
     },
     {
-      name: "Ledger1CRM",
-      logo: "/crmlogowide.png",
-      url: "https://crm.ledger1.ai",
+      name: "BasaltCRM",
+      logo: "/BasaltCRMWide.png",
+      url: "https://crm.basalthq.com",
       tagline: "AI-First Customer Intelligence",
       description: "Lead generation, sales agents & social intelligence"
     },
     {
-      name: "Ledger1CMS",
-      logo: "/ledger1-cms-wide-logo.webp",
-      url: "https://cms.ledger1.ai",
+      name: "BasaltCMS",
+      logo: "/BasaltCMSWide.png",
+      url: "https://cms.basalthq.com",
       tagline: "AI-Voice Powered Content Command Center",
       description: "Manage media, docs, forms, website from one dashboard"
     },
     {
-      name: "VoiceHub",
-      logo: "/vhlogowide.png",
-      url: "https://voice.ledger1.ai",
+      name: "BasaltEcho",
+      logo: "/BasaltEchoWide.png",
+      url: "https://echo.basalthq.com",
       tagline: "Enterprise Voice AI Platform",
       description: "Custom voice agents for meetings & streams"
     },
     {
-      name: "PortalPay",
-      logo: "/pplogowide.png",
-      url: "https://pay.ledger1.ai",
+      name: "BasaltSurge",
+      logo: "/BasaltSurgeWide.png",
+      url: "https://surge.basalthq.com",
       tagline: "Web3-Native Commerce",
       description: "Crypto payments, instant settlement, 90+ chains",
       locked: false
     },
     {
-      name: "Anubis",
-      logo: "/anubis.svg", // Using the SVG we just created
+      name: "BasaltOnyx",
+      logo: "/BasaltOnyxWide.png",
       url: "#",
       tagline: "Autonomous Social Intelligence",
       description: "AI Agents that post, engage, and grow your presence",

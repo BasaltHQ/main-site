@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Footer } from "@/components/layout/footer";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy – Ledger1",
-  description: "How Ledger1 collects, uses, and protects your information. Learn about data rights, retention, security, and contact details.",
-  alternates: { canonical: "https://ledger1.ai/privacy" },
+  title: "Privacy Policy – BasaltHQ",
+  description: "How BasaltHQ collects, uses, and protects your information. Learn about data rights, retention, security, and contact details.",
+  alternates: { canonical: "https://basalthq.com/privacy" },
 };
 
 export default function PrivacyPage() {
@@ -21,7 +21,7 @@ export default function PrivacyPage() {
       <section className="py-12">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 prose prose-invert">
           <p>
-            Ledger1 ("we", "us", "our") provides an AI‑assisted ERP platform. This Privacy Policy explains how we
+            BasaltHQ ("we", "us", "our") provides an AI‑assisted ERP platform. This Privacy Policy explains how we
             collect, use, share, and protect information in connection with our websites, products, and services (collectively, the "Services").
           </p>
 
@@ -103,7 +103,7 @@ export default function PrivacyPage() {
 
           <h2>Contact</h2>
           <p>
-            Ledger1 · Santa Fe, New Mexico · Email: <a href="mailto:info@theutilitycompany.co">info@theutilitycompany.co</a>
+            BasaltHQ · Santa Fe, New Mexico · Email: <a href="mailto:info@theutilitycompany.co">info@theutilitycompany.co</a>
           </p>
         </div>
       </section>

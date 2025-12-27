@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 import { getAllPosts } from '@/lib/blog/posts'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://ledger1.ai'
+  const baseUrl = 'https://basalthq.com'
 
   const staticEntries: MetadataRoute.Sitemap = [
     {

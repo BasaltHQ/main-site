@@ -16,13 +16,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
     if (feature) {
         return {
-            title: `${industry.name} ${feature.name} | Ledger1 Ontology`,
-            description: `Deploy the ${feature.name} weapon system for ${industry.name}. Dominate your market with the Ledger1 Main Street Ontology.`,
+            title: `${industry.name} ${feature.name} | BasaltHQ Ontology`,
+            description: `Deploy the ${feature.name} weapon system for ${industry.name}. Dominate your market with the BasaltHQ Main Street Ontology.`,
         };
     }
 
     return {
-        title: `${industry.name} Dominance Platform | Ledger1`,
+        title: `${industry.name} Dominance Platform | BasaltHQ`,
         description: `The Operating System for ${industry.name} Supremacy. Automate operations, assets, and decisions. Survival is optional.`,
     };
 }
@@ -142,7 +142,7 @@ export default async function SEOPage({ params }: { params: Promise<{ slug: stri
                             </h2>
                             <p className="text-lg text-slate-400 leading-relaxed mb-8">
                                 Your competitors are using Excel and legacy ERPs. They are blind.
-                                Ledger1 constructs a high-fidelity digital twin of your {industry.shortName} reality.
+                                BasaltHQ constructs a high-fidelity digital twin of your {industry.shortName} reality.
                                 We don't just track data. We track truth.
                             </p>
                             <ul className="space-y-6">

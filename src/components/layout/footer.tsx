@@ -25,16 +25,16 @@ export function Footer() {
           <div className="space-y-4">
             <Link href="/" className="flex items-center gap-3">
               <Image
-                src="/l1logows.png"
-                alt="Ledger1"
+                src="/BasaltHQWide.png"
+                alt="BasaltHQ"
                 width={120}
                 height={40}
                 className="h-8 w-auto dark:hidden"
                 priority
               />
               <Image
-                src="/l1logowsdm.png"
-                alt="Ledger1"
+                src="/BasaltHQWideD.png"
+                alt="BasaltHQ"
                 width={120}
                 height={40}
                 className="h-8 w-auto hidden dark:block"
@@ -46,10 +46,10 @@ export function Footer() {
               ERP, CRM, Voice AI, and Web3 payments—all powered by advanced AI.
             </p>
             <div className="flex space-x-4">
-              <a href="https://x.com/The_Utility_Co" className="text-muted-foreground hover:text-primary transition-colors">
+              <a href="https://x.com/BasaltHQ" className="text-muted-foreground hover:text-primary transition-colors">
                 <Twitter className="h-5 w-5" />
               </a>
-              <a href="https://www.linkedin.com/company/the-utility-company/" className="text-muted-foreground hover:text-primary transition-colors">
+              <a href="https://www.linkedin.com/company/basalthq/" className="text-muted-foreground hover:text-primary transition-colors">
                 <Linkedin className="h-5 w-5" />
               </a>
               <a href="https://www.facebook.com/profile.php?id=100083624105531" className="text-muted-foreground hover:text-primary transition-colors">
@@ -65,11 +65,11 @@ export function Footer() {
           <div className="space-y-4">
             <h3 className="font-semibold">Product Suite</h3>
             <ul className="space-y-2 text-sm">
-              <li><a href="https://erp.ledger1.ai" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">Ledger1ERP</a></li>
-              <li><a href="https://crm.ledger1.ai" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">Ledger1CRM</a></li>
-              <li><a href="https://cms.ledger1.ai" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">Ledger1CMS</a></li>
-              <li><a href="https://voice.ledger1.ai" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">VoiceHub</a></li>
-              <li><a href="https://pay.ledger1.ai" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">PortalPay</a></li>
+              <li><a href="https://erp.basalthq.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">BasaltERP</a></li>
+              <li><a href="https://crm.basalthq.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">BasaltCRM</a></li>
+              <li><a href="https://cms.basalthq.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">BasaltCMS</a></li>
+              <li><a href="https://echo.basalthq.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">BasaltEcho</a></li>
+              <li><a href="https://surge.basalthq.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">BasaltSurge</a></li>
             </ul>
           </div>
 
@@ -124,7 +124,7 @@ export function Footer() {
         <div className="py-6 border-t border-border/50">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-6">
-              <p>© {currentYear} Ledger1. All rights reserved.</p>
+              <p>© {currentYear} BasaltHQ. All rights reserved.</p>
               <div className="hidden md:flex items-center gap-4">
                 <a href="/status" className="hover:text-primary transition-colors">System Status</a>
                 <a href="/changelog" className="hover:text-primary transition-colors">Changelog</a>

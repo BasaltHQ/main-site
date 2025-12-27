@@ -42,8 +42,8 @@ export default function GetStartedPage() {
         setSubmitError(null);
 
         try {
-            const formSlug = "ledger1-ai-contact-us-55230247";
-            const apiEndpoint = "https://crm.ledger1.ai/api/forms/submit";
+            const formSlug = "basalthq-contact-us-55230247";
+            const apiEndpoint = "https://crm.basalthq.com/api/forms/submit";
 
             const payload = {
                 form_slug: formSlug,
@@ -66,7 +66,7 @@ export default function GetStartedPage() {
                     window.location.href = result.redirect_url;
                 }
             } else {
-                setSubmitError(result.error || "Submission failed. Please try again or contact command@ledger1.ai directly.");
+                setSubmitError(result.error || "Submission failed. Please try again or contact command@basalthq.com directly.");
             }
         } catch (error) {
             setSubmitError("Network error. Transmission blocked.");
@@ -97,7 +97,7 @@ export default function GetStartedPage() {
                     </h1>
 
                     <p className="max-w-2xl mx-auto text-xl text-cyan-100/60 font-light leading-relaxed">
-                        You are about to instantiate a new instance of the <span className="text-white font-bold">Ledger1 Neural Operating System</span>.
+                        You are about to instantiate a new instance of the <span className="text-white font-bold">BasaltHQ Neural Operating System</span>.
                         Please select your integration vector.
                     </p>
                 </div>
@@ -128,7 +128,7 @@ export default function GetStartedPage() {
 
                         <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-teal-400 transition-colors">Deploy Cortex</h3>
                         <p className="text-cyan-100/50 mb-6 min-h-[48px]">
-                            Initiate a guided integration with a Ledger1 Solution Architect. For enterprise environments requiring custom ontology mapping.
+                            Initiate a guided integration with a BasaltHQ Solution Architect. For enterprise environments requiring custom ontology mapping.
                         </p>
 
                         <div className="space-y-3">
@@ -328,7 +328,7 @@ export default function GetStartedPage() {
                                 </button>
 
                                 <p className="text-center text-xs text-cyan-500/30 mt-4">
-                                    By clicking above, you agree to allow Ledger1 Cortex to scan your intake form for compatibility.
+                                    By clicking above, you agree to allow BasaltHQ Cortex to scan your intake form for compatibility.
                                 </p>
                             </form>
                         ) : (

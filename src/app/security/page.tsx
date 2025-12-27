@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Footer } from "@/components/layout/footer";
 
 export const metadata: Metadata = {
-  title: "Security – Ledger1",
+  title: "Security – BasaltHQ",
   description: "Our approach to security: encryption, access control, SSO, audit logs, data retention, incident response, and vulnerability disclosure.",
-  alternates: { canonical: "https://ledger1.ai/security" },
+  alternates: { canonical: "https://basalthq.com/security" },
 };
 
 export default function SecurityPage() {

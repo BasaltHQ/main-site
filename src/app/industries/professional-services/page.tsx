@@ -3,11 +3,11 @@ import Link from "next/link";
 import { Briefcase, Users, Clock, Sparkles, Brain, CheckCircle } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "AI-Powered Professional Services ERP | 84% More Billable Hours | Ledger1",
+  title: "AI-Powered Professional Services ERP | 84% More Billable Hours | BasaltHQ",
   description: "Transform consulting & services with AI automation. 91% time tracking accuracy, $495K average savings. Smart resource management for professional firms.",
   keywords: "AI professional services ERP, smart time tracking, automated project billing, AI resource management, intelligent consulting software",
   openGraph: {
-    title: "AI-Powered Professional Services ERP | Ledger1",
+    title: "AI-Powered Professional Services ERP | BasaltHQ",
     description: "84% more billable hours captured, 91% accuracy",
     type: "website",
   },
@@ -209,7 +209,7 @@ export default function ProfessionalServicesIndustryPage() {
             Ready to Maximize Your Firm's Profitability?
           </h2>
           <p className="text-lg text-muted-foreground mb-8">
-            Join professional services firms capturing 84% more billable hours with Ledger1's AI-first platform
+            Join professional services firms capturing 84% more billable hours with BasaltHQ's AI-first platform
           </p>
           <a
             href="https://calendly.com/founders-tuc/ledger1-info-session"

@@ -3,11 +3,11 @@ import Link from "next/link";
 import { Heart, Shield, TrendingUp, Sparkles, Brain, CheckCircle } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "AI-Powered Healthcare ERP | 78% Less Manual Work | Ledger1",
+  title: "AI-Powered Healthcare ERP | 78% Less Manual Work | BasaltHQ",
   description: "Transform healthcare finances with AI automation. 95% faster claims processing, $430K average savings. HIPAA-compliant ERP for hospitals, clinics, and medical practices.",
   keywords: "AI healthcare ERP, automated medical billing, HIPAA compliant accounting, hospital financial software, AI revenue cycle management",
   openGraph: {
-    title: "AI-Powered Healthcare ERP | Ledger1",
+    title: "AI-Powered Healthcare ERP | BasaltHQ",
     description: "78% reduction in manual work, 95% faster claims processing",
     type: "website",
   },
@@ -209,7 +209,7 @@ export default function HealthcareIndustryPage() {
             Ready to Experience AI-Powered Healthcare Finance?
           </h2>
           <p className="text-lg text-muted-foreground mb-8">
-            Join leading healthcare organizations achieving 78% efficiency gains with Ledger1's AI-first platform
+            Join leading healthcare organizations achieving 78% efficiency gains with BasaltHQ's AI-first platform
           </p>
           <a
             href="https://calendly.com/founders-tuc/ledger1-info-session"

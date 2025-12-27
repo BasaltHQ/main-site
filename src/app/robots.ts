@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/private/', '/admin/'],
     },
-    sitemap: 'https://ledger1.ai/sitemap.xml',
+    sitemap: 'https://basalthq.com/sitemap.xml',
   }
 }

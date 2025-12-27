@@ -4,9 +4,9 @@ import { Footer } from "@/components/layout/footer";
 import { getAllPosts } from "@/lib/blog/posts";
 
 export const metadata: Metadata = {
-  title: "Blog – Ledger1",
+  title: "Blog – BasaltHQ",
   description: "Product announcements, research, and customer stories.",
-  alternates: { canonical: "https://ledger1.ai/blog" },
+  alternates: { canonical: "https://basalthq.com/blog" },
 };
 
 export default function BlogPage() {

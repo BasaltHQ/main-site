@@ -329,7 +329,7 @@ export default function ManifestoPage() {
                 </div>
             </section >
 
-            {/* THE NEURAL LINK: LEDGER1 INTEGRATION (New Section) */}
+            {/* THE NEURAL LINK: BASALTHQ INTEGRATION (New Section) */}
             < section className="py-24 px-4 sm:px-6 lg:px-8 border-t border-cyan-900/30 bg-black relative overflow-hidden" >
                 <div className="absolute inset-0 bg-[linear-gradient(rgba(20,184,166,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(20,184,166,0.05)_1px,transparent_1px)] bg-[size:30px_30px] opacity-20" />
 
@@ -350,7 +350,7 @@ export default function ManifestoPage() {
                             <div className="h-10 w-10 bg-teal-900/30 rounded-lg flex items-center justify-center mb-4 border border-teal-500/30 group-hover:scale-110 transition-transform">
                                 <Cpu className="w-5 h-5 text-teal-400" />
                             </div>
-                            <h4 className="text-lg font-bold text-white mb-1">Ledger1 ERP</h4>
+                            <h4 className="text-lg font-bold text-white mb-1">BasaltERP</h4>
                             <p className="text-[10px] font-mono text-teal-500 w-full mb-3 border-b border-teal-500/20 pb-2">HIPPOCAMPUS (Memory)</p>
                             <p className="text-cyan-100/60 text-xs leading-relaxed">
                                 The single source of truth. Stores "State Vectors" of every object, ensuring <strong>Zero Latency</strong> access to data.
@@ -362,44 +362,44 @@ export default function ManifestoPage() {
                             <div className="h-10 w-10 bg-red-900/30 rounded-lg flex items-center justify-center mb-4 border border-red-500/30 group-hover:scale-110 transition-transform">
                                 <Share2 className="w-5 h-5 text-red-400" />
                             </div>
-                            <h4 className="text-lg font-bold text-white mb-1">Ledger1 CRM</h4>
+                            <h4 className="text-lg font-bold text-white mb-1">BasaltCRM</h4>
                             <p className="text-[10px] font-mono text-red-500 w-full mb-3 border-b border-red-500/20 pb-2">AMYGDALA (Social)</p>
                             <p className="text-cyan-100/60 text-xs leading-relaxed">
                                 Maps the social graph of customers, identifying <strong>Profit Gradients</strong> via emotional and transactional analysis.
                             </p>
                         </div>
 
-                        {/* Module 3: VoiceHub */}
+                        {/* Module 3: BasaltEcho */}
                         <div className="p-6 border border-cyan-800/50 rounded-xl bg-cyan-950/20 backdrop-blur hover:border-white transition-colors group">
                             <div className="h-10 w-10 bg-gray-800/50 rounded-lg flex items-center justify-center mb-4 border border-white/30 group-hover:scale-110 transition-transform">
                                 <Brain className="w-5 h-5 text-white" />
                             </div>
-                            <h4 className="text-lg font-bold text-white mb-1">VoiceHub</h4>
+                            <h4 className="text-lg font-bold text-white mb-1">BasaltEcho</h4>
                             <p className="text-[10px] font-mono text-white/70 w-full mb-3 border-b border-white/20 pb-2">BROCA'S AREA (Speech)</p>
                             <p className="text-cyan-100/60 text-xs leading-relaxed">
                                 Interprets unstructured natural language (voice/text) and translates it into structured <strong>Ontological Actions</strong>.
                             </p>
                         </div>
 
-                        {/* Module 4: Pay */}
+                        {/* Module 4: BasaltSurge */}
                         <div className="p-6 border border-cyan-800/50 rounded-xl bg-cyan-950/20 backdrop-blur hover:border-teal-500 transition-colors group">
                             <div className="h-10 w-10 bg-teal-900/30 rounded-lg flex items-center justify-center mb-4 border border-teal-500/30 group-hover:scale-110 transition-transform">
                                 <Zap className="w-5 h-5 text-teal-400" />
                             </div>
-                            <h4 className="text-lg font-bold text-white mb-1">PortalPay</h4>
+                            <h4 className="text-lg font-bold text-white mb-1">BasaltSurge</h4>
                             <p className="text-[10px] font-mono text-teal-500 w-full mb-3 border-b border-teal-500/20 pb-2">VASCULAR (Resource)</p>
                             <p className="text-cyan-100/60 text-xs leading-relaxed">
                                 Ensures liquidity (oxygen) reaches the value-added clusters, automating <strong>Capital Reallocation</strong>.
                             </p>
                         </div>
 
-                        {/* Module 5: CMS (Coming Soon) */}
+                        {/* Module 5: BasaltCMS (Coming Soon) */}
                         <div className="p-6 border border-cyan-900/30 rounded-xl bg-cyan-950/10 backdrop-blur opacity-70 hover:opacity-100 hover:border-teal-500/50 transition-all group relative overflow-hidden">
                             <div className="absolute top-3 right-3 px-2 py-0.5 bg-teal-950/50 border border-teal-500/30 rounded text-[9px] font-mono text-teal-400 uppercase tracking-wider">Coming Soon</div>
                             <div className="h-10 w-10 bg-teal-900/20 rounded-lg flex items-center justify-center mb-4 border border-teal-500/20 group-hover:scale-110 transition-transform grayscale group-hover:grayscale-0">
                                 <Layers className="w-5 h-5 text-teal-400" />
                             </div>
-                            <h4 className="text-lg font-bold text-white mb-1 text-opacity-80 group-hover:text-opacity-100">Ledger1 CMS</h4>
+                            <h4 className="text-lg font-bold text-white mb-1 text-opacity-80 group-hover:text-opacity-100">BasaltCMS</h4>
                             <p className="text-[10px] font-mono text-teal-500/70 w-full mb-3 border-b border-teal-500/10 pb-2">WERNICKE'S AREA (Meaning)</p>
                             <p className="text-cyan-100/40 text-xs leading-relaxed group-hover:text-cyan-100/60">
                                 The semantic knowledge store. Organizes unstructured corporate wisdom into retrievable, context-aware <strong>Intelligence</strong>.
@@ -412,7 +412,7 @@ export default function ManifestoPage() {
                             <div className="h-10 w-10 bg-red-900/20 rounded-lg flex items-center justify-center mb-4 border border-red-500/20 group-hover:scale-110 transition-transform grayscale group-hover:grayscale-0">
                                 <Shield className="w-5 h-5 text-red-400" />
                             </div>
-                            <h4 className="text-lg font-bold text-white mb-1 text-opacity-80 group-hover:text-opacity-100">Ledger1 Vault</h4>
+                            <h4 className="text-lg font-bold text-white mb-1 text-opacity-80 group-hover:text-opacity-100">BasaltVault</h4>
                             <p className="text-[10px] font-mono text-red-500/70 w-full mb-3 border-b border-red-500/10 pb-2">PREFRONTAL CORTEX (Control)</p>
                             <p className="text-cyan-100/40 text-xs leading-relaxed group-hover:text-cyan-100/60">
                                 Multi-signature smart contract accounts. The executive function that enforces <strong>Governance Protocols</strong> and asset security.

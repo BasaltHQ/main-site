@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import { Footer } from "@/components/layout/footer";
 
 export const metadata: Metadata = {
-  title: "API Documentation – Ledger1 (Coming Soon)",
+  title: "API Documentation – BasaltHQ (Coming Soon)",
   description: "GraphQL schema, REST endpoints, webhooks, auth, and SDKs. Coming soon.",
   robots: { index: true, follow: true },
-  alternates: { canonical: "https://ledger1.ai/docs/api" },
+  alternates: { canonical: "https://basalthq.com/docs/api" },
 };
 
 export default function ApiDocsComingSoonPage() {

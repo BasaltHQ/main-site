@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Footer } from "@/components/layout/footer";
 
 export const metadata: Metadata = {
-  title: "Terms of Service – Ledger1",
-  description: "The legal terms governing your use of Ledger1, including subscriptions, acceptable use, data, warranties, and liability.",
-  alternates: { canonical: "https://ledger1.ai/terms" },
+  title: "Terms of Service – BasaltHQ",
+  description: "The legal terms governing your use of BasaltHQ, including subscriptions, acceptable use, data, warranties, and liability.",
+  alternates: { canonical: "https://basalthq.com/terms" },
 };
 
 export default function TermsPage() {
@@ -20,7 +20,7 @@ export default function TermsPage() {
 
       <section className="py-12">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 prose prose-invert">
-          <p>These Terms of Service ("Terms") govern your access to and use of the Ledger1 platform and services (the "Services"). By using the Services, you agree to these Terms.</p>
+          <p>These Terms of Service ("Terms") govern your access to and use of the BasaltHQ platform and services (the "Services"). By using the Services, you agree to these Terms.</p>
 
           <h2>Accounts & Access</h2>
           <ul>

@@ -3,19 +3,19 @@ import { PricingSection } from "@/components/sections/pricing-section";
 import { Footer } from "@/components/layout/footer";
 
 export const metadata: Metadata = {
-  title: "Pricing – Ledger1",
-  description: "Simple, transparent pricing for Ledger1. Starter, Pro, and Scale plans with optional add-ons and enterprise options.",
-  alternates: { canonical: "https://ledger1.ai/pricing" },
+  title: "Pricing – BasaltHQ",
+  description: "Simple, transparent pricing for BasaltHQ. Starter, Pro, and Scale plans with optional add-ons and enterprise options.",
+  alternates: { canonical: "https://basalthq.com/pricing" },
   openGraph: {
-    title: "Pricing – Ledger1",
-    description: "Simple, transparent pricing for Ledger1.",
-    url: "https://ledger1.ai/pricing",
+    title: "Pricing – BasaltHQ",
+    description: "Simple, transparent pricing for BasaltHQ.",
+    url: "https://basalthq.com/pricing",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Pricing – Ledger1",
-    description: "Simple, transparent pricing for Ledger1.",
+    title: "Pricing – BasaltHQ",
+    description: "Simple, transparent pricing for BasaltHQ.",
   },
 };
 

@@ -54,10 +54,10 @@ export default function CareersPage() {
               <p className="text-muted-foreground">
                 Send your resume to{" "}
                 <a
-                  href="mailto:careers@ledger1.ai"
+                  href="mailto:careers@basalthq.com"
                   className="text-blue-600 dark:text-blue-400 hover:underline"
                 >
-                  careers@ledger1.ai
+                  careers@basalthq.com
                 </a>{" "}
                 and tell us why you'd be a great fit.
               </p>
@@ -200,7 +200,7 @@ export default function CareersPage() {
                       </a>
                     ) : (
                       <a
-                        href={`mailto:careers@ledger1.ai?subject=${encodeURIComponent(career.title + " Application")}`}
+                        href={`mailto:careers@basalthq.com?subject=${encodeURIComponent(career.title + " Application")}`}
                         className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
                       >
                         Apply for this position
@@ -231,7 +231,7 @@ export default function CareersPage() {
               We're always interested in meeting talented people. Send us your resume and tell us about yourself.
             </p>
             <a
-              href="mailto:careers@ledger1.ai"
+              href="mailto:careers@basalthq.com"
               className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
             >
               Get in touch

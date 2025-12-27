@@ -4,7 +4,7 @@ import { ArrowRight, Check, X, Zap } from "lucide-react";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-    title: "Ledger1 vs Palantir – The Ontology for the 99%",
+    title: "BasaltHQ vs Palantir – The Ontology for the 99%",
     description: "Palantir built the Ontology for Wall Street. We built the Main Street Ontology. AI-driven operating system for businesses that build the real world.",
     keywords: ["Palantir Alternative", "Main Street Ontology", "SMB ERP", "Business Operating System", "Anti-Wall Street"],
 };
@@ -86,7 +86,7 @@ export default function PalantirAlternativePage() {
                             </ul>
                         </div>
 
-                        {/* Ledger1 Side */}
+                        {/* BasaltHQ Side */}
                         <div className="-mt-2 p-2 lg:mt-0 lg:w-full lg:max-w-md lg:flex-shrink-0">
                             <div className="rounded-2xl bg-primary/5 py-10 text-center ring-1 ring-inset ring-primary/20 lg:flex lg:flex-col lg:justify-center lg:py-16">
                                 <div className="mx-auto max-w-xs px-8">

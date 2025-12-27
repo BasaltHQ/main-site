@@ -3,18 +3,18 @@ import { CTASection } from "@/components/sections/cta-section";
 import { Footer } from "@/components/layout/footer";
 
 export const metadata: Metadata = {
-  title: "Contact – Ledger1",
-  description: "Get in touch with Ledger1. Book a demo, contact sales, or schedule an info session.",
-  alternates: { canonical: "https://ledger1.ai/contact" },
+  title: "Contact – BasaltHQ",
+  description: "Get in touch with BasaltHQ. Book a demo, contact sales, or schedule an info session.",
+  alternates: { canonical: "https://basalthq.com/contact" },
   openGraph: {
-    title: "Contact – Ledger1",
+    title: "Contact – BasaltHQ",
     description: "Book a demo or contact our team.",
-    url: "https://ledger1.ai/contact",
+    url: "https://basalthq.com/contact",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Contact – Ledger1",
+    title: "Contact – BasaltHQ",
     description: "Book a demo or contact our team.",
   },
 };

@@ -15,7 +15,7 @@ export function AboutSection() {
             <span className="text-white font-semibold">Intelligence is power.</span> For too long, the Fortune 500 has hoarded the world's most advanced ontologies—digital twins that allow them to model, predict, and control markets with god-like efficiency. Companies like Palantir built the weapons for Wall Street.
           </p>
           <p>
-            <span className="text-white font-semibold">We built the weapon for you.</span> Ledger1 is not just "software". It is a pre-packaged, AI-driven Ontology designed specifically for Main Street. We have taken the same comprehensive "Object-Action-Decision" architecture used by trillion-dollar asset managers and compressed it into an accessible, autonomous operating system.
+            <span className="text-white font-semibold">We built the weapon for you.</span> BasaltHQ is not just "software". It is a pre-packaged, AI-driven Ontology designed specifically for Main Street. We have taken the same comprehensive "Object-Action-Decision" architecture used by trillion-dollar asset managers and compressed it into an accessible, autonomous operating system.
           </p>
           <p>
             By digitizing your reality into <span className="text-teal-400 font-mono text-sm">Objects</span>, <span className="text-red-400 font-mono text-sm">Actions</span>, and <span className="text-slate-200 font-mono text-sm">Decisions</span>, we give you the same analytical supremacy. Whether you are running a restaurant chain, a retail empire, or a service fleet, the Main Street Ontology levels the battlefield.

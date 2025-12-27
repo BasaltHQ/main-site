@@ -30,62 +30,62 @@ export function ProductShowcase() {
     {
       id: "core",
       name: "Structural Core",
-      product: "Ledger1ERP",
-      logo: "/erplogowide.png",
+      product: "BasaltERP",
+      logo: "/BasaltERPWide.png",
       description: "The backbone of your ontology. Manage inventory, supply chain, and financials in one unified truth.",
       color: "text-teal-500",
       lightColor: "bg-teal-500",
       benefits: ["Predictive Inventory", "Automated Procurement", "Multi-Location Sync"],
       module_id: "MOD_CORE",
-      href: "https://erp.ledger1.ai/industries"
+      href: "https://erp.basalthq.com/industries"
     },
     {
       id: "graph",
       name: "Relational Graph",
-      product: "Ledger1CRM",
-      logo: "/crmlogowide.png",
+      product: "BasaltCRM",
+      logo: "/BasaltCRMWide.png",
       description: "Map the complex web of relationships between your customers, leads, and sales agents.",
       color: "text-red-500",
       lightColor: "bg-red-500",
       benefits: ["Sentiment Analysis", "Lead Scoring", "Automated Outreach"],
       module_id: "MOD_GRAPH",
-      href: "https://crm.ledger1.ai/en/features"
+      href: "https://crm.basalthq.com/en/features"
     },
     {
       id: "cms",
       name: "Universal Integrations",
-      product: "Ledger1CMS",
-      logo: "/ledger1-cms-wide-logo.webp",
+      product: "BasaltCMS",
+      logo: "/BasaltCMSWide.png",
       description: "Orchestrate your entire digital ecosystem. Connect e-commerce, AI assistants, and social platforms.",
       color: "text-sky-400",
       lightColor: "bg-sky-400",
       benefits: ["Unified Data Sync", "Real-time Actions", "Cross-Platform Control"],
       module_id: "MOD_INTEGRATION",
-      href: "https://cms.ledger1.ai/features"
+      href: "https://cms.basalthq.com/features"
     },
     {
       id: "interface",
       name: "Semantic Interface",
-      product: "VoiceHub",
-      logo: "/vhlogowide.png",
+      product: "BasaltEcho",
+      logo: "/BasaltEchoWide.png",
       description: "Interact with your ontology using natural language. Voice agents that understand context.",
       color: "text-white",
       lightColor: "bg-white",
       benefits: ["Meeting Transcription", "Action Item Extraction", "Voice Commands"],
       module_id: "MOD_INTERFACE",
-      href: "https://voice.ledger1.ai/"
+      href: "https://echo.basalthq.com/"
     },
     {
       id: "layer",
       name: "Transaction Layer",
-      product: "PortalPay",
-      logo: "/pplogowide.png",
+      product: "BasaltSurge",
+      logo: "/BasaltSurgeWide.png",
       description: "Secure, instant value transfer across the ontology. Crypto and fiat, seamless settlement.",
       color: "text-cyan-400",
       lightColor: "bg-cyan-400",
       benefits: ["99.9% Uptime", "Zero-Knowledge Proofs", "Instant Settlement"],
       module_id: "MOD_TX",
-      href: "https://pay.ledger1.ai/vs"
+      href: "https://surge.basalthq.com/vs"
     }
   ];
 
@@ -119,8 +119,8 @@ export function ProductShowcase() {
             <div className="absolute z-20 flex flex-col items-center justify-center w-28 h-28 rounded-2xl bg-black border border-sky-500/30 shadow-[0_0_30px_rgba(56,189,248,0.2)]">
               <div className="relative w-20 h-20">
                 <Image
-                  src="/Ledger1CMSWhite.png"
-                  alt="Ledger1 CMS"
+                  src="/BasaltCMS.png"
+                  alt="BasaltCMS"
                   fill
                   className="object-contain"
                 />

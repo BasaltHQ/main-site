@@ -3,11 +3,11 @@ import Link from "next/link";
 import { Building2, Home, DollarSign, Sparkles, Brain, CheckCircle } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "AI-Powered Real Estate ERP | 88% Faster Lease Processing | Ledger1",
+  title: "AI-Powered Real Estate ERP | 88% Faster Lease Processing | BasaltHQ",
   description: "Transform property management with AI automation. 94% rent collection rate, $340K average savings. Smart portfolio management for real estate professionals.",
   keywords: "AI real estate ERP, smart property management, automated lease tracking, AI portfolio analytics, intelligent real estate software",
   openGraph: {
-    title: "AI-Powered Real Estate ERP | Ledger1",
+    title: "AI-Powered Real Estate ERP | BasaltHQ",
     description: "88% faster lease processing, 94% collection rate",
     type: "website",
   },
@@ -209,7 +209,7 @@ export default function RealEstateIndustryPage() {
             Ready to Optimize Your Property Portfolio?
           </h2>
           <p className="text-lg text-muted-foreground mb-8">
-            Join real estate professionals achieving 94% collection rates with Ledger1's AI-first platform
+            Join real estate professionals achieving 94% collection rates with BasaltHQ's AI-first platform
           </p>
           <a
             href="https://calendly.com/founders-tuc/ledger1-info-session"

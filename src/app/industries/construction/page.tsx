@@ -3,11 +3,11 @@ import Link from "next/link";
 import { HardHat, FileText, Calculator, Sparkles, Brain, CheckCircle } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "AI-Powered Construction ERP | 71% Faster Project Delivery | Ledger1",
+  title: "AI-Powered Construction ERP | 71% Faster Project Delivery | BasaltHQ",
   description: "Transform construction management with AI automation. 86% cost accuracy, $615K average savings. Smart job costing and predictive analytics for contractors.",
   keywords: "AI construction ERP, smart job costing, automated project tracking, AI bid management, intelligent construction analytics",
   openGraph: {
-    title: "AI-Powered Construction ERP | Ledger1",
+    title: "AI-Powered Construction ERP | BasaltHQ",
     description: "71% faster project delivery, 86% cost accuracy",
     type: "website",
   },
@@ -209,7 +209,7 @@ export default function ConstructionIndustryPage() {
             Ready to Build Smarter Projects?
           </h2>
           <p className="text-lg text-muted-foreground mb-8">
-            Join contractors achieving 71% faster delivery with Ledger1's AI-first platform
+            Join contractors achieving 71% faster delivery with BasaltHQ's AI-first platform
           </p>
           <a
             href="https://calendly.com/founders-tuc/ledger1-info-session"

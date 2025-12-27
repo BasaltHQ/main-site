@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Footer } from "@/components/layout/footer";
 
 export const metadata: Metadata = {
-  title: "Changelog – Ledger1",
+  title: "Changelog – BasaltHQ",
   description: "Product updates, new features, and improvements.",
-  alternates: { canonical: "https://ledger1.ai/changelog" },
+  alternates: { canonical: "https://basalthq.com/changelog" },
 };
 
 const entries = [
@@ -17,7 +17,7 @@ export default function ChangelogPage() {
       <section className="relative py-20 bg-gradient-to-b from-background to-muted/20">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-3">Changelog</h1>
-          <p className="text-lg text-muted-foreground">What’s new in Ledger1.</p>
+          <p className="text-lg text-muted-foreground">What’s new in BasaltHQ.</p>
         </div>
       </section>
       <section className="py-12">

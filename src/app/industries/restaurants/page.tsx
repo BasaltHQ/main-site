@@ -3,11 +3,11 @@ import Link from "next/link";
 import { UtensilsCrossed, ChefHat, DollarSign, Sparkles, Brain, CheckCircle } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "AI-Powered Restaurant ERP | 76% Lower Food Costs | Ledger1",
+  title: "AI-Powered Restaurant ERP | 76% Lower Food Costs | BasaltHQ",
   description: "Transform restaurant operations with AI automation. 93% inventory accuracy, $285K average savings. Smart menu engineering and predictive analytics for restaurants.",
   keywords: "AI restaurant ERP, smart POS integration, automated food cost tracking, AI menu optimization, intelligent restaurant analytics",
   openGraph: {
-    title: "AI-Powered Restaurant ERP | Ledger1",
+    title: "AI-Powered Restaurant ERP | BasaltHQ",
     description: "76% lower food costs, 93% inventory accuracy",
     type: "website",
   },
@@ -209,7 +209,7 @@ export default function RestaurantsIndustryPage() {
             Ready to Transform Your Restaurant's Profitability?
           </h2>
           <p className="text-lg text-muted-foreground mb-8">
-            Join restaurants reducing food costs by 76% with Ledger1's AI-first platform
+            Join restaurants reducing food costs by 76% with BasaltHQ's AI-first platform
           </p>
           <a
             href="https://calendly.com/founders-tuc/ledger1-info-session"

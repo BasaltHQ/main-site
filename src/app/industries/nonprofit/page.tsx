@@ -3,11 +3,11 @@ import Link from "next/link";
 import { Heart, DollarSign, FileText, Sparkles, Brain, CheckCircle } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "AI-Powered Nonprofit ERP | 91% Better Donor Retention | Ledger1",
+  title: "AI-Powered Nonprofit ERP | 91% Better Donor Retention | BasaltHQ",
   description: "Transform nonprofit operations with AI automation. 97% grant compliance, $315K average savings. Smart fund accounting for charitable organizations.",
   keywords: "AI nonprofit ERP, charity accounting software, automated donor management, AI grant tracking, intelligent nonprofit analytics",
   openGraph: {
-    title: "AI-Powered Nonprofit ERP | Ledger1",
+    title: "AI-Powered Nonprofit ERP | BasaltHQ",
     description: "91% better donor retention, 97% compliance",
     type: "website",
   },
@@ -209,7 +209,7 @@ export default function NonprofitIndustryPage() {
             Ready to Amplify Your Organization's Impact?
           </h2>
           <p className="text-lg text-muted-foreground mb-8">
-            Join nonprofits achieving 91% donor retention with Ledger1's AI-first platform
+            Join nonprofits achieving 91% donor retention with BasaltHQ's AI-first platform
           </p>
           <a
             href="https://calendly.com/founders-tuc/ledger1-info-session"

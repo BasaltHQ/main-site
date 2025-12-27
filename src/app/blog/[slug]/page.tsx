@@ -18,9 +18,9 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const post = getPostBySlug(params.slug);
   if (!post) return { title: "Post not found" };
-  const url = `https://ledger1.ai/blog/${post.slug}`;
+  const url = `https://basalthq.com/blog/${post.slug}`;
   return {
-    title: `${post.title} – Ledger1 Blog`,
+    title: `${post.title} – BasaltHQ Blog`,
     description: post.description,
     alternates: { canonical: url },
     openGraph: {

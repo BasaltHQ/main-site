@@ -16,11 +16,11 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Industry Solutions | Ledger1 ERP for Every Business",
-  description: "Discover how Ledger1's ERP software serves businesses across healthcare, manufacturing, retail, construction, and more. Industry-specific financial management solutions.",
+  title: "Industry Solutions | BasaltHQ ERP for Every Business",
+  description: "Discover how BasaltHQ's ERP software serves businesses across healthcare, manufacturing, retail, construction, and more. Industry-specific financial management solutions.",
   keywords: "ERP by industry, industry-specific software, vertical ERP solutions, business management software",
   openGraph: {
-    title: "Industry Solutions | Ledger1 ERP",
+    title: "Industry Solutions | BasaltHQ ERP",
     description: "ERP solutions tailored for your industry",
     type: "website",
   },
@@ -118,7 +118,7 @@ export default function IndustriesPage() {
               <span className="block text-primary mt-2">ERP Solutions</span>
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-              Ledger1 provides tailored financial management solutions for businesses across diverse industries. Discover how our ERP software can transform your industry's unique challenges into opportunities.
+              BasaltHQ provides tailored financial management solutions for businesses across diverse industries. Discover how our ERP software can transform your industry's unique challenges into opportunities.
             </p>
           </div>
         </div>
@@ -169,7 +169,7 @@ export default function IndustriesPage() {
             Don't See Your Industry Listed?
           </h2>
           <p className="text-lg text-muted-foreground mb-8">
-            Ledger1 is flexible enough to serve businesses across all industries. Contact us to discuss your specific needs and learn how we can help.
+            BasaltHQ is flexible enough to serve businesses across all industries. Contact us to discuss your specific needs and learn how we can help.
           </p>
           <a
             href="https://calendly.com/founders-tuc/ledger1-info-session"

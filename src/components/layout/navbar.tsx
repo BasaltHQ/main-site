@@ -29,11 +29,11 @@ export function Navbar() {
   ], []);
 
   const products = [
-    { name: "Ledger1ERP", url: "https://erp.ledger1.ai" },
-    { name: "Ledger1CRM", url: "https://crm.ledger1.ai" },
-    { name: "Ledger1CMS", url: "https://cms.ledger1.ai" },
-    { name: "VoiceHub", url: "https://voice.ledger1.ai" },
-    { name: "PortalPay", url: "https://pay.ledger1.ai" },
+    { name: "BasaltERP", url: "https://erp.basalthq.com" },
+    { name: "BasaltCRM", url: "https://crm.basalthq.com" },
+    { name: "BasaltCMS", url: "https://cms.basalthq.com" },
+    { name: "BasaltEcho", url: "https://echo.basalthq.com" },
+    { name: "BasaltSurge", url: "https://surge.basalthq.com" },
   ];
 
   const [activeId, setActiveId] = useState<string>("");
@@ -114,16 +114,16 @@ export function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
           <Image
-            src="/l1logows.png"
-            alt="Ledger1"
+            src="/BasaltHQWide.png"
+            alt="BasaltHQ"
             width={120}
             height={40}
             className="h-8 w-auto dark:hidden"
             priority
           />
           <Image
-            src="/l1logowsdm.png"
-            alt="Ledger1"
+            src="/BasaltHQWideD.png"
+            alt="BasaltHQ"
             width={120}
             height={40}
             className="h-8 w-auto hidden dark:block"

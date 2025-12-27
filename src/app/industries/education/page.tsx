@@ -3,11 +3,11 @@ import Link from "next/link";
 import { GraduationCap, BookOpen, Users, Sparkles, Brain, CheckCircle } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "AI-Powered Education ERP | 87% Faster Grant Processing | Ledger1",
+  title: "AI-Powered Education ERP | 87% Faster Grant Processing | BasaltHQ",
   description: "Transform educational finances with AI automation. 95% compliance accuracy, $385K average savings. Smart fund accounting for schools and universities.",
   keywords: "AI education ERP, school accounting software, automated grant management, AI fund accounting, intelligent education analytics",
   openGraph: {
-    title: "AI-Powered Education ERP | Ledger1",
+    title: "AI-Powered Education ERP | BasaltHQ",
     description: "87% faster grant processing, 95% compliance",
     type: "website",
   },
@@ -209,7 +209,7 @@ export default function EducationIndustryPage() {
             Ready to Transform Educational Finance?
           </h2>
           <p className="text-lg text-muted-foreground mb-8">
-            Join institutions achieving 95% compliance with Ledger1's AI-first platform
+            Join institutions achieving 95% compliance with BasaltHQ's AI-first platform
           </p>
           <a
             href="https://calendly.com/founders-tuc/ledger1-info-session"
