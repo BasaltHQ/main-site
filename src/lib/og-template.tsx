@@ -193,29 +193,40 @@ export async function generateBasaltOG({
                 </div>
 
                 {/* GLASS FRAME - TOP */}
-                <div style={{ position: 'absolute', left: 40, top: 40, width: 2320, height: 40, overflow: 'hidden', borderRadius: '24px 24px 0 0', display: 'flex', zIndex: 5, boxShadow: 'inset 0 0 10px rgba(255,255,255,0.2)' }}>
-                    <img src={blurredBgBase64} width={2400} height={1260} style={{ position: 'absolute', left: -40, top: -40, objectFit: 'cover', transform: 'scale(1.05)' }} />
-                    <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.05)' }} />
-                    <div style={{ position: 'absolute', inset: 0, border: '2px solid rgba(255,255,255,0.3)', borderBottom: 'none' }} />
-                </div>
+                <div style={{
+                    position: 'absolute', left: 40, top: 40, width: 2320, height: 40,
+                    borderRadius: '24px 24px 0 0', display: 'flex', zIndex: 5,
+                    background: 'rgba(255,255,255,0.1)',
+                    boxShadow: 'inset 0 0 10px rgba(255,255,255,0.2)',
+                    border: '2px solid rgba(255,255,255,0.3)', borderBottom: 'none'
+                }} />
+
                 {/* GLASS FRAME - BOTTOM */}
-                <div style={{ position: 'absolute', left: 40, top: 1180, width: 2320, height: 40, overflow: 'hidden', borderRadius: '0 0 24px 24px', display: 'flex', zIndex: 5, boxShadow: 'inset 0 0 10px rgba(255,255,255,0.2)' }}>
-                    <img src={blurredBgBase64} width={2400} height={1260} style={{ position: 'absolute', left: -40, top: -1180, objectFit: 'cover', transform: 'scale(1.05)' }} />
-                    <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.05)' }} />
-                    <div style={{ position: 'absolute', inset: 0, border: '2px solid rgba(255,255,255,0.3)', borderTop: 'none' }} />
-                </div>
+                <div style={{
+                    position: 'absolute', left: 40, top: 1180, width: 2320, height: 40,
+                    borderRadius: '0 0 24px 24px', display: 'flex', zIndex: 5,
+                    background: 'rgba(255,255,255,0.1)',
+                    boxShadow: 'inset 0 0 10px rgba(255,255,255,0.2)',
+                    border: '2px solid rgba(255,255,255,0.3)', borderTop: 'none'
+                }} />
+
                 {/* GLASS FRAME - LEFT */}
-                <div style={{ position: 'absolute', left: 40, top: 80, width: 40, height: 1100, overflow: 'hidden', display: 'flex', zIndex: 5, boxShadow: 'inset 0 0 10px rgba(255,255,255,0.2)' }}>
-                    <img src={blurredBgBase64} width={2400} height={1260} style={{ position: 'absolute', left: -40, top: -80, objectFit: 'cover', transform: 'scale(1.05)' }} />
-                    <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.05)' }} />
-                    <div style={{ position: 'absolute', inset: 0, border: '2px solid rgba(255,255,255,0.3)', borderTop: 'none', borderBottom: 'none' }} />
-                </div>
+                <div style={{
+                    position: 'absolute', left: 40, top: 80, width: 40, height: 1100,
+                    display: 'flex', zIndex: 5,
+                    background: 'rgba(255,255,255,0.1)',
+                    boxShadow: 'inset 0 0 10px rgba(255,255,255,0.2)',
+                    border: '2px solid rgba(255,255,255,0.3)', borderTop: 'none', borderBottom: 'none'
+                }} />
+
                 {/* GLASS FRAME - RIGHT */}
-                <div style={{ position: 'absolute', left: 2320, top: 80, width: 40, height: 1100, overflow: 'hidden', display: 'flex', zIndex: 5, boxShadow: 'inset 0 0 10px rgba(255,255,255,0.2)' }}>
-                    <img src={blurredBgBase64} width={2400} height={1260} style={{ position: 'absolute', left: -2320, top: -80, objectFit: 'cover', transform: 'scale(1.05)' }} />
-                    <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.05)' }} />
-                    <div style={{ position: 'absolute', inset: 0, border: '2px solid rgba(255,255,255,0.3)', borderTop: 'none', borderBottom: 'none' }} />
-                </div>
+                <div style={{
+                    position: 'absolute', left: 2320, top: 80, width: 40, height: 1100,
+                    display: 'flex', zIndex: 5,
+                    background: 'rgba(255,255,255,0.1)',
+                    boxShadow: 'inset 0 0 10px rgba(255,255,255,0.2)',
+                    border: '2px solid rgba(255,255,255,0.3)', borderTop: 'none', borderBottom: 'none'
+                }} />
 
                 {/* HUD Corners */}
                 <div style={{ position: 'absolute', top: 60, left: 60, width: 80, height: 80, borderTop: `8px solid ${primaryColor}`, borderLeft: `8px solid ${primaryColor}`, borderRadius: '24px 0 0 0', display: 'flex' }} />
