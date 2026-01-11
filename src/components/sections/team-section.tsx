@@ -30,14 +30,14 @@ export function TeamSection() {
       twitter: "https://twitter.com/mayordelmar",
       linkedin: "https://www.linkedin.com/in/mayordelmar/"
     },
-    {
+    /* {
       name: "Shahir Monjour",
       role: "Senior VP, Engineering",
       description: "Senior engineering executive leading teams to build scalable, robust enterprise systems.",
       image: "/team/member4.png",
       twitter: "https://twitter.com/shahir1395",
       linkedin: "https://www.linkedin.com/in/shahir-monjur/"
-    },
+    }, */
     {
       name: "John Garcia",
       role: "Senior VP, AI Research",
