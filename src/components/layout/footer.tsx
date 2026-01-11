@@ -89,10 +89,10 @@ export function Footer() {
               <span className="text-primary font-semibold">Your Business. Supercharged.</span> Empowering Main Street businesses with Fortune 500 technology.
             </p>
             <a
-              href="mailto:info@theutilitycompany.co"
+              href="mailto:info@basalthq.com"
               className="text-primary text-sm hover:underline"
             >
-              info@theutilitycompany.co
+              info@basalthq.com
             </a>
           </div>
 
