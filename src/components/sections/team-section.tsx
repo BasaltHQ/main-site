@@ -8,7 +8,7 @@ export function TeamSection() {
   const teamMembers = [
     {
       name: "Krishna Patel",
-      role: "Chairman & CTO",
+      role: "Chief Architect & Co-Founder",
       description: "Technical visionary and chairman overseeing technology strategy and innovation across the enterprise.",
       image: "/team/member1.png",
       twitter: "https://twitter.com/GenRevoeth",
@@ -16,7 +16,7 @@ export function TeamSection() {
     },
     {
       name: "Eric Turner",
-      role: "Chief Executive Officer",
+      role: "Chief Executive Officer & Co-Founder",
       description: "Executive leader driving company vision, strategy, and growth for Main Street businesses.",
       image: "/team/member6.png",
       twitter: "https://twitter.com/sinisterxtwitr",
@@ -24,7 +24,7 @@ export function TeamSection() {
     },
     {
       name: "Michael Milton",
-      role: "Chief Marketing Officer",
+      role: "Chief Revenue Officer & Co-Founder",
       description: "Marketing leader building brand awareness and driving customer engagement strategies.",
       image: "/team/member3.png",
       twitter: "https://twitter.com/mayordelmar",
