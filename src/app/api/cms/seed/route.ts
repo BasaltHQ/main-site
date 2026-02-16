@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { validateSession } from '@/lib/cosmos/auth';
-import { initializeCosmosDB, container } from '@/lib/cosmos/client';
+import { initializeCosmosDB, getContainer } from '@/lib/cosmos/client';
 import { helpArticles, documentation, videos, careers } from '@/lib/cms/data';
 import { posts } from '@/lib/blog/posts';
 
@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     for (const item of helpArticles) {
       try {
         // Upsert using existing ID and docType to avoid duplicates
-        await container.items.upsert({ ...item, docType: 'help-article' });
+        await getContainer().items.upsert({ ...item, docType: 'help-article' });
         helpSeeded++;
       } catch (e) {
         console.error('Help seed error:', e);
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     // Seed Documentation
     for (const item of documentation) {
       try {
-        await container.items.upsert({ ...item, docType: 'documentation' });
+        await getContainer().items.upsert({ ...item, docType: 'documentation' });
         docsSeeded++;
       } catch (e) {
         console.error('Docs seed error:', e);
@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
     // Seed Videos
     for (const item of videos) {
       try {
-        await container.items.upsert({ ...item, docType: 'video' });
+        await getContainer().items.upsert({ ...item, docType: 'video' });
         videosSeeded++;
       } catch (e) {
         console.error('Videos seed error:', e);
@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
     // Seed Careers
     for (const item of careers) {
       try {
-        await container.items.upsert({ ...item, docType: 'career' });
+        await getContainer().items.upsert({ ...item, docType: 'career' });
         careersSeeded++;
       } catch (e) {
         console.error('Careers seed error:', e);
@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
     // Seed Blog Posts (use slug as id)
     for (const post of posts) {
       try {
-        await container.items.upsert({ id: post.slug, ...post, docType: 'blog-post' });
+        await getContainer().items.upsert({ id: post.slug, ...post, docType: 'blog-post' });
         blogSeeded++;
       } catch (e) {
         console.error('Blog seed error:', e);

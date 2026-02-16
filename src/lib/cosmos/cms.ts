@@ -1,4 +1,4 @@
-import { container } from './client';
+import { getContainer } from './client';
 import { HelpArticle, Documentation, Video, Career } from '../cms/types';
 import { BlogPost } from '../blog/posts';
 
@@ -18,7 +18,7 @@ async function queryItemsByType<T>(type: string, filters?: Record<string, any>):
     }
 
     const querySpec = { query, parameters };
-    const { resources } = await container.items.query(querySpec).fetchAll();
+    const { resources } = await getContainer().items.query(querySpec).fetchAll();
     return resources;
   } catch (error) {
     console.error(`Error querying ${type}:`, error);
@@ -50,7 +50,7 @@ export async function createHelpArticle(article: Omit<HelpArticle, 'id' | 'creat
       docType: 'help-article',
     };
 
-    const { resource } = await container.items.create(newArticle);
+    const { resource } = await getContainer().items.create(newArticle);
     return resource || null;
   } catch (error) {
     console.error('Error creating help article:', error);
@@ -66,7 +66,7 @@ export async function updateHelpArticle(article: HelpArticle): Promise<HelpArtic
       docType: 'help-article',
     };
 
-    const { resource } = await container.item(article.id, 'help-article').replace(updated);
+    const { resource } = await getContainer().item(article.id, 'help-article').replace(updated);
     return resource || null;
   } catch (error) {
     console.error('Error updating help article:', error);
@@ -76,7 +76,7 @@ export async function updateHelpArticle(article: HelpArticle): Promise<HelpArtic
 
 export async function deleteHelpArticle(id: string): Promise<boolean> {
   try {
-    await container.item(id, 'help-article').delete();
+    await getContainer().item(id, 'help-article').delete();
     return true;
   } catch (error) {
     console.error('Error deleting help article:', error);
@@ -109,7 +109,7 @@ export async function createDocumentation(doc: Omit<Documentation, 'id' | 'creat
       docType: 'documentation',
     };
 
-    const { resource } = await container.items.create(newDoc);
+    const { resource } = await getContainer().items.create(newDoc);
     return resource || null;
   } catch (error) {
     console.error('Error creating documentation:', error);
@@ -125,7 +125,7 @@ export async function updateDocumentation(doc: Documentation): Promise<Documenta
       docType: 'documentation',
     };
 
-    const { resource } = await container.item(doc.id, 'documentation').replace(updated);
+    const { resource } = await getContainer().item(doc.id, 'documentation').replace(updated);
     return resource || null;
   } catch (error) {
     console.error('Error updating documentation:', error);
@@ -135,7 +135,7 @@ export async function updateDocumentation(doc: Documentation): Promise<Documenta
 
 export async function deleteDocumentation(id: string): Promise<boolean> {
   try {
-    await container.item(id, 'documentation').delete();
+    await getContainer().item(id, 'documentation').delete();
     return true;
   } catch (error) {
     console.error('Error deleting documentation:', error);
@@ -167,7 +167,7 @@ export async function createVideo(video: Omit<Video, 'id' | 'createdAt' | 'updat
       docType: 'video',
     };
 
-    const { resource } = await container.items.create(newVideo);
+    const { resource } = await getContainer().items.create(newVideo);
     return resource || null;
   } catch (error) {
     console.error('Error creating video:', error);
@@ -183,7 +183,7 @@ export async function updateVideo(video: Video): Promise<Video | null> {
       docType: 'video',
     };
 
-    const { resource } = await container.item(video.id, 'video').replace(updated);
+    const { resource } = await getContainer().item(video.id, 'video').replace(updated);
     return resource || null;
   } catch (error) {
     console.error('Error updating video:', error);
@@ -193,7 +193,7 @@ export async function updateVideo(video: Video): Promise<Video | null> {
 
 export async function deleteVideo(id: string): Promise<boolean> {
   try {
-    await container.item(id, 'video').delete();
+    await getContainer().item(id, 'video').delete();
     return true;
   } catch (error) {
     console.error('Error deleting video:', error);
@@ -221,7 +221,7 @@ export async function getBlogPosts(filters?: {
     }
 
     const querySpec = { query, parameters };
-    const { resources } = await container.items.query(querySpec).fetchAll();
+    const { resources } = await getContainer().items.query(querySpec).fetchAll();
     return resources.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   } catch (error) {
     console.error('Error querying blog posts:', error);
@@ -243,7 +243,7 @@ export async function createBlogPost(post: Omit<BlogPost, 'slug'>): Promise<Blog
       docType: 'blog-post',
     };
 
-    const { resource } = await container.items.create(newPost);
+    const { resource } = await getContainer().items.create(newPost);
     return resource || null;
   } catch (error) {
     console.error('Error creating blog post:', error);
@@ -259,7 +259,7 @@ export async function updateBlogPost(post: BlogPost): Promise<BlogPost | null> {
       docType: 'blog-post',
     };
 
-    const { resource } = await container.item(post.slug, 'blog-post').replace(updated);
+    const { resource } = await getContainer().item(post.slug, 'blog-post').replace(updated);
     return resource || null;
   } catch (error) {
     console.error('Error updating blog post:', error);
@@ -269,7 +269,7 @@ export async function updateBlogPost(post: BlogPost): Promise<BlogPost | null> {
 
 export async function deleteBlogPost(slug: string): Promise<boolean> {
   try {
-    await container.item(slug, 'blog-post').delete();
+    await getContainer().item(slug, 'blog-post').delete();
     return true;
   } catch (error) {
     console.error('Error deleting blog post:', error);
@@ -300,7 +300,7 @@ export async function createCareer(career: Omit<Career, 'id' | 'createdAt' | 'up
       docType: 'career',
     };
 
-    const { resource } = await container.items.create(newCareer);
+    const { resource } = await getContainer().items.create(newCareer);
     if (resource) {
       const { docType, ...careerData } = resource;
       return careerData as Career;
@@ -320,7 +320,7 @@ export async function updateCareer(career: Career): Promise<Career | null> {
       docType: 'career',
     };
 
-    const { resource } = await container.item(career.id, 'career').replace(updated);
+    const { resource } = await getContainer().item(career.id, 'career').replace(updated);
     if (resource) {
       const { docType, ...careerData } = resource;
       return careerData as Career;
@@ -334,7 +334,7 @@ export async function updateCareer(career: Career): Promise<Career | null> {
 
 export async function deleteCareer(id: string): Promise<boolean> {
   try {
-    await container.item(id, 'career').delete();
+    await getContainer().item(id, 'career').delete();
     return true;
   } catch (error) {
     console.error('Error deleting career:', error);

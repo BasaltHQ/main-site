@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import { validateSession, createUser, getUserByUsername } from '@/lib/cosmos/auth';
-import { container, initializeCosmosDB } from '@/lib/cosmos/client';
+import { getContainer, initializeCosmosDB } from '@/lib/cosmos/client';
 import { CMSUser } from '@/lib/cms/types';
 
 // Ensure Cosmos DB is initialized before handling requests
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
       query: 'SELECT c.id, c.username, c.role, c.createdAt FROM c WHERE c.docType = @docType',
       parameters: [{ name: '@docType', value: 'user' }],
     };
-    const { resources } = await container.items.query(querySpec).fetchAll();
+    const { resources } = await getContainer().items.query(querySpec).fetchAll();
     return NextResponse.json(resources);
   } catch (error) {
     console.error('List users error:', error);
@@ -92,7 +92,7 @@ export async function PUT(request: NextRequest) {
     // Resolve user by id or username
     let target: CMSUser | null = null;
     if (id) {
-      const { resource } = await container.item(id, 'user').read<CMSUser>();
+      const { resource } = await getContainer().item(id, 'user').read<CMSUser>();
       target = resource || null;
     } else if (username) {
       target = await getUserByUsername(username);
@@ -120,7 +120,7 @@ export async function PUT(request: NextRequest) {
     // Preserve partition key value via docType
     (patch as any).docType = 'user';
 
-    const { resource } = await container.item(patch.id, 'user').replace(patch);
+    const { resource } = await getContainer().item(patch.id, 'user').replace(patch);
     if (!resource) return NextResponse.json({ error: 'Failed to update user' }, { status: 500 });
 
     const { passwordHash, ...safe } = resource as any;
@@ -158,7 +158,7 @@ export async function DELETE(request: NextRequest) {
 
     if (!targetId) return NextResponse.json({ error: 'User not found' }, { status: 404 });
 
-    await container.item(targetId, 'user').delete();
+    await getContainer().item(targetId, 'user').delete();
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Delete user error:', error);

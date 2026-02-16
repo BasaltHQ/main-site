@@ -1,35 +1,56 @@
 import { CosmosClient, Database, Container } from '@azure/cosmos';
 
-if (!process.env.COSMOS_CONNECTION_STRING) {
-  throw new Error('COSMOS_CONNECTION_STRING is not defined in environment variables');
+let client: CosmosClient | null = null;
+let database: Database | null = null;
+let container: Container | null = null;
+
+export function getClient(): CosmosClient {
+  if (!client) {
+    if (!process.env.COSMOS_CONNECTION_STRING) {
+      throw new Error('COSMOS_CONNECTION_STRING is not defined in environment variables');
+    }
+    client = new CosmosClient(process.env.COSMOS_CONNECTION_STRING);
+  }
+  return client;
 }
 
-if (!process.env.COSMOS_DB_ID) {
-  throw new Error('COSMOS_DB_ID is not defined in environment variables');
+export function getContainer(): Container {
+  if (!container) {
+    const dbId = process.env.COSMOS_DB_ID;
+    const containerId = process.env.COSMOS_CONTAINER_ID;
+
+    if (!dbId) {
+      throw new Error('COSMOS_DB_ID is not defined in environment variables');
+    }
+    if (!containerId) {
+      throw new Error('COSMOS_CONTAINER_ID is not defined in environment variables');
+    }
+
+    const dbClient = getClient();
+    database = dbClient.database(dbId);
+    container = database.container(containerId);
+  }
+  return container;
 }
-
-if (!process.env.COSMOS_CONTAINER_ID) {
-  throw new Error('COSMOS_CONTAINER_ID is not defined in environment variables');
-}
-
-// Initialize Cosmos client
-const client = new CosmosClient(process.env.COSMOS_CONNECTION_STRING);
-
-// Get database and container references
-const database: Database = client.database(process.env.COSMOS_DB_ID);
-const container: Container = database.container(process.env.COSMOS_CONTAINER_ID);
 
 // Initialize database and container (will create if they don't exist)
 export async function initializeCosmosDB() {
   try {
+    const dbId = process.env.COSMOS_DB_ID;
+    const containerId = process.env.COSMOS_CONTAINER_ID;
+
+    if (!dbId || !containerId) {
+      throw new Error('Database or Container ID missing in environment variables');
+    }
+
     // Create database if it doesn't exist
-    const { database: db } = await client.databases.createIfNotExists({
-      id: process.env.COSMOS_DB_ID!,
+    const { database: db } = await getClient().databases.createIfNotExists({
+      id: dbId,
     });
 
     // Create container if it doesn't exist
     await db.containers.createIfNotExists({
-      id: process.env.COSMOS_CONTAINER_ID!,
+      id: containerId,
       partitionKey: { paths: ['/docType'] },
     });
 
@@ -41,4 +62,6 @@ export async function initializeCosmosDB() {
   }
 }
 
-export { client, database, container };
+// Temporary export to maintain backward compatibility during refactor, but throwing error on access if not initialized specific way is hard.
+// Instead, we will remove exports for client, database, container and force usage of getters.
+

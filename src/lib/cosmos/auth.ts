@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import { container } from './client';
+import { getContainer } from './client';
 import { CMSUser, CMSSession } from '../cms/types';
 
 // Helper to generate secure tokens
@@ -18,7 +18,7 @@ export async function getUserByUsername(username: string): Promise<CMSUser | nul
       ],
     };
 
-    const { resources } = await container.items.query(querySpec).fetchAll();
+    const { resources } = await getContainer().items.query(querySpec).fetchAll();
     return resources.length > 0 ? resources[0] : null;
   } catch (error) {
     console.error('Error getting user:', error);
@@ -43,7 +43,7 @@ export async function createUser(
       docType: 'user',
     };
 
-    const { resource } = await container.items.create(user);
+    const { resource } = await getContainer().items.create(user);
     return resource || null;
   } catch (error) {
     console.error('Error creating user:', error);
@@ -77,7 +77,7 @@ export async function createSession(userId: string): Promise<string | null> {
       docType: 'session',
     };
 
-    await container.items.create(session);
+    await getContainer().items.create(session);
     return token;
   } catch (error) {
     console.error('Error creating session:', error);
@@ -100,11 +100,11 @@ export async function validateSession(token: string): Promise<CMSUser | null> {
     if (sessions.length === 0) return null;
 
     const session = sessions[0];
-    
+
     // Check if session is expired
     if (new Date(session.expiresAt) < new Date()) {
       // Delete expired session
-      await container.item(session.id, 'session').delete();
+      await getContainer().item(session.id, 'session').delete();
       return null;
     }
 
@@ -120,7 +120,7 @@ export async function validateSession(token: string): Promise<CMSUser | null> {
 // Get user by ID
 async function getUserById(userId: string): Promise<CMSUser | null> {
   try {
-    const { resource } = await container.item(userId, 'user').read();
+    const { resource } = await getContainer().item(userId, 'user').read();
     return resource || null;
   } catch (error) {
     console.error('Error getting user by ID:', error);
@@ -142,7 +142,7 @@ export async function deleteSession(token: string): Promise<boolean> {
     const { resources: sessions } = await container.items.query(querySpec).fetchAll();
     if (sessions.length === 0) return false;
 
-    await container.item(sessions[0].id, 'session').delete();
+    await getContainer().item(sessions[0].id, 'session').delete();
     return true;
   } catch (error) {
     console.error('Error deleting session:', error);
@@ -164,8 +164,8 @@ export async function initializeDefaultUser(): Promise<void> {
       parameters: [{ name: '@docType', value: 'user' }],
     };
 
-    const { resources } = await container.items.query(querySpec).fetchAll();
-    
+    const { resources } = await getContainer().items.query(querySpec).fetchAll();
+
     if (resources.length === 0) {
       // Create default admin user
       await createUser('admin', 'admin123', 'admin');
