@@ -59,7 +59,7 @@ export function Footer() {
   return (
     <footer className="relative pt-6 pb-4 border-t border-border/20 mt-24 bg-background/50 backdrop-blur-sm">
       <div className="max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
           {/* Brand Column */}
           <div>
             <div className="flex items-center gap-3 mb-6">
