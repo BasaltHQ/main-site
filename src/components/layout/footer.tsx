@@ -57,9 +57,9 @@ export function Footer() {
   const { currentTheme } = useBrandTheme();
 
   return (
-    <footer className="relative py-16 px-6 border-t border-border/20 mt-24 bg-background/50 backdrop-blur-sm">
+    <footer className="relative pt-6 pb-4 border-t border-border/20 mt-24 bg-background/50 backdrop-blur-sm">
       <div className="max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-6">
           {/* Brand Column */}
           <div>
             <div className="flex items-center gap-3 mb-6">
@@ -184,6 +184,25 @@ export function Footer() {
           <p className="text-muted-foreground text-xs">
             © {currentYear} BasaltHQ. All rights reserved.
           </p>
+
+          {/* ElevenLabs Grant Badge */}
+          <div className="flex justify-center">
+              <a
+                  href="https://elevenlabs.io/startup-grants"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative transition-all duration-500 hover:scale-105"
+              >
+                  <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 blur opacity-0 group-hover:opacity-100 transition duration-500" />
+                  <Image
+                      src="/elevenlabs-grants.webp"
+                      alt="ElevenLabs Startup Grant"
+                      width={160}
+                      height={40}
+                      className="relative object-contain w-[140px] opacity-70 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0"
+                  />
+              </a>
+          </div>
           <div className="flex items-center gap-6">
             <Link href="/privacy" className="text-muted-foreground text-xs hover:text-foreground transition-colors">
               Privacy Policy
