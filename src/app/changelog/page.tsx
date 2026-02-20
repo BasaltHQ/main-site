@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Footer } from "@/components/layout/footer";
 
 export const metadata: Metadata = {
   title: "Changelog – BasaltHQ",
@@ -35,7 +34,6 @@ export default function ChangelogPage() {
           ))}
         </div>
       </section>
-      <Footer />
     </div>
   );
 }

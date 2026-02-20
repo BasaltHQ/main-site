@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Footer } from "@/components/layout/footer";
 import { Documentation } from "@/lib/cms/types";
 import { DocsSidebar } from "@/components/docs/DocsSidebar";
 import { MarkdownRenderer } from "@/components/docs/MarkdownRenderer";
@@ -20,7 +19,7 @@ export default function DocsPage() {
       const response = await fetch('/api/cms/documentation?published=true');
       const data = await response.json();
       setDocs(data);
-      
+
       // Select first doc by default
       if (data.length > 0 && !selectedDoc) {
         setSelectedDoc(data[0]);
@@ -96,7 +95,7 @@ export default function DocsPage() {
                     <p className="text-lg text-muted-foreground mb-4">
                       {selectedDoc.description}
                     </p>
-                    
+
                     {/* Tags */}
                     {selectedDoc.tags && selectedDoc.tags.length > 0 && (
                       <div className="flex flex-wrap gap-2">
@@ -177,7 +176,6 @@ export default function DocsPage() {
         )}
       </div>
 
-      <Footer />
     </div>
   );
 }

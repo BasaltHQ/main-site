@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Footer } from "@/components/layout/footer";
 
 export const metadata: Metadata = {
   title: "System Status – BasaltHQ",
@@ -29,7 +28,6 @@ export default function StatusPage() {
           </div>
         </div>
       </section>
-      <Footer />
     </div>
   );
 }

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { Footer } from "@/components/layout/footer";
 import { HelpArticle } from "@/lib/cms/types";
 import { faqs } from "@/lib/cms/data";
 import { Video, BookOpen, Wrench, Lightbulb, Search, X, ChevronDown, Mail, Info } from "lucide-react";
@@ -38,17 +37,17 @@ export default function HelpPage() {
   };
 
   // Organize and filter articles
-  const videoArticles = useMemo(() => 
+  const videoArticles = useMemo(() =>
     articles.filter(a => ['Getting Started', 'Integrations', 'Operations'].includes(a.category)),
     [articles]
   );
-  
-  const guideArticles = useMemo(() => 
+
+  const guideArticles = useMemo(() =>
     articles.filter(a => a.category === 'Guides'),
     [articles]
   );
-  
-  const troubleshootingArticles = useMemo(() => 
+
+  const troubleshootingArticles = useMemo(() =>
     articles.filter(a => a.category === 'Troubleshooting'),
     [articles]
   );
@@ -64,7 +63,7 @@ export default function HelpPage() {
   }, [activeTab, videoArticles, guideArticles, troubleshootingArticles]);
 
   // Get unique categories
-  const categories = useMemo(() => 
+  const categories = useMemo(() =>
     ['all', ...Array.from(new Set(currentArticles.map(a => a.category)))],
     [currentArticles]
   );
@@ -81,7 +80,7 @@ export default function HelpPage() {
     // Apply search filter
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(a => 
+      filtered = filtered.filter(a =>
         a.title.toLowerCase().includes(query) ||
         a.description.toLowerCase().includes(query) ||
         a.content.toLowerCase().includes(query) ||
@@ -113,7 +112,7 @@ export default function HelpPage() {
   const filteredFaqs = useMemo(() => {
     if (!searchQuery.trim()) return faqs;
     const query = searchQuery.toLowerCase();
-    return faqs.filter(f => 
+    return faqs.filter(f =>
       f.question.toLowerCase().includes(query) ||
       f.answer.toLowerCase().includes(query) ||
       f.category.toLowerCase().includes(query)
@@ -200,11 +199,10 @@ export default function HelpPage() {
                   setActiveTab(tab.id as any);
                   setSelectedCategory('all');
                 }}
-                className={`flex items-center gap-2 px-6 py-4 font-medium border-b-2 transition-all whitespace-nowrap ${
-                  activeTab === tab.id
+                className={`flex items-center gap-2 px-6 py-4 font-medium border-b-2 transition-all whitespace-nowrap ${activeTab === tab.id
                     ? 'border-primary text-primary bg-primary/5'
                     : 'border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/50'
-                }`}
+                  }`}
               >
                 <tab.Icon className="w-4 h-4" />
                 <span>{tab.label}</span>
@@ -226,11 +224,10 @@ export default function HelpPage() {
                   <button
                     key={category}
                     onClick={() => setSelectedCategory(category)}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                      selectedCategory === category
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${selectedCategory === category
                         ? 'bg-primary text-primary-foreground shadow-lg scale-105'
                         : 'bg-background hover:bg-muted border border-border'
-                    }`}
+                      }`}
                   >
                     {category === 'all' ? 'All Categories' : category}
                   </button>
@@ -295,9 +292,8 @@ export default function HelpPage() {
                           key={article.id}
                           onMouseEnter={() => setHoveredCard(article.id)}
                           onMouseLeave={() => setHoveredCard(null)}
-                          className={`group glass-pane rounded-2xl overflow-hidden transition-all duration-300 cursor-pointer ${
-                            hoveredCard === article.id ? 'scale-105 shadow-2xl' : 'hover:shadow-xl'
-                          }`}
+                          className={`group glass-pane rounded-2xl overflow-hidden transition-all duration-300 cursor-pointer ${hoveredCard === article.id ? 'scale-105 shadow-2xl' : 'hover:shadow-xl'
+                            }`}
                           onClick={() => setSelectedVideo(article)}
                         >
                           {/* Video Thumbnail */}
@@ -332,7 +328,7 @@ export default function HelpPage() {
                             <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
                               {article.description}
                             </p>
-                            
+
                             {/* Tags */}
                             {article.tags && article.tags.length > 0 && (
                               <div className="flex flex-wrap gap-2 mb-4">
@@ -402,9 +398,8 @@ export default function HelpPage() {
                       {filteredFaqs.map((faq, index) => (
                         <div
                           key={faq.id}
-                          className={`glass-pane rounded-2xl overflow-hidden transition-all duration-300 ${
-                            expandedFaq === faq.id ? 'shadow-xl' : 'hover:shadow-lg'
-                          }`}
+                          className={`glass-pane rounded-2xl overflow-hidden transition-all duration-300 ${expandedFaq === faq.id ? 'shadow-xl' : 'hover:shadow-lg'
+                            }`}
                           style={{ animationDelay: `${index * 50}ms` }}
                         >
                           <button
@@ -422,11 +417,10 @@ export default function HelpPage() {
                                 <span className="px-2 py-1 rounded bg-muted">{faq.category}</span>
                               </div>
                             </div>
-                            <ChevronDown className={`flex-shrink-0 w-6 h-6 text-muted-foreground transition-transform duration-300 ${
-                              expandedFaq === faq.id ? 'rotate-180' : ''
-                            }`} />
+                            <ChevronDown className={`flex-shrink-0 w-6 h-6 text-muted-foreground transition-transform duration-300 ${expandedFaq === faq.id ? 'rotate-180' : ''
+                              }`} />
                           </button>
-                          
+
                           {expandedFaq === faq.id && (
                             <div className="px-6 pb-6 animate-in fade-in slide-in-from-top-2 duration-300">
                               <div className="pl-12 pt-4 border-t border-border text-muted-foreground leading-relaxed">
@@ -461,12 +455,11 @@ export default function HelpPage() {
       </main>
 
       {/* Video Player Modal */}
-      <VideoPlayer 
-        video={selectedVideo} 
-        onClose={() => setSelectedVideo(null)} 
+      <VideoPlayer
+        video={selectedVideo}
+        onClose={() => setSelectedVideo(null)}
       />
 
-      <Footer />
     </div>
   );
 }

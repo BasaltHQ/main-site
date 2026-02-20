@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { AboutSection } from "@/components/sections/about";
 import { TeamSection } from "@/components/sections/team-section";
-import { Footer } from "@/components/layout/footer";
 
 export const metadata: Metadata = {
   title: "About Us – BasaltHQ",
@@ -32,7 +31,6 @@ export default function AboutPage() {
       </section>
       <AboutSection />
       <TeamSection />
-      <Footer />
     </div>
   );
 }
