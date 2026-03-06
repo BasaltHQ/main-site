@@ -49,12 +49,17 @@ const socialLinks = [
 ];
 
 import { useBrandTheme } from "@/components/providers/brand-theme-provider";
+import { usePathname } from "next/navigation";
 
 // ... imports ...
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
   const { currentTheme } = useBrandTheme();
+  const pathname = usePathname();
+
+  // Hide footer inside Nexus app
+  if (pathname?.startsWith('/nexus')) return null;
 
   return (
     <footer className="relative pt-6 pb-4 border-t border-border/10 mt-24 bg-background/50 backdrop-blur-sm">
@@ -187,21 +192,21 @@ export function Footer() {
 
           {/* ElevenLabs Grant Badge */}
           <div className="flex justify-center">
-              <a
-                  href="https://elevenlabs.io/startup-grants"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group relative transition-all duration-500 hover:scale-105"
-              >
-                  <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 blur opacity-0 group-hover:opacity-100 transition duration-500" />
-                  <Image
-                      src="/elevenlabs-grants.webp"
-                      alt="ElevenLabs Startup Grant"
-                      width={160}
-                      height={40}
-                      className="relative object-contain w-[140px] opacity-70 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0"
-                  />
-              </a>
+            <a
+              href="https://elevenlabs.io/startup-grants"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative transition-all duration-500 hover:scale-105"
+            >
+              <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 blur opacity-0 group-hover:opacity-100 transition duration-500" />
+              <Image
+                src="/elevenlabs-grants.webp"
+                alt="ElevenLabs Startup Grant"
+                width={160}
+                height={40}
+                className="relative object-contain w-[140px] opacity-70 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0"
+              />
+            </a>
           </div>
           <div className="flex items-center gap-6">
             <Link href="/privacy" className="text-muted-foreground text-xs hover:text-foreground transition-colors">

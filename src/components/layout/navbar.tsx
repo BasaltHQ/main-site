@@ -56,6 +56,9 @@ export function Navbar() {
   const isHomepage = pathname === "/";
   const themeColor = currentTheme.color;
 
+  // Hide main navbar inside Nexus app (it has its own shell)
+  if (pathname?.startsWith('/nexus')) return null;
+
   return (
     <>
       <nav
