@@ -316,20 +316,9 @@ export default function CorporateDocuments({ isAdmin = false, userEmail = '', us
                                     className="flex-1 py-2 bg-[#119dff]/10 border border-[#119dff]/20 text-[#119dff] rounded-lg text-[10px] font-bold uppercase tracking-wider hover:bg-[#119dff]/20 transition-all flex items-center justify-center gap-1">
                                     <Eye size={12} /> View
                                 </button>
-                                {isAdmin && doc.file_url && (() => {
-                                    const sr = signatureRequests[doc.id]
-                                    if (sr && sr.status !== 'voided' && sr.status !== 'declined') {
-                                        return (
-                                            <button onClick={() => setFillSignDoc({ doc, mode: 'view', request: sr })}
-                                                className="py-2 px-3 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-lg text-[10px] font-bold hover:bg-emerald-500/20 transition-all flex items-center gap-1">
-                                                <Pen size={12} /> Track
-                                            </button>
-                                        )
-                                    }
-                                    return null
-                                })()}
-                                {/* Sign Now button for pending signatories */}
-                                {!isAdmin && doc.file_url && (() => {
+
+                                {/* Sign Now — for ANY pending signatory (admin or not) */}
+                                {doc.file_url && (() => {
                                     const sr = signatureRequests[doc.id]
                                     if (!sr) return null
                                     const mySig = sr.signatories?.find((s: any) => s.email === userEmail)
@@ -338,6 +327,15 @@ export default function CorporateDocuments({ isAdmin = false, userEmail = '', us
                                             <button onClick={() => setFillSignDoc({ doc, mode: 'sign', request: sr })}
                                                 className="py-2 px-3 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-lg text-[10px] font-bold hover:bg-emerald-500/20 transition-all flex items-center gap-1 animate-pulse">
                                                 <Pen size={12} /> Sign Now
+                                            </button>
+                                        )
+                                    }
+                                    // Show Track for admins who are NOT a pending signatory
+                                    if (isAdmin && sr.status !== 'voided' && sr.status !== 'declined') {
+                                        return (
+                                            <button onClick={() => setFillSignDoc({ doc, mode: 'view', request: sr })}
+                                                className="py-2 px-3 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-lg text-[10px] font-bold hover:bg-emerald-500/20 transition-all flex items-center gap-1">
+                                                <Pen size={12} /> Track
                                             </button>
                                         )
                                     }
