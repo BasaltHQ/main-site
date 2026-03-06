@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import {
     X, Pen, Type, Calendar, CheckSquare, Hash, Plus, Trash2,
     Send, ChevronLeft, ChevronRight, ZoomIn, ZoomOut,
@@ -117,6 +117,23 @@ export default function FillAndSign({
     const [requestId, setRequestId] = useState(existingRequest?._id || '')
     const [showAuditTrail, setShowAuditTrail] = useState(false)
     const [showSignatoryPicker, setShowSignatoryPicker] = useState(false)
+
+    // Refetch latest data on mount for sign/view modes (snapshot from card may be stale)
+    useEffect(() => {
+        if ((mode === 'sign' || mode === 'view') && requestId) {
+            fetch(`/api/nexus/signatures?id=${requestId}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.request) {
+                        setSignatories(data.request.signatories || [])
+                        setFields(data.request.fields || [])
+                        setAuditTrail(data.request.audit_trail || [])
+                        setStatus(data.request.status)
+                    }
+                })
+                .catch(console.error)
+        }
+    }, [mode, requestId])
 
     // Prepare mode: which signatory is active, which field type to place
     const [activeSignatoryEmail, setActiveSignatoryEmail] = useState<string>('')
@@ -273,16 +290,25 @@ export default function FillAndSign({
                 body: JSON.stringify({ id: requestId, action: 'sign', actor_email: userEmail, actor_name: userName, signature_data: sigData.signature, initials_data: sigData.initials })
             })
             const data = await res.json()
-            setSignatories(prev => prev.map(s => s.email === userEmail ? { ...s, status: 'signed', signature_data: sigData.signature, signed_at: new Date().toISOString() } : s))
-            setFields(prev => prev.map(f => {
-                if (f.assigned_to === userEmail && !f.value) {
-                    if (f.type === 'signature') return { ...f, value: sigData.signature, filled_at: new Date().toISOString() }
-                    if (f.type === 'initials') return { ...f, value: sigData.initials, filled_at: new Date().toISOString() }
-                }
-                return f
-            }))
-            if (data.completed) setStatus('completed')
-            else setStatus('in_progress')
+            if (data.success && data.request) {
+                // Sync full state from server response
+                setSignatories(data.request.signatories || [])
+                setFields(data.request.fields || [])
+                setAuditTrail(data.request.audit_trail || [])
+                setStatus(data.request.status)
+            } else {
+                // Fallback to local update
+                setSignatories(prev => prev.map(s => s.email === userEmail ? { ...s, status: 'signed', signature_data: sigData.signature, signed_at: new Date().toISOString() } : s))
+                setFields(prev => prev.map(f => {
+                    if (f.assigned_to === userEmail && !f.value) {
+                        if (f.type === 'signature') return { ...f, value: sigData.signature, filled_at: new Date().toISOString() }
+                        if (f.type === 'initials') return { ...f, value: sigData.initials, filled_at: new Date().toISOString() }
+                    }
+                    return f
+                }))
+                if (data.completed) setStatus('completed')
+                else setStatus('in_progress')
+            }
             onComplete?.()
         } catch (e) { console.error(e) }
     }
@@ -366,6 +392,17 @@ export default function FillAndSign({
                             </button>
                             <button onClick={handleDecline} className="px-4 py-2 text-red-400/60 hover:text-red-400 text-xs font-bold uppercase tracking-wider transition-all">Decline</button>
                         </>
+                    )}
+                    {mode === 'sign' && (mySignatory?.status === 'signed' || mySignatory?.status === 'declined') && (
+                        <div className="flex items-center gap-3">
+                            <span className="text-xs text-emerald-400/70 flex items-center gap-1.5">
+                                <CheckCircle size={14} /> {mySignatory?.status === 'signed' ? 'Signature recorded' : 'Declined'}
+                            </span>
+                            <button onClick={onClose}
+                                className="px-5 py-2 bg-[#119dff] text-white text-xs font-bold uppercase tracking-wider rounded-lg hover:bg-[#119dff]/80 transition-all flex items-center gap-2 shadow-[0_0_20px_rgba(17,157,255,0.3)]">
+                                <CheckCircle size={14} /> Done
+                            </button>
+                        </div>
                     )}
                     {(mode === 'view' || mode === 'prepare') && requestId && !['completed', 'voided', 'declined'].includes(status) && (
                         <>

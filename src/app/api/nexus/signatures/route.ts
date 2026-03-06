@@ -223,7 +223,9 @@ export async function PATCH(req: NextRequest) {
 
             sr.updated_at = new Date()
             await sr.save()
-            return NextResponse.json({ success: true, completed: allSigned })
+            const updated = sr.toObject()
+            updated._id = updated._id.toString()
+            return NextResponse.json({ success: true, completed: allSigned, request: updated })
         }
 
         // ── decline ──
