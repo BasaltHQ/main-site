@@ -37,7 +37,8 @@ export function ProductShowcase() {
       description: "The backbone of your ontology. Manage inventory, supply chain, and financials in one unified truth.",
       benefits: ["Predictive Inventory", "Automated Procurement", "Multi-Location Sync"],
       module_id: "MOD_CORE",
-      href: "https://erp.basalthq.com/industries"
+      // href: "https://erp.basalthq.com/industries"
+      href: "Coming Soon"
     },
     {
       id: "graph",
@@ -57,7 +58,8 @@ export function ProductShowcase() {
       description: "Orchestrate your entire digital ecosystem. Connect e-commerce, AI assistants, and social platforms.",
       benefits: ["Unified Data Sync", "Real-time Actions", "Cross-Platform Control"],
       module_id: "MOD_INTEGRATION",
-      href: "https://cms.basalthq.com/features"
+      // href: "https://cms.basalthq.com/features"
+      href: "Coming Soon"
     },
     {
       id: "interface",

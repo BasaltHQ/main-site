@@ -59,7 +59,8 @@ export function SuiteHero() {
       logo: "/BasaltERPWide.png",
       url: "https://erp.basalthq.com",
       tagline: "AI-Assisted Universal ERP",
-      description: "Industry-specific ERP with AI module builder"
+      description: "Industry-specific ERP with AI module builder",
+      locked: true
     },
     {
       name: "BasaltCRM",
@@ -73,7 +74,8 @@ export function SuiteHero() {
       logo: "/BasaltCMSWide.png",
       url: "https://cms.basalthq.com",
       tagline: "AI-Voice Powered Content Command Center",
-      description: "Manage media, docs, forms, website from one dashboard"
+      description: "Manage media, docs, forms, website from one dashboard",
+      locked: true
     },
     {
       name: "BasaltEcho",
