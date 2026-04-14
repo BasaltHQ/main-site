@@ -38,7 +38,7 @@ export function ProductShowcase() {
       benefits: ["Predictive Inventory", "Automated Procurement", "Multi-Location Sync"],
       module_id: "MOD_CORE",
       // href: "https://erp.basalthq.com/industries"
-      href: "Coming Soon"
+      href: "#"
     },
     {
       id: "graph",
@@ -59,7 +59,7 @@ export function ProductShowcase() {
       benefits: ["Unified Data Sync", "Real-time Actions", "Cross-Platform Control"],
       module_id: "MOD_INTEGRATION",
       // href: "https://cms.basalthq.com/features"
-      href: "Coming Soon"
+      href: "#"
     },
     {
       id: "interface",
