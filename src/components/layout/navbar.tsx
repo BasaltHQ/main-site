@@ -171,7 +171,7 @@ export function Navbar() {
 
             {/* CTA Button */}
             <a
-              href="https://calendly.com/founders-tuc/ledger1-info-session" target="_blank" rel="noopener noreferrer"
+              href="https://calendar.app.google/hGAfvK8RR2PMr2xy9" target="_blank" rel="noopener noreferrer"
               className="hidden md:block text-xs font-mono tracking-wider px-6 py-3 rounded-[10px] text-black font-bold hover:opacity-90 transition-all duration-500 shadow-lg"
               style={{ backgroundColor: themeColor, boxShadow: `0 0 20px ${themeColor}40` }}
             >
@@ -245,7 +245,7 @@ export function Navbar() {
 
               <div className="pt-2">
                 <a
-                  href="https://calendly.com/founders-tuc/ledger1-info-session" target="_blank" rel="noopener noreferrer"
+                  href="https://calendar.app.google/hGAfvK8RR2PMr2xy9" target="_blank" rel="noopener noreferrer"
                   className="block w-full text-center rounded-lg px-4 py-3 text-sm font-bold text-black shadow-lg transition-all duration-500"
                   style={{ backgroundColor: themeColor, boxShadow: `0 0 15px ${themeColor}40` }}
                   onClick={() => setIsMenuOpen(false)}
