@@ -51,6 +51,7 @@ export function Navbar() {
     // { name: "BASALTCMS", url: "https://cms.basalthq.com" },
     { name: "BASALTECHO", url: "https://echo.basalthq.com" },
     { name: "BASALTSURGE", url: "https://surge.basalthq.com" },
+    // { name: "BASALTONYX", url: "https://onyx.basalthq.com" },
   ];
 
   const isHomepage = pathname === "/";
