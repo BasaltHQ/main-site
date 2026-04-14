@@ -46,9 +46,9 @@ export function Navbar() {
   ], []);
 
   const products = [
-    { name: "BASALTERP", url: "https://erp.basalthq.com" },
+    // { name: "BASALTERP", url: "https://erp.basalthq.com" },
     { name: "BASALTCRM", url: "https://crm.basalthq.com" },
-    { name: "BASALTCMS", url: "https://cms.basalthq.com" },
+    // { name: "BASALTCMS", url: "https://cms.basalthq.com" },
     { name: "BASALTECHO", url: "https://echo.basalthq.com" },
     { name: "BASALTSURGE", url: "https://surge.basalthq.com" },
   ];
