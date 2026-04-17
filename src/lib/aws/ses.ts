@@ -1,11 +1,15 @@
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 
-const sesClient = new SESClient({
-    region: process.env.SES_REGION || "us-west-2",
-    credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID || "",
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || ""
+const credentials = process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY 
+    ? {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
     }
+    : undefined;
+
+const sesClient = new SESClient({
+    region: process.env.SES_REGION || process.env.AWS_REGION || "us-west-2",
+    ...(credentials ? { credentials } : {})
 });
 
 const FROM_ADDRESS = process.env.SES_FROM_ADDRESS || "BasaltCRM <sysadm@basalthq.com>";

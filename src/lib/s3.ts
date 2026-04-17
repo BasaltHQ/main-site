@@ -4,13 +4,15 @@ const s3 = new S3Client({
     endpoint: process.env.S3_ENDPOINT,
     region: process.env.S3_REGION || 'us-west-or',
     credentials: {
-        accessKeyId: process.env.S3_ACCESS_KEY || '',
-        secretAccessKey: process.env.S3_SECRET_KEY || '',
+        accessKeyId: process.env.S3_NEW_ACCESS_KEY || process.env.S3_ACCESS_KEY || '',
+        secretAccessKey: process.env.S3_NEW_SERIAL_KEY || process.env.S3_SECRET_KEY || '',
     },
     forcePathStyle: true, // Required for OVHcloud / non-AWS S3-compatible endpoints
 })
 
-const BUCKET = process.env.S3_BUCKET_NAME || 'basaltsurge'
+let bucketName = process.env.S3_NEW_BUCKET_NAME || process.env.S3_BUCKET_NAME || 'basaltsurge';
+if (bucketName.toLowerCase() !== bucketName) bucketName = bucketName.toLowerCase();
+const BUCKET = bucketName;
 
 export async function uploadToS3(buffer: Buffer, key: string, contentType: string): Promise<string> {
     await s3.send(new PutObjectCommand({

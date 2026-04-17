@@ -43,7 +43,7 @@ export default function ForgotPasswordPage() {
                 
                 <div className="mb-8 text-center">
                     <div className="w-16 h-16 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <Shield className="text-[#119dff]" size={32} />
+                        <span className="text-[#119dff]"><Shield size={32} /></span>
                     </div>
                     <h1 className="text-2xl font-bold text-white font-rajdhani">Reset Password</h1>
                     <p className="text-white/60 mt-2">Enter your email and we'll send you a reset link.</p>
