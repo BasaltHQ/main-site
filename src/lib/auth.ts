@@ -4,6 +4,32 @@ import dbConnect from "./mongodb";
 import { Profile } from "./models";
 import bcrypt from "bcryptjs";
 
+// Augment next-auth types
+declare module "next-auth" {
+    interface Session {
+        user: {
+            id: string;
+            role: string;
+            name: string;
+            email: string;
+        }
+    }
+    interface User {
+        id: string;
+        role: string;
+        name: string;
+        email: string;
+    }
+}
+
+declare module "next-auth/jwt" {
+    interface JWT {
+        id: string;
+        role: string;
+        name: string;
+    }
+}
+
 // @ts-ignore
 const CredentialsProvider = importCredentialsProvider.default || importCredentialsProvider;
 
@@ -15,7 +41,7 @@ export const authOptions: NextAuthOptions = {
                 email: { label: "Email", type: "text" },
                 password: { label: "Password", type: "password" }
             },
-            async authorize(credentials) {
+            async authorize(credentials: Record<string, string> | undefined) {
                 await dbConnect();
                 if (!credentials?.email || !credentials.password) return null;
                 const user = await Profile.findOne({ email: credentials.email });
@@ -40,16 +66,16 @@ export const authOptions: NextAuthOptions = {
         async jwt({ token, user }) {
             if (user) {
                 token.id = user.id;
-                token.role = (user as any).role;
+                token.role = user.role;
                 token.name = user.name;
             }
             return token;
         },
         async session({ session, token }) {
             if (token && session.user) {
-                (session.user as any).id = token.id as string;
-                (session.user as any).role = token.role;
-                session.user.name = token.name as string;
+                session.user.id = token.id;
+                session.user.role = token.role;
+                session.user.name = token.name;
             }
             return session;
         }

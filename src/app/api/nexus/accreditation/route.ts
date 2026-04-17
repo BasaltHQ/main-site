@@ -1,8 +1,9 @@
 import { NextResponse, NextRequest } from 'next/server'
 import dbConnect from '@/lib/mongodb'
-import { AccreditationResponse, VerificationDocument, InvestorProfile } from '@/lib/models'
+import { AccreditationResponse, VerificationDocument, InvestorProfile, Profile } from '@/lib/models'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
+import { sendAccreditationUpdateEmail } from '@/lib/aws/ses'
 
 export async function GET(req: NextRequest) {
     try {
@@ -35,13 +36,20 @@ export async function PATCH(req: NextRequest) {
             verified_at: new Date(),
         })
 
-        if (status === 'verified') {
-            const accreditation = await AccreditationResponse.findById(accreditationId).lean() as any
-            if (accreditation) {
-                await InvestorProfile.updateOne(
-                    { id: accreditation.investor_id },
-                    { accreditation_status: accreditation.determination, accreditation_verified_at: new Date() }
-                )
+        const accreditation = await AccreditationResponse.findById(accreditationId).lean() as any
+
+        if (status === 'verified' && accreditation) {
+            await InvestorProfile.updateOne(
+                { id: accreditation.investor_id },
+                { accreditation_status: accreditation.determination, accreditation_verified_at: new Date() }
+            )
+        }
+
+        // Send email notification
+        if (accreditation) {
+            const userProfile = await Profile.findById(accreditation.investor_id).lean() as any;
+            if (userProfile?.email) {
+                await sendAccreditationUpdateEmail(userProfile.email, status, notes);
             }
         }
 

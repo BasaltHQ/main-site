@@ -39,11 +39,13 @@ export const ACCREDITATION_BADGES: Record<string, any> = {
     unknown: { label: 'Unknown', description: 'Requires Verification', color: 'gray' },
 }
 
-export const VERIFICATION_BADGES = {
-    verified: { label: 'Verified', color: 'green' },
-    pending: { label: 'Pending', color: 'yellow' },
-    needs_more_info: { label: 'Action Required', color: 'red' },
+export const VERIFICATION_BADGES: Record<string, { label: string; color: string; icon: string }> = {
+    verified: { label: 'Verified', color: 'green', icon: 'CheckCircle' },
+    pending: { label: 'Pending', color: 'yellow', icon: 'Clock' },
+    needs_more_info: { label: 'Action Required', color: 'red', icon: 'AlertCircle' },
+    rejected: { label: 'Rejected', color: 'red', icon: 'XCircle' },
 }
+
 
 export function formatInvestmentLimit(limit: any) {
     if (limit.maxInvestment >= 999999999999) return 'Unlimited'
