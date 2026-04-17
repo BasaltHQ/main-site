@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { Eye, EyeOff, Loader2, Shield } from 'lucide-react'
+import Link from 'next/link'
 
 export default function AuthForm() {
     const [email, setEmail] = useState('')
@@ -227,7 +228,7 @@ export default function AuthForm() {
                         </span>
                     </button>
 
-                    <div className="text-center">
+                    <div className="text-center flex flex-col items-center gap-4">
                         <button
                             type="button"
                             onClick={() => setIsSignUp(!isSignUp)}
@@ -235,6 +236,12 @@ export default function AuthForm() {
                         >
                             {isSignUp ? 'Already have an account? Login' : 'New Director/Officer/Investor? Request Access'}
                         </button>
+
+                        {!isSignUp && (
+                            <Link href="/nexus/forgot-password" className="text-white/30 hover:text-white text-[10px] transition-colors uppercase tracking-widest">
+                                Forgot Password?
+                            </Link>
+                        )}
                     </div>
                 </form>
             </div>
