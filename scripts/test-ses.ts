@@ -13,8 +13,10 @@ envRaw.split('\n').forEach(line => {
 });
 
 console.log('AWS_ACCESS_KEY_ID =', process.env.AWS_ACCESS_KEY_ID?.substring(0, 5) + '...');
-console.log('SES_REGION =', process.env.SES_REGION);
 console.log('SES_FROM_ADDRESS =', process.env.SES_FROM_ADDRESS);
+
+// override for testing
+process.env.SES_FROM_ADDRESS = 'sysadm';
 
 import { sendPasswordResetEmail } from '../src/lib/aws/ses';
 

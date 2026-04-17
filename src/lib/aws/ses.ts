@@ -12,7 +12,10 @@ const sesClient = new SESClient({
     ...(credentials ? { credentials } : {})
 });
 
-const FROM_ADDRESS = process.env.SES_FROM_ADDRESS || "BasaltCRM <sysadm@basalthq.com>";
+let FROM_ADDRESS = process.env.SES_FROM_ADDRESS || "BasaltCRM <sysadm@basalthq.com>";
+if ((FROM_ADDRESS.startsWith('"') && FROM_ADDRESS.endsWith('"')) || (FROM_ADDRESS.startsWith("'") && FROM_ADDRESS.endsWith("'"))) {
+    FROM_ADDRESS = FROM_ADDRESS.substring(1, FROM_ADDRESS.length - 1);
+}
 
 export async function sendEmail(to: string, subject: string, htmlBody: string): Promise<{ success: boolean; error?: string }> {
     try {
