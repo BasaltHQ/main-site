@@ -14,7 +14,7 @@ const sesClient = new SESClient({
 
 const FROM_ADDRESS = process.env.SES_FROM_ADDRESS || "BasaltCRM <sysadm@basalthq.com>";
 
-export async function sendEmail(to: string, subject: string, htmlBody: string) {
+export async function sendEmail(to: string, subject: string, htmlBody: string): Promise<{ success: boolean; error?: string }> {
     try {
         const command = new SendEmailCommand({
             Destination: { ToAddresses: [to] },
@@ -27,10 +27,10 @@ export async function sendEmail(to: string, subject: string, htmlBody: string) {
 
         const response = await sesClient.send(command);
         console.log(`Email sent to ${to}. Message ID:`, response.MessageId);
-        return true;
-    } catch (error) {
+        return { success: true };
+    } catch (error: any) {
         console.error(`Failed to send email to ${to}:`, error);
-        return false;
+        return { success: false, error: error.message || String(error) };
     }
 }
 

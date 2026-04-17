@@ -26,10 +26,10 @@ export async function POST(req: Request) {
 
         await Profile.updateOne({ email }, { $set: { reset_token: resetToken, reset_token_expiry: resetTokenExpiry } });
 
-        const emailSent = await sendPasswordResetEmail(email, resetToken);
+        const result = await sendPasswordResetEmail(email, resetToken);
 
-        if (!emailSent) {
-            return NextResponse.json({ error: 'Failed to send email' }, { status: 500 });
+        if (!result.success) {
+            return NextResponse.json({ error: `AWS SES Error: ${result.error}` }, { status: 500 });
         }
 
         return NextResponse.json({ success: true });
