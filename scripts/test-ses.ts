@@ -23,7 +23,7 @@ import { sendPasswordResetEmail } from '../src/lib/aws/ses';
 async function test() {
     console.log('Attempting to send email...');
     try {
-        const result = await sendPasswordResetEmail('sysadm@basalthq.com', 'test-1234');
+        const result = await sendPasswordResetEmail('kpatel@basalthq.com', 'test-live-demo-token-12345');
         console.log('Send result:', result);
     } catch (e: any) {
         console.error('Unhandled error in send:', e);
