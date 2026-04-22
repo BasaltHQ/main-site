@@ -707,17 +707,18 @@ export const GovernanceMemo = mongoose.models.GovernanceMemo || mongoose.model('
 const DocumentAnnotationSchema = new mongoose.Schema({
     document_key: { type: String, required: true, index: true }, // S3 key of the PDF
     page: { type: Number, required: true },
-    type: { type: String, enum: ['highlight', 'comment'], required: true },
+    type: { type: String, enum: ['highlight', 'comment', 'text-highlight'], required: true },
     // Position as percentage of page dimensions (0-100)
     x: { type: Number, required: true },
     y: { type: Number, required: true },
     width: { type: Number, default: 0 },  // for highlights
     height: { type: Number, default: 0 }, // for highlights
+    rects: [{ x: Number, y: Number, width: Number, height: Number }], // for text-highlight
     text: { type: String, default: '' },  // comment text or highlight note
     user_email: { type: String, required: true },
     user_name: { type: String },
     user_color: { type: String, required: true }, // deterministic hex per user
     created_at: { type: Date, default: Date.now }
-});
+}, { strict: false });
 
 export const DocumentAnnotation = mongoose.models.DocumentAnnotation || mongoose.model('DocumentAnnotation', DocumentAnnotationSchema);

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { FileText, Plus, X, Trash2, Send, Filter, Clock, AlertTriangle, CheckCircle, Eye, Paperclip, Users, Bell, ChevronDown, Upload, Loader2, MessageCircle, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, Highlighter } from 'lucide-react'
+import { FileText, Plus, X, Trash2, Send, Filter, Clock, AlertTriangle, CheckCircle, Eye, Paperclip, Users, Bell, ChevronDown, Upload, Loader2, MessageCircle, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, Highlighter, Download } from 'lucide-react'
 import { Document, Page, pdfjs } from 'react-pdf'
 import 'react-pdf/dist/Page/AnnotationLayer.css'
 import 'react-pdf/dist/Page/TextLayer.css'
@@ -113,7 +113,7 @@ export default function GovernanceMemos({ isAdmin = false, userEmail = '', userN
     const [pdfPage, setPdfPage] = useState(1)
     const [pdfScale, setPdfScale] = useState(1.0)
     const [pageDims, setPageDims] = useState({ width: 0, height: 0 })
-    const [annotTool, setAnnotTool] = useState<'none' | 'highlight' | 'comment'>('none')
+    const [annotTool, setAnnotTool] = useState<'none' | 'highlight' | 'text-highlight' | 'comment'>('none')
     const myColor = userColor(userEmail)
     const [form, setForm] = useState({
         title: '', type: 'memo' as 'memo' | 'proposal' | 'report',
@@ -770,6 +770,10 @@ export default function GovernanceMemos({ isAdmin = false, userEmail = '', userN
                                     <ZoomIn size={12} />
                                 </button>
                             </div>
+                            <a href={`/api/nexus/pdf-proxy?key=${encodeURIComponent(viewingPdf)}`} download
+                                className="w-7 h-7 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 hover:bg-emerald-500 hover:text-white transition-all ml-4">
+                                <Download size={14} />
+                            </a>
                             <button onClick={() => { setViewingPdf(null); setAnnotTool('none'); setPageDims({ width: 0, height: 0 }) }} className="text-white/40 hover:text-white transition-colors">
                                 <X size={20} />
                             </button>
@@ -778,9 +782,13 @@ export default function GovernanceMemos({ isAdmin = false, userEmail = '', userN
                     {/* Annotation Toolbar */}
                     <div className="flex items-center gap-2 px-6 py-2 border-b border-white/5 bg-[#0A0A0A]/60" onClick={e => e.stopPropagation()}>
                         <span className="text-[9px] text-white/30 uppercase tracking-wider mr-2">Annotate:</span>
+                        <button onClick={() => setAnnotTool(t => t === 'text-highlight' ? 'none' : 'text-highlight')}
+                            className={`flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider rounded-lg border transition-all ${annotTool === 'text-highlight' ? 'bg-amber-500/10 border-amber-500/30 text-amber-400' : 'bg-white/[0.03] border-white/5 text-white/30 hover:text-white'}`}>
+                            <Highlighter size={12} /> Text Highlight
+                        </button>
                         <button onClick={() => setAnnotTool(t => t === 'highlight' ? 'none' : 'highlight')}
                             className={`flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider rounded-lg border transition-all ${annotTool === 'highlight' ? 'bg-amber-500/10 border-amber-500/30 text-amber-400' : 'bg-white/[0.03] border-white/5 text-white/30 hover:text-white'}`}>
-                            <Highlighter size={12} /> Highlight
+                            <Plus size={12} /> Area Highlight
                         </button>
                         <button onClick={() => setAnnotTool(t => t === 'comment' ? 'none' : 'comment')}
                             className={`flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider rounded-lg border transition-all ${annotTool === 'comment' ? 'bg-blue-500/10 border-blue-500/30 text-blue-400' : 'bg-white/[0.03] border-white/5 text-white/30 hover:text-white'}`}>

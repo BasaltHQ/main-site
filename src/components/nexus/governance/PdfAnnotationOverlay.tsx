@@ -7,7 +7,7 @@ interface Annotation {
     id: string
     document_key: string
     page: number
-    type: 'highlight' | 'comment'
+    type: 'highlight' | 'comment' | 'text-highlight'
     x: number
     y: number
     width: number
@@ -16,6 +16,7 @@ interface Annotation {
     user_email: string
     user_name: string
     user_color: string
+    rects?: { x: number; y: number; width: number; height: number }[]
     created_at: string
 }
 
@@ -38,7 +39,7 @@ interface Props {
     pageNumber: number
     userEmail: string
     userName: string
-    activeTool: 'none' | 'highlight' | 'comment'
+    activeTool: 'none' | 'highlight' | 'text-highlight' | 'comment'
 }
 
 export default function PdfAnnotationOverlay({ documentKey, pageNumber, userEmail, userName, activeTool }: Props) {
@@ -48,7 +49,7 @@ export default function PdfAnnotationOverlay({ documentKey, pageNumber, userEmai
     const [drawCurrent, setDrawCurrent] = useState({ x: 0, y: 0 })
     const [commentPos, setCommentPos] = useState<{ x: number; y: number } | null>(null)
     const [commentText, setCommentText] = useState('')
-    const [hoveredAnnotation, setHoveredAnnotation] = useState<string | null>(null)
+    const [selectedAnnotation, setSelectedAnnotation] = useState<string | null>(null)
     const overlayRef = useRef<HTMLDivElement>(null)
     const myColor = userColor(userEmail)
 
@@ -130,6 +131,68 @@ export default function PdfAnnotationOverlay({ documentKey, pageNumber, userEmai
         }
     }
 
+    useEffect(() => {
+        const handleGlobalMouseUp = async () => {
+            if (activeTool === 'text-highlight') {
+                const sel = window.getSelection();
+                if (sel && sel.rangeCount > 0 && !sel.isCollapsed && overlayRef.current) {
+                    const range = sel.getRangeAt(0);
+                    const clientRects = Array.from(range.getClientRects());
+                    if (clientRects.length > 0) {
+                        const containerRect = overlayRef.current.getBoundingClientRect();
+                        
+                        // Filter out empty rects
+                        const validRects = clientRects.filter(r => r.width > 1 && r.height > 1);
+                        if (validRects.length === 0) return;
+
+                        const rects = validRects.map(r => ({
+                            x: ((r.left - containerRect.left) / containerRect.width) * 100,
+                            y: ((r.top - containerRect.top) / containerRect.height) * 100,
+                            width: (r.width / containerRect.width) * 100,
+                            height: (r.height / containerRect.height) * 100
+                        }));
+
+                        const minX = Math.min(...rects.map(r => r.x));
+                        const minY = Math.min(...rects.map(r => r.y));
+                        const maxW = Math.max(...rects.map(r => r.x + r.width)) - minX;
+                        const maxH = Math.max(...rects.map(r => r.y + r.height)) - minY;
+
+                        try {
+                            const res = await fetch('/api/nexus/annotations', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    document_key: documentKey, page: pageNumber, type: 'text-highlight',
+                                    x: minX, y: minY, width: maxW, height: maxH, rects: rects,
+                                    user_email: userEmail, user_name: userName, user_color: myColor
+                                })
+                            })
+                            const data = await res.json()
+                            if (data.id) {
+                                setAnnotations(prev => [...prev, {
+                                    id: data.id, document_key: documentKey, page: pageNumber,
+                                    type: 'text-highlight', x: minX, y: minY, width: maxW, height: maxH, rects: rects, text: '',
+                                    user_email: userEmail, user_name: userName, user_color: myColor,
+                                    created_at: new Date().toISOString()
+                                }])
+                            }
+                        } catch (e) { console.error(e) }
+                    }
+                    window.getSelection()?.removeAllRanges();
+                }
+            }
+        };
+
+        const handleGlobalClick = () => setSelectedAnnotation(null);
+
+        window.addEventListener('mouseup', handleGlobalMouseUp);
+        window.addEventListener('click', handleGlobalClick);
+        return () => {
+            window.removeEventListener('mouseup', handleGlobalMouseUp);
+            window.removeEventListener('click', handleGlobalClick);
+        };
+    }, [activeTool, documentKey, pageNumber, userEmail, userName, myColor]);
+
     async function handleCommentSubmit() {
         if (!commentPos || !commentText.trim()) return
         try {
@@ -168,15 +231,15 @@ export default function PdfAnnotationOverlay({ documentKey, pageNumber, userEmai
             ref={overlayRef}
             className="absolute inset-0"
             style={{
-                cursor: activeTool === 'highlight' ? 'crosshair' : activeTool === 'comment' ? 'cell' : 'default',
-                pointerEvents: activeTool === 'none' ? 'none' : 'auto',
+                cursor: activeTool === 'highlight' ? 'crosshair' : activeTool === 'comment' ? 'cell' : activeTool === 'text-highlight' ? 'text' : 'default',
+                pointerEvents: (activeTool === 'highlight' || activeTool === 'comment') ? 'auto' : 'none',
                 zIndex: 10,
             }}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
         >
-            {/* Existing Highlights */}
+            {/* Existing Area Highlights */}
             {annotations.filter(a => a.type === 'highlight').map(a => (
                 <div
                     key={a.id}
@@ -184,21 +247,61 @@ export default function PdfAnnotationOverlay({ documentKey, pageNumber, userEmai
                     style={{
                         left: `${a.x}%`, top: `${a.y}%`,
                         width: `${a.width}%`, height: `${a.height}%`,
-                        backgroundColor: a.user_color + '25',
-                        border: `1.5px solid ${a.user_color}50`,
+                        backgroundColor: a.user_color + '35',
+                        border: selectedAnnotation === a.id ? `3px solid ${a.user_color}` : `2px solid ${a.user_color}80`,
                         borderRadius: '2px',
                         pointerEvents: 'auto',
+                        cursor: 'pointer'
                     }}
-                    onMouseEnter={() => setHoveredAnnotation(a.id)}
-                    onMouseLeave={() => setHoveredAnnotation(null)}
+                    onClick={(e) => { e.stopPropagation(); e.nativeEvent.stopImmediatePropagation(); setSelectedAnnotation(a.id); }}
                 >
-                    {hoveredAnnotation === a.id && (
-                        <div className="absolute -top-7 left-0 bg-[#111] border border-white/10 rounded px-2 py-0.5 flex items-center gap-2 whitespace-nowrap z-20" style={{ pointerEvents: 'auto' }}>
+                    {selectedAnnotation === a.id && (
+                        <div className="absolute -top-7 left-0 bg-[#111] border border-white/10 rounded px-2 py-0.5 flex items-center gap-2 whitespace-nowrap z-20 shadow-xl" style={{ pointerEvents: 'auto' }}>
                             <div className="w-2 h-2 rounded-full" style={{ backgroundColor: a.user_color }} />
-                            <span className="text-[9px] text-white/60">{a.user_name || a.user_email.split('@')[0]}</span>
+                            <span className="text-[9px] text-white/60 font-bold">{a.user_name || a.user_email.split('@')[0]}</span>
                             {a.user_email === userEmail && (
-                                <button onClick={(e) => { e.stopPropagation(); handleDelete(a.id) }} className="text-red-400/60 hover:text-red-400">
-                                    <Trash2 size={10} />
+                                <button onClick={(e) => { e.stopPropagation(); handleDelete(a.id) }} className="text-red-400/60 hover:text-red-400 p-0.5 rounded hover:bg-white/5 transition-colors">
+                                    <Trash2 size={12} />
+                                </button>
+                            )}
+                        </div>
+                    )}
+                </div>
+            ))}
+
+            {/* Existing Text Highlights */}
+            {annotations.filter(a => a.type === 'text-highlight').map(a => (
+                <div
+                    key={a.id}
+                    className="absolute"
+                    style={{
+                        left: `${a.x}%`, top: `${a.y}%`,
+                        width: `${a.width}%`, height: `${a.height}%`,
+                        pointerEvents: 'none',
+                        zIndex: 5
+                    }}
+                >
+                    {a.rects?.map((r, i) => (
+                        <div key={i} className="absolute" style={{
+                            left: `${((r.x - a.x) / a.width) * 100}%`,
+                            top: `${((r.y - a.y) / a.height) * 100}%`,
+                            width: `${(r.width / a.width) * 100}%`,
+                            height: `${(r.height / a.height) * 100}%`,
+                            backgroundColor: a.user_color + (selectedAnnotation === a.id ? '60' : '35'),
+                            pointerEvents: 'auto',
+                            cursor: 'pointer'
+                        }} 
+                        onClick={(e) => { e.stopPropagation(); e.nativeEvent.stopImmediatePropagation(); setSelectedAnnotation(a.id); }} />
+                    ))}
+
+                    {/* Popover */}
+                    {selectedAnnotation === a.id && (
+                        <div className="absolute -top-7 left-0 bg-[#111] border border-white/10 rounded px-2 py-0.5 flex items-center gap-2 whitespace-nowrap z-[60] shadow-xl" style={{ pointerEvents: 'auto' }}>
+                            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: a.user_color }} />
+                            <span className="text-[9px] text-white/60 font-bold">{a.user_name || a.user_email.split('@')[0]}</span>
+                            {a.user_email === userEmail && (
+                                <button onClick={(e) => { e.stopPropagation(); handleDelete(a.id) }} className="text-red-400/60 hover:text-red-400 p-0.5 rounded hover:bg-white/5 transition-colors">
+                                    <Trash2 size={12} />
                                 </button>
                             )}
                         </div>
@@ -215,30 +318,29 @@ export default function PdfAnnotationOverlay({ documentKey, pageNumber, userEmai
                         left: `${a.x}%`, top: `${a.y}%`,
                         transform: 'translate(-50%, -50%)',
                         pointerEvents: 'auto',
-                        zIndex: hoveredAnnotation === a.id ? 30 : 15
+                        zIndex: selectedAnnotation === a.id ? 30 : 15
                     }}
-                    onMouseEnter={() => setHoveredAnnotation(a.id)}
-                    onMouseLeave={() => setHoveredAnnotation(null)}
+                    onClick={(e) => { e.stopPropagation(); e.nativeEvent.stopImmediatePropagation(); setSelectedAnnotation(a.id); }}
                 >
-                    <div className="w-5 h-5 rounded-full flex items-center justify-center shadow-lg cursor-pointer"
+                    <div className={`w-6 h-6 rounded-full flex items-center justify-center shadow-lg cursor-pointer transition-transform ${selectedAnnotation === a.id ? 'scale-110 ring-2 ring-white/50' : 'hover:scale-110'}`}
                         style={{ backgroundColor: a.user_color }}>
-                        <MessageCircle size={10} className="text-white" />
+                        <MessageCircle size={12} className="text-white" />
                     </div>
-                    {hoveredAnnotation === a.id && (
-                        <div className="absolute top-6 left-1/2 -translate-x-1/2 bg-[#111] border border-white/10 rounded-lg p-2.5 min-w-[160px] max-w-[220px] z-30 shadow-xl" style={{ pointerEvents: 'auto' }}>
-                            <div className="flex items-center justify-between mb-1">
+                    {selectedAnnotation === a.id && (
+                        <div className="absolute top-8 left-1/2 -translate-x-1/2 bg-[#111] border border-white/10 rounded-lg p-3 min-w-[200px] max-w-[280px] z-30 shadow-xl" style={{ pointerEvents: 'auto' }}>
+                            <div className="flex items-center justify-between mb-2">
                                 <div className="flex items-center gap-1.5">
-                                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: a.user_color }} />
-                                    <span className="text-[9px] font-bold text-white/60">{a.user_name || a.user_email.split('@')[0]}</span>
+                                    <div className="w-2.5 h-2.5 rounded-full shadow-sm" style={{ backgroundColor: a.user_color }} />
+                                    <span className="text-[10px] font-bold text-white/80">{a.user_name || a.user_email.split('@')[0]}</span>
                                 </div>
                                 {a.user_email === userEmail && (
-                                    <button onClick={(e) => { e.stopPropagation(); handleDelete(a.id) }} className="text-red-400/60 hover:text-red-400">
-                                        <Trash2 size={10} />
+                                    <button onClick={(e) => { e.stopPropagation(); handleDelete(a.id) }} className="text-red-400/60 hover:text-red-400 p-1 hover:bg-white/5 rounded transition-colors">
+                                        <Trash2 size={12} />
                                     </button>
                                 )}
                             </div>
-                            <p className="text-[10px] text-white/50 leading-relaxed">{a.text}</p>
-                            <p className="text-[8px] text-white/20 mt-1">{new Date(a.created_at).toLocaleString()}</p>
+                            <p className="text-[11px] text-white/70 leading-relaxed font-medium">{a.text}</p>
+                            <p className="text-[9px] text-white/30 mt-2 font-mono">{new Date(a.created_at).toLocaleString()}</p>
                         </div>
                     )}
                 </div>

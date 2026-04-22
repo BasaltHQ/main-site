@@ -26,6 +26,7 @@ export async function GET(req: NextRequest) {
                 user_email: a.user_email,
                 user_name: a.user_name,
                 user_color: a.user_color,
+                rects: a.rects || [],
                 created_at: a.created_at
             }))
         })
@@ -52,7 +53,8 @@ export async function POST(req: NextRequest) {
             text: body.text || '',
             user_email: body.user_email,
             user_name: body.user_name,
-            user_color: body.user_color
+            user_color: body.user_color,
+            rects: body.rects || []
         })
 
         return NextResponse.json({
