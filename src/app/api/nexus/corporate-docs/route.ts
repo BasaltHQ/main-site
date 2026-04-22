@@ -107,7 +107,7 @@ export async function PATCH(req: NextRequest) {
                     created_at: new Date()
                 }
             },
-            updated_at: new Date()
+            $set: { updated_at: new Date() }
         })
 
         return NextResponse.json({ success: true })

@@ -20,7 +20,8 @@ import {
     PanelLeftClose,
     PanelLeftOpen,
     Landmark,
-    Shield
+    Shield,
+    Target
 } from 'lucide-react'
 import NotificationBell from '@/components/nexus/governance/NotificationBell'
 
@@ -97,7 +98,10 @@ export default function NexusShell({ children, role, name, company, userEmail }:
                         <NavItem href="/nexus/messages" icon={MessageSquare} label="Messages" />
                         <NavItem href="/nexus/documents" icon={FileText} label="Data Room" />
                         {role === 'investor' && (
-                            <NavItem href="/nexus/portfolio" icon={Briefcase} label="My Portfolio" />
+                            <>
+                                <NavItem href="/nexus/open-rounds" icon={Target} label="Open Rounds" />
+                                <NavItem href="/nexus/my-investments" icon={Briefcase} label="My Portfolio" />
+                            </>
                         )}
                     </nav>
                 </div>
@@ -113,6 +117,7 @@ export default function NexusShell({ children, role, name, company, userEmail }:
                             <NavItem href="/nexus/manage/team" icon={Shield} label="Team Members" />
                             <NavItem href="/nexus/manage/investors" icon={Users} label="Investors" />
                             <NavItem href="/nexus/manage/documents" icon={FileText} label="Doc Center" />
+                            <NavItem href="/nexus/admin/treasury" icon={Landmark} label="Treasury Ops" />
                         </div>
                     </div>
                 )}

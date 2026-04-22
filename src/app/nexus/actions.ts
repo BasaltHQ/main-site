@@ -450,3 +450,36 @@ export async function getCurrentUserInvestorStatus() {
     return await getInvestorStatus((session.user as any).id)
 }
 
+export async function getOpenRounds() {
+    await dbConnect()
+    const { Campaign } = await import('@/lib/models')
+    const activeCampaigns = await Campaign.find({ status: 'active' }).sort({ created_at: -1 }).lean()
+    return JSON.parse(JSON.stringify(activeCampaigns))
+}
+
+export async function createCommitmentTransaction(data: {
+    campaign_id: string,
+    amount: number,
+    instrument: 'safe' | 'equity',
+    payment_method: 'wire' | 'crypto'
+}) {
+    const session = await getSession()
+    if (!session?.user) throw new Error("Unauthorized")
+    
+    await dbConnect()
+    const { Transaction } = await import('@/lib/models')
+
+    const tx = await Transaction.create({
+        investor_id: (session.user as any).id,
+        campaign_id: data.campaign_id,
+        amount: data.amount,
+        type: 'investment',
+        instrument: data.instrument,
+        payment_method: data.payment_method,
+        status: data.payment_method === 'wire' ? 'pending_wire' : 'pending_crypto',
+        created_at: new Date()
+    })
+
+    return JSON.parse(JSON.stringify(tx))
+}
+

@@ -5,7 +5,8 @@ import bcrypt from 'bcryptjs'
 
 export async function POST(req: Request) {
     try {
-        const { email, password, full_name, requested_role } = await req.json()
+        const body = await req.clone().json()
+        const { email, password, full_name, requested_role } = body
 
         if (!email || !password) {
             return NextResponse.json({ message: "Missing required fields" }, { status: 400 })
@@ -21,27 +22,42 @@ export async function POST(req: Request) {
 
         const hashedPassword = await bcrypt.hash(password, 10)
 
-        // Investors get approved immediately; team/director/officer need admin approval
-        const needsApproval = requested_role && requested_role !== 'investor'
-
+        // ALL users start as pending_approval per user requirement
         const user = await Profile.create({
             email,
             password: hashedPassword,
             full_name: full_name || email.split('@')[0],
-            role: needsApproval ? 'pending' : 'investor',
-            status: needsApproval ? 'pending_approval' : 'approved',
+            role: requested_role || 'investor',
+            status: 'pending_approval',
             requested_role: requested_role || 'investor'
         })
 
-        if (needsApproval) {
-            return NextResponse.json({
-                message: "Your access request has been submitted. An administrator will review and approve your application.",
-                pending: true,
-                user: { email: user.email, id: user._id }
-            }, { status: 201 })
+        // If investor and they passed accreditation info, save it
+        const { accreditation_info } = body;
+        if (accreditation_info) {
+            const { AccreditationResponse, InvestorProfile } = await import('@/lib/models');
+            
+            await InvestorProfile.create({
+                id: user._id.toString(),
+                onboarding_step: 'complete' // skip old onboarding
+            });
+
+            await AccreditationResponse.create({
+                investor_id: user._id.toString(),
+                investor_type: accreditation_info.investor_type || 'individual',
+                annual_income: accreditation_info.annual_income || 0,
+                net_worth: accreditation_info.net_worth || 0,
+                responses: accreditation_info,
+                determination: 'pending', // admin needs to review
+                verified_status: 'pending'
+            });
         }
 
-        return NextResponse.json({ message: "User registered successfully", user: { email: user.email, id: user._id } }, { status: 201 })
+        return NextResponse.json({
+            message: "Your access request has been submitted. An administrator will review and approve your application.",
+            pending: true,
+            user: { email: user.email, id: user._id }
+        }, { status: 201 })
     } catch (error: any) {
         console.error("Registration error:", error)
         return NextResponse.json({ message: "Internal server error" }, { status: 500 })

@@ -160,7 +160,7 @@ export async function PATCH(req: NextRequest) {
                         responded_at: new Date()
                     }
                 },
-                updated_at: new Date()
+                $set: { updated_at: new Date() }
             })
         } else if (body.message) {
             // Post a message to the memo's message board
@@ -173,7 +173,7 @@ export async function PATCH(req: NextRequest) {
                         created_at: new Date()
                     }
                 },
-                updated_at: new Date()
+                $set: { updated_at: new Date() }
             })
         } else if (body.status) {
             const update: any = { status: body.status, updated_at: new Date() }
