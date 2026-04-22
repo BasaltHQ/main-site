@@ -113,7 +113,7 @@ export default function GovernanceMemos({ isAdmin = false, userEmail = '', userN
     const [pdfPage, setPdfPage] = useState(1)
     const [pdfScale, setPdfScale] = useState(1.0)
     const [viewMode, setViewMode] = useState<'single' | 'scroll'>('scroll')
-    const [annotTool, setAnnotTool] = useState<'none' | 'highlight'>('none')
+    const [annotTool, setAnnotTool] = useState<'none' | 'highlight' | 'comment'>('none')
     const myColor = userColor(userEmail)
     const [form, setForm] = useState({
         title: '', type: 'memo' as 'memo' | 'proposal' | 'report',
@@ -796,8 +796,12 @@ export default function GovernanceMemos({ isAdmin = false, userEmail = '', userN
                             className={`flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider rounded-lg border transition-all ${annotTool === 'highlight' ? 'bg-amber-500/10 border-amber-500/30 text-amber-400' : 'bg-white/[0.03] border-white/5 text-white/30 hover:text-white'}`}>
                             <Plus size={12} /> Area Highlight
                         </button>
+                        <button onClick={() => setAnnotTool(t => t === 'comment' ? 'none' : 'comment')}
+                            className={`flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider rounded-lg border transition-all ${annotTool === 'comment' ? 'bg-blue-500/10 border-blue-500/30 text-blue-400' : 'bg-white/[0.03] border-white/5 text-white/30 hover:text-white'}`}>
+                            <MessageCircle size={12} /> Add Comment Tool
+                        </button>
                         <div className="w-[1px] h-4 bg-white/10 mx-2" />
-                        <span className="text-[9px] text-white/30 italic mr-2">Pro Tip: Select text to automatically add highlights & comments.</span>
+                        <span className="text-[9px] text-white/30 italic mr-2">Pro Tip: Standard text selection is always active.</span>
                         
                         <div className="flex items-center gap-1 ml-auto">
                             <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: myColor }} />

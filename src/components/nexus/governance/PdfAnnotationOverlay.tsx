@@ -53,7 +53,8 @@ export default function PdfAnnotationOverlay({ documentKey, pageNumber, userEmai
     const overlayRef = useRef<HTMLDivElement>(null)
 
     interface PendingSelection {
-        rects: { x: number; y: number; width: number; height: number }[];
+        type: 'highlight' | 'text-highlight' | 'comment';
+        rects?: { x: number; y: number; width: number; height: number }[];
         minX: number;
         minY: number;
         maxW: number;
@@ -119,26 +120,7 @@ export default function PdfAnnotationOverlay({ documentKey, pageNumber, userEmai
 
             if (w < 1 && h < 1) return
 
-            try {
-                const res = await fetch('/api/nexus/annotations', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        document_key: documentKey, page: pageNumber, type: 'highlight',
-                        x, y, width: w, height: h,
-                        user_email: userEmail, user_name: userName, user_color: myColor
-                    })
-                })
-                const data = await res.json()
-                if (data.id) {
-                    setAnnotations(prev => [...prev, {
-                        id: data.id, document_key: documentKey, page: pageNumber,
-                        type: 'highlight', x, y, width: w, height: h, text: '',
-                        user_email: userEmail, user_name: userName, user_color: myColor,
-                        created_at: new Date().toISOString()
-                    }])
-                }
-            } catch (e) { console.error(e) }
+            setPendingSelection({ type: 'highlight', minX: x, minY: y, maxW: w, maxH: h, showCommentInput: false })
         }
     }
 
@@ -193,7 +175,7 @@ export default function PdfAnnotationOverlay({ documentKey, pageNumber, userEmai
                         const maxW = Math.max(...rects.map(r => r.x + r.width)) - minX;
                         const maxH = Math.max(...rects.map(r => r.y + r.height)) - minY;
 
-                        setPendingSelection({ rects, minX, minY, maxW, maxH, showCommentInput: false });
+                        setPendingSelection({ type: 'text-highlight', rects, minX, minY, maxW, maxH, showCommentInput: false });
                     }
                 } else if (sel?.isCollapsed) {
                     setPendingSelection(null);
@@ -208,31 +190,33 @@ export default function PdfAnnotationOverlay({ documentKey, pageNumber, userEmai
         };
 
         window.addEventListener('mouseup', handleGlobalMouseUp);
-        window.addEventListener('click', handleGlobalClick);
+        window.addEventListener('click', handleGlobalClick, true);
         return () => {
             window.removeEventListener('mouseup', handleGlobalMouseUp);
-            window.removeEventListener('click', handleGlobalClick);
+            window.removeEventListener('click', handleGlobalClick, true);
         };
     }, [activeTool, documentKey, pageNumber, userEmail, userName, myColor]);
 
     async function commitPendingSelection(textToSave: string = '') {
         if (!pendingSelection) return;
-        const { minX, minY, maxW, maxH, rects } = pendingSelection;
+        const { type, minX, minY, maxW, maxH, rects } = pendingSelection;
         try {
+            const body = {
+                document_key: documentKey, page: pageNumber, type,
+                x: minX, y: minY, width: maxW, height: maxH, text: textToSave,
+                user_email: userEmail, user_name: userName, user_color: myColor,
+                ...(type === 'text-highlight' ? { rects } : {})
+            };
             const res = await fetch('/api/nexus/annotations', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    document_key: documentKey, page: pageNumber, type: 'text-highlight',
-                    x: minX, y: minY, width: maxW, height: maxH, rects: rects, text: textToSave,
-                    user_email: userEmail, user_name: userName, user_color: myColor
-                })
+                body: JSON.stringify(body)
             });
             const data = await res.json();
             if (data.id) {
                 setAnnotations(prev => [...prev, {
                     id: data.id, document_key: documentKey, page: pageNumber,
-                    type: 'text-highlight', x: minX, y: minY, width: maxW, height: maxH, rects: rects, text: textToSave,
+                    type, x: minX, y: minY, width: maxW, height: maxH, rects: rects, text: textToSave,
                     user_email: userEmail, user_name: userName, user_color: myColor,
                     created_at: new Date().toISOString()
                 }]);
@@ -386,11 +370,6 @@ export default function PdfAnnotationOverlay({ documentKey, pageNumber, userEmai
                                     </button>
                                 )}
                             </div>
-                            {a.text && (
-                                <div className="text-xs text-white/80 max-w-xs break-words whitespace-normal border-t border-white/5 pt-1.5">
-                                    {a.text}
-                                </div>
-                            )}
                         </div>
                     )}
                 </div>
@@ -426,8 +405,6 @@ export default function PdfAnnotationOverlay({ documentKey, pageNumber, userEmai
                                     </button>
                                 )}
                             </div>
-                            <p className="text-[11px] text-white/70 leading-relaxed font-medium">{a.text}</p>
-                            <p className="text-[9px] text-white/30 mt-2 font-mono">{new Date(a.created_at).toLocaleString()}</p>
                         </div>
                     )}
                 </div>
@@ -474,6 +451,32 @@ export default function PdfAnnotationOverlay({ documentKey, pageNumber, userEmai
                             </button>
                         </div>
                     </div>
+                </div>
+            )}
+
+            {/* Marginal Comments Sidebar */}
+            {annotations.filter(a => a.text).length > 0 && (
+                <div className="absolute top-0 -right-4 translate-x-full w-64 flex flex-col gap-3 pointer-events-auto z-10 max-h-full overflow-visible pb-16 hidden xl:flex">
+                    {annotations.filter(a => a.text).map((a, i) => (
+                        <div key={`margin-${a.id}`} 
+                            onMouseEnter={() => setSelectedAnnotation(a.id)}
+                            onMouseLeave={() => setSelectedAnnotation(null)}
+                            className={`p-3 bg-[#111] border rounded-xl transition-all shadow-xl ${selectedAnnotation === a.id ? 'border-[#119dff]' : 'border-white/10'}`} 
+                            style={{ borderLeftWidth: '4px', borderLeftColor: a.user_color }}>
+                            <div className="flex items-center justify-between mb-2">
+                                <div className="flex items-center gap-2">
+                                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: a.user_color }} />
+                                    <span className="text-[10px] text-white/60 font-bold">{a.user_name || a.user_email.split('@')[0]}</span>
+                                </div>
+                                {a.user_email === userEmail && (
+                                    <button onClick={(e) => { e.stopPropagation(); handleDelete(a.id) }} className="text-red-400/60 hover:text-red-400 transition-colors">
+                                        <Trash2 size={12} />
+                                    </button>
+                                )}
+                            </div>
+                            <p className="text-xs text-white/80 whitespace-pre-wrap">{a.text}</p>
+                        </div>
+                    ))}
                 </div>
             )}
         </div>
