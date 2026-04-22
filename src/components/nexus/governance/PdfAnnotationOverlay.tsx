@@ -135,21 +135,43 @@ export default function PdfAnnotationOverlay({ documentKey, pageNumber, userEmai
         const handleGlobalMouseUp = async () => {
             if (activeTool === 'text-highlight') {
                 const sel = window.getSelection();
-                if (sel && sel.rangeCount > 0 && !sel.isCollapsed && overlayRef.current) {
+                if (sel && sel.rangeCount > 0 && !sel.isCollapsed && sel.toString().trim() && overlayRef.current) {
                     const range = sel.getRangeAt(0);
                     const clientRects = Array.from(range.getClientRects());
                     if (clientRects.length > 0) {
                         const containerRect = overlayRef.current.getBoundingClientRect();
                         
-                        // Filter out empty rects
-                        const validRects = clientRects.filter(r => r.width > 1 && r.height > 1);
+                        // Filter out empty rects, very thin rects, and massive wrapper rects (height > 20% of page)
+                        const validRects = clientRects.filter(r => r.width > 2 && r.height > 2 && r.height < containerRect.height * 0.2);
                         if (validRects.length === 0) return;
 
-                        const rects = validRects.map(r => ({
-                            x: ((r.left - containerRect.left) / containerRect.width) * 100,
-                            y: ((r.top - containerRect.top) / containerRect.height) * 100,
-                            width: (r.width / containerRect.width) * 100,
-                            height: (r.height / containerRect.height) * 100
+                        // Merge rects that are on the same vertical line to prevent sporadic fractured boxes
+                        const mergedRects: { left: number, top: number, right: number, bottom: number }[] = [];
+                        for (const r of validRects) {
+                            let merged = false;
+                            for (const m of mergedRects) {
+                                // If they overlap vertically by at least 50%
+                                const mHeight = m.bottom - m.top;
+                                const verticalOverlap = Math.max(0, Math.min(r.bottom, m.bottom) - Math.max(r.top, m.top));
+                                if (verticalOverlap > Math.min(r.height, mHeight) * 0.5) {
+                                    m.left = Math.min(m.left, r.left);
+                                    m.right = Math.max(m.right, r.right);
+                                    m.top = Math.min(m.top, r.top);
+                                    m.bottom = Math.max(m.bottom, r.bottom);
+                                    merged = true;
+                                    break;
+                                }
+                            }
+                            if (!merged) {
+                                mergedRects.push({ left: r.left, top: r.top, right: r.right, bottom: r.bottom });
+                            }
+                        }
+
+                        const rects = mergedRects.map(m => ({
+                            x: ((m.left - containerRect.left) / containerRect.width) * 100,
+                            y: ((m.top - containerRect.top) / containerRect.height) * 100,
+                            width: ((m.right - m.left) / containerRect.width) * 100,
+                            height: ((m.bottom - m.top) / containerRect.height) * 100
                         }));
 
                         const minX = Math.min(...rects.map(r => r.x));
