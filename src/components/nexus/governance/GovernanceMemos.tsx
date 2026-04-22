@@ -1,11 +1,11 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { FileText, Plus, X, Trash2, Send, Filter, Clock, AlertTriangle, CheckCircle, Eye, Paperclip, Users, Bell, ChevronDown, Upload, Loader2, MessageCircle, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, Highlighter, Download, Layout, LayoutList } from 'lucide-react'
+import { FileText, Plus, X, Trash2, Send, Filter, Clock, AlertTriangle, CheckCircle, Eye, EyeOff, Paperclip, Users, Bell, ChevronDown, Upload, Loader2, MessageCircle, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, Highlighter, Download, Layout, LayoutList } from 'lucide-react'
 import { Document, Page, pdfjs } from 'react-pdf'
 import 'react-pdf/dist/Page/AnnotationLayer.css'
 import 'react-pdf/dist/Page/TextLayer.css'
-import PdfAnnotationOverlay, { userColor } from './PdfAnnotationOverlay'
+import PdfAnnotationOverlay, { getUserColor, setUserColor, ANNOTATION_COLORS } from './PdfAnnotationOverlay'
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`
 
@@ -113,8 +113,10 @@ export default function GovernanceMemos({ isAdmin = false, userEmail = '', userN
     const [pdfPage, setPdfPage] = useState(1)
     const [pdfScale, setPdfScale] = useState(1.0)
     const [viewMode, setViewMode] = useState<'single' | 'scroll'>('scroll')
+    const [showAnnotations, setShowAnnotations] = useState(true)
     const [annotTool, setAnnotTool] = useState<'none' | 'highlight' | 'comment'>('none')
-    const myColor = userColor(userEmail)
+    const [myColor, setMyColor] = useState(() => getUserColor(userEmail))
+    const [showColorPicker, setShowColorPicker] = useState(false)
     const [form, setForm] = useState({
         title: '', type: 'memo' as 'memo' | 'proposal' | 'report',
         department: 'Executive', content: '', summary: '',
@@ -125,6 +127,32 @@ export default function GovernanceMemos({ isAdmin = false, userEmail = '', userN
         requires_response: false, response_deadline: '',
         tags: ''
     })
+
+    // Fetch server-persisted color preference on mount
+    useEffect(() => {
+        if (!userEmail) return
+        fetch(`/api/nexus/user-preferences?email=${encodeURIComponent(userEmail)}`)
+            .then(r => r.json())
+            .then(d => {
+                if (d.annotation_color) {
+                    setMyColor(d.annotation_color)
+                    setUserColor(userEmail, d.annotation_color) // sync to localStorage too
+                }
+            })
+            .catch(() => {})
+    }, [userEmail])
+
+    function handleColorChange(color: string) {
+        setMyColor(color)
+        setUserColor(userEmail, color) // localStorage
+        setShowColorPicker(false)
+        // Persist to server
+        fetch('/api/nexus/user-preferences', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: userEmail, annotation_color: color })
+        }).catch(() => {})
+    }
 
     useEffect(() => { fetchMemos() }, [typeFilter, deptFilter])
 
@@ -780,6 +808,12 @@ export default function GovernanceMemos({ isAdmin = false, userEmail = '', userN
                                     <ZoomIn size={12} />
                                 </button>
                             </div>
+
+                            {/* Visibility Toggle */}
+                            <button onClick={() => setShowAnnotations(!showAnnotations)} className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ml-2 ${showAnnotations ? 'bg-[#119dff]/20 border border-[#119dff]/30 text-[#119dff] hover:bg-[#119dff]/30' : 'bg-white/5 border border-white/10 text-white/40 hover:text-white'}`} title="Toggle Annotation Visibility">
+                                {showAnnotations ? <Eye size={14} /> : <EyeOff size={14} />}
+                            </button>
+
                             <a href={`/api/nexus/pdf-proxy?key=${encodeURIComponent(viewingPdf)}`} download
                                 className="w-7 h-7 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 hover:bg-emerald-500 hover:text-white transition-all ml-4">
                                 <Download size={14} />
@@ -803,9 +837,21 @@ export default function GovernanceMemos({ isAdmin = false, userEmail = '', userN
                         <div className="w-[1px] h-4 bg-white/10 mx-2" />
                         <span className="text-[9px] text-white/30 italic mr-2">Pro Tip: Standard text selection is always active.</span>
                         
-                        <div className="flex items-center gap-1 ml-auto">
-                            <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: myColor }} />
-                            <span className="text-[9px] text-white/30">Your color</span>
+                        <div className="flex items-center gap-1 ml-auto relative">
+                            <div className="w-2.5 h-2.5 rounded-full cursor-pointer ring-2 ring-transparent hover:ring-white/30 transition-all" style={{ backgroundColor: myColor }} onClick={() => setShowColorPicker(!showColorPicker)} />
+                            <span className="text-[9px] text-white/30 cursor-pointer" onClick={() => setShowColorPicker(!showColorPicker)}>Your color</span>
+                            {showColorPicker && (
+                                <div className="absolute bottom-full right-0 mb-2 p-3 bg-[#111] border border-white/10 rounded-xl shadow-2xl z-[70] annotation-toolbar">
+                                    <p className="text-[9px] text-white/40 uppercase tracking-wider mb-2 font-bold">Pick Your Color</p>
+                                    <div className="grid grid-cols-5 gap-1.5">
+                                        {ANNOTATION_COLORS.map(c => (
+                                            <button key={c} onClick={() => handleColorChange(c)}
+                                                className={`w-6 h-6 rounded-full transition-all hover:scale-110 ${myColor === c ? 'ring-2 ring-white ring-offset-2 ring-offset-[#111]' : ''}`}
+                                                style={{ backgroundColor: c }} />
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                     {/* PDF Render with Annotation Overlay */}
@@ -838,13 +884,16 @@ export default function GovernanceMemos({ isAdmin = false, userEmail = '', userN
                                         renderTextLayer={true}
                                         renderAnnotationLayer={true}
                                     />
-                                    <PdfAnnotationOverlay
-                                        documentKey={viewingPdf}
-                                        pageNumber={pdfPage}
-                                        userEmail={userEmail}
-                                        userName={userName}
-                                        activeTool={annotTool as any}
-                                    />
+                                    {showAnnotations && (
+                                        <PdfAnnotationOverlay
+                                            documentKey={viewingPdf}
+                                            pageNumber={pdfPage}
+                                            userEmail={userEmail}
+                                            userName={userName}
+                                            activeTool={annotTool as any}
+                                            userColorOverride={myColor}
+                                        />
+                                    )}
                                 </div>
                             ) : (
                                 <div className="flex flex-col gap-16 pb-32">
@@ -858,13 +907,16 @@ export default function GovernanceMemos({ isAdmin = false, userEmail = '', userN
                                                     renderTextLayer={true}
                                                     renderAnnotationLayer={true}
                                                 />
-                                                <PdfAnnotationOverlay
-                                                    documentKey={viewingPdf}
-                                                    pageNumber={p}
-                                                    userEmail={userEmail}
-                                                    userName={userName}
-                                                    activeTool={annotTool as any}
-                                                />
+                                                {showAnnotations && (
+                                                    <PdfAnnotationOverlay
+                                                        documentKey={viewingPdf}
+                                                        pageNumber={p}
+                                                        userEmail={userEmail}
+                                                        userName={userName}
+                                                        activeTool={annotTool as any}
+                                                        userColorOverride={myColor}
+                                                    />
+                                                )}
                                             </div>
                                         )
                                     })}

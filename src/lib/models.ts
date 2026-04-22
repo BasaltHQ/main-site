@@ -722,3 +722,12 @@ const DocumentAnnotationSchema = new mongoose.Schema({
 }, { strict: false });
 
 export const DocumentAnnotation = mongoose.models.DocumentAnnotation || mongoose.model('DocumentAnnotation', DocumentAnnotationSchema);
+
+// User Preferences — per-user settings (e.g. annotation color)
+const UserPreferenceSchema = new mongoose.Schema({
+    user_email: { type: String, required: true, unique: true, index: true },
+    annotation_color: { type: String },
+    updated_at: { type: Date, default: Date.now }
+}, { strict: false });
+
+export const UserPreference = mongoose.models.UserPreference || mongoose.model('UserPreference', UserPreferenceSchema);

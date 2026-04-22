@@ -20,18 +20,34 @@ interface Annotation {
     created_at: string
 }
 
-// Deterministic color from email hash
+// High-contrast annotation color palette
+export const ANNOTATION_COLORS = [
+    '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7',
+    '#DDA0DD', '#FF8C42', '#6BCB77', '#4D96FF', '#FF6B9D',
+    '#C792EA', '#82AAFF', '#F78C6C', '#FFCB6B', '#89DDFF',
+]
+
+// Deterministic color from email using FNV-1a hash
 export function userColor(email: string): string {
-    const colors = [
-        '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7',
-        '#DDA0DD', '#FF8C42', '#6BCB77', '#4D96FF', '#FF6B9D',
-        '#C792EA', '#82AAFF', '#F78C6C', '#FFCB6B', '#89DDFF',
-    ]
-    let hash = 0
+    let hash = 0x811c9dc5 // FNV offset basis
     for (let i = 0; i < email.length; i++) {
-        hash = email.charCodeAt(i) + ((hash << 5) - hash)
+        hash ^= email.charCodeAt(i)
+        hash = (hash * 0x01000193) >>> 0 // FNV prime, unsigned
     }
-    return colors[Math.abs(hash) % colors.length]
+    return ANNOTATION_COLORS[hash % ANNOTATION_COLORS.length]
+}
+
+// localStorage-backed color preference
+export function getUserColor(email: string): string {
+    if (typeof window === 'undefined') return userColor(email)
+    const stored = localStorage.getItem(`annotation-color-${email}`)
+    return stored || userColor(email)
+}
+
+export function setUserColor(email: string, color: string) {
+    if (typeof window !== 'undefined') {
+        localStorage.setItem(`annotation-color-${email}`, color)
+    }
 }
 
 interface Props {
@@ -40,9 +56,11 @@ interface Props {
     userEmail: string
     userName: string
     activeTool: 'none' | 'highlight' | 'text-highlight' | 'comment'
+    userColorOverride?: string
+    onColorChange?: (color: string) => void
 }
 
-export default function PdfAnnotationOverlay({ documentKey, pageNumber, userEmail, userName, activeTool }: Props) {
+export default function PdfAnnotationOverlay({ documentKey, pageNumber, userEmail, userName, activeTool, userColorOverride, onColorChange }: Props) {
     const [annotations, setAnnotations] = useState<Annotation[]>([])
     const [drawing, setDrawing] = useState(false)
     const [drawStart, setDrawStart] = useState({ x: 0, y: 0 })
@@ -63,7 +81,7 @@ export default function PdfAnnotationOverlay({ documentKey, pageNumber, userEmai
     }
     const [pendingSelection, setPendingSelection] = useState<PendingSelection | null>(null)
     const [pendingComment, setPendingComment] = useState('')
-    const myColor = userColor(userEmail)
+    const myColor = userColorOverride || getUserColor(userEmail)
 
     // Fetch annotations for current page
     useEffect(() => {
@@ -197,13 +215,14 @@ export default function PdfAnnotationOverlay({ documentKey, pageNumber, userEmai
         };
     }, [activeTool, documentKey, pageNumber, userEmail, userName, myColor]);
 
-    async function commitPendingSelection(textToSave: string = '') {
+    async function commitPendingSelection(textToSave: string | any = '') {
         if (!pendingSelection) return;
+        const textToPersist = (typeof textToSave === 'string' && textToSave.trim() !== '') ? textToSave : pendingComment;
         const { type, minX, minY, maxW, maxH, rects } = pendingSelection;
         try {
             const body = {
                 document_key: documentKey, page: pageNumber, type,
-                x: minX, y: minY, width: maxW, height: maxH, text: textToSave,
+                x: minX, y: minY, width: maxW, height: maxH, text: textToPersist.trim(),
                 user_email: userEmail, user_name: userName, user_color: myColor,
                 ...(type === 'text-highlight' ? { rects } : {})
             };
@@ -216,7 +235,7 @@ export default function PdfAnnotationOverlay({ documentKey, pageNumber, userEmai
             if (data.id) {
                 setAnnotations(prev => [...prev, {
                     id: data.id, document_key: documentKey, page: pageNumber,
-                    type, x: minX, y: minY, width: maxW, height: maxH, rects: rects, text: textToSave,
+                    type, x: minX, y: minY, width: maxW, height: maxH, rects: rects, text: textToPersist.trim(),
                     user_email: userEmail, user_name: userName, user_color: myColor,
                     created_at: new Date().toISOString()
                 }]);
