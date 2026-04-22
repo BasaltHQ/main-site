@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { MessageCircle, Trash2, X } from 'lucide-react'
+import { MessageCircle, Trash2, X, Highlighter, Send } from 'lucide-react'
 
 interface Annotation {
     id: string
@@ -51,6 +51,17 @@ export default function PdfAnnotationOverlay({ documentKey, pageNumber, userEmai
     const [commentText, setCommentText] = useState('')
     const [selectedAnnotation, setSelectedAnnotation] = useState<string | null>(null)
     const overlayRef = useRef<HTMLDivElement>(null)
+
+    interface PendingSelection {
+        rects: { x: number; y: number; width: number; height: number }[];
+        minX: number;
+        minY: number;
+        maxW: number;
+        maxH: number;
+        showCommentInput?: boolean;
+    }
+    const [pendingSelection, setPendingSelection] = useState<PendingSelection | null>(null)
+    const [pendingComment, setPendingComment] = useState('')
     const myColor = userColor(userEmail)
 
     // Fetch annotations for current page
@@ -132,8 +143,11 @@ export default function PdfAnnotationOverlay({ documentKey, pageNumber, userEmai
     }
 
     useEffect(() => {
-        const handleGlobalMouseUp = async () => {
-            if (activeTool === 'text-highlight') {
+        const handleGlobalMouseUp = async (e: MouseEvent) => {
+            // Ignore mouse up if we are interacting with the toolbars
+            if ((e.target as HTMLElement).closest('.annotation-toolbar')) return;
+
+            if (activeTool === 'none') {
                 const sel = window.getSelection();
                 if (sel && sel.rangeCount > 0 && !sel.isCollapsed && sel.toString().trim() && overlayRef.current) {
                     const range = sel.getRangeAt(0);
@@ -179,33 +193,19 @@ export default function PdfAnnotationOverlay({ documentKey, pageNumber, userEmai
                         const maxW = Math.max(...rects.map(r => r.x + r.width)) - minX;
                         const maxH = Math.max(...rects.map(r => r.y + r.height)) - minY;
 
-                        try {
-                            const res = await fetch('/api/nexus/annotations', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({
-                                    document_key: documentKey, page: pageNumber, type: 'text-highlight',
-                                    x: minX, y: minY, width: maxW, height: maxH, rects: rects,
-                                    user_email: userEmail, user_name: userName, user_color: myColor
-                                })
-                            })
-                            const data = await res.json()
-                            if (data.id) {
-                                setAnnotations(prev => [...prev, {
-                                    id: data.id, document_key: documentKey, page: pageNumber,
-                                    type: 'text-highlight', x: minX, y: minY, width: maxW, height: maxH, rects: rects, text: '',
-                                    user_email: userEmail, user_name: userName, user_color: myColor,
-                                    created_at: new Date().toISOString()
-                                }])
-                            }
-                        } catch (e) { console.error(e) }
+                        setPendingSelection({ rects, minX, minY, maxW, maxH, showCommentInput: false });
                     }
-                    window.getSelection()?.removeAllRanges();
+                } else if (sel?.isCollapsed) {
+                    setPendingSelection(null);
                 }
             }
         };
 
-        const handleGlobalClick = () => setSelectedAnnotation(null);
+        const handleGlobalClick = (e: MouseEvent) => {
+            if (!(e.target as HTMLElement).closest('.annotation-toolbar') && !((e.target as HTMLElement).closest('[data-annotation-id]'))) {
+                setSelectedAnnotation(null);
+            }
+        };
 
         window.addEventListener('mouseup', handleGlobalMouseUp);
         window.addEventListener('click', handleGlobalClick);
@@ -214,6 +214,34 @@ export default function PdfAnnotationOverlay({ documentKey, pageNumber, userEmai
             window.removeEventListener('click', handleGlobalClick);
         };
     }, [activeTool, documentKey, pageNumber, userEmail, userName, myColor]);
+
+    async function commitPendingSelection(textToSave: string = '') {
+        if (!pendingSelection) return;
+        const { minX, minY, maxW, maxH, rects } = pendingSelection;
+        try {
+            const res = await fetch('/api/nexus/annotations', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    document_key: documentKey, page: pageNumber, type: 'text-highlight',
+                    x: minX, y: minY, width: maxW, height: maxH, rects: rects, text: textToSave,
+                    user_email: userEmail, user_name: userName, user_color: myColor
+                })
+            });
+            const data = await res.json();
+            if (data.id) {
+                setAnnotations(prev => [...prev, {
+                    id: data.id, document_key: documentKey, page: pageNumber,
+                    type: 'text-highlight', x: minX, y: minY, width: maxW, height: maxH, rects: rects, text: textToSave,
+                    user_email: userEmail, user_name: userName, user_color: myColor,
+                    created_at: new Date().toISOString()
+                }]);
+            }
+        } catch (e) { console.error(e) }
+        setPendingSelection(null);
+        setPendingComment('');
+        window.getSelection()?.removeAllRanges();
+    }
 
     async function handleCommentSubmit() {
         if (!commentPos || !commentText.trim()) return
@@ -261,6 +289,33 @@ export default function PdfAnnotationOverlay({ documentKey, pageNumber, userEmai
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
         >
+            {/* Pending Native Text Selection Floating Toolbar */}
+            {pendingSelection && (
+                <div className="absolute annotation-toolbar bg-[#111] border border-white/10 rounded-xl flex items-center gap-2 whitespace-nowrap z-[70] shadow-2xl p-1" style={{ 
+                    left: `${pendingSelection.minX + (pendingSelection.maxW / 2)}%`, 
+                    top: `calc(${pendingSelection.minY}% - 40px)`,
+                    transform: 'translateX(-50%)',
+                    pointerEvents: 'auto'
+                }}>
+                    {!pendingSelection.showCommentInput ? (
+                        <>
+                            <button onClick={() => commitPendingSelection()} className="flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-amber-400 hover:bg-amber-500/10 rounded-lg transition-colors">
+                                <Highlighter size={12} /> Highlight
+                            </button>
+                            <div className="w-[1px] h-4 bg-white/10" />
+                            <button onClick={() => setPendingSelection({ ...pendingSelection, showCommentInput: true })} className="flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-blue-400 hover:bg-blue-500/10 rounded-lg transition-colors">
+                                <MessageCircle size={12} /> Comment
+                            </button>
+                        </>
+                    ) : (
+                        <div className="flex items-center gap-2 px-2 py-1">
+                            <input autoFocus value={pendingComment} onChange={e => setPendingComment(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') commitPendingSelection(pendingComment) }} className="bg-transparent text-xs text-white outline-none w-48 placeholder:text-white/20" placeholder="Type a comment and press enter..." />
+                            <button onClick={() => commitPendingSelection(pendingComment)} className="text-[#119dff] hover:text-white"><Send size={12} /></button>
+                        </div>
+                    )}
+                </div>
+            )}
+
             {/* Existing Area Highlights */}
             {annotations.filter(a => a.type === 'highlight').map(a => (
                 <div
@@ -291,11 +346,12 @@ export default function PdfAnnotationOverlay({ documentKey, pageNumber, userEmai
                 </div>
             ))}
 
-            {/* Existing Text Highlights */}
+                    {/* Existing Text Highlights */}
             {annotations.filter(a => a.type === 'text-highlight').map(a => (
                 <div
                     key={a.id}
                     className="absolute"
+                    data-annotation-id={a.id}
                     style={{
                         left: `${a.x}%`, top: `${a.y}%`,
                         width: `${a.width}%`, height: `${a.height}%`,
@@ -318,13 +374,22 @@ export default function PdfAnnotationOverlay({ documentKey, pageNumber, userEmai
 
                     {/* Popover */}
                     {selectedAnnotation === a.id && (
-                        <div className="absolute -top-7 left-0 bg-[#111] border border-white/10 rounded px-2 py-0.5 flex items-center gap-2 whitespace-nowrap z-[60] shadow-xl" style={{ pointerEvents: 'auto' }}>
-                            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: a.user_color }} />
-                            <span className="text-[9px] text-white/60 font-bold">{a.user_name || a.user_email.split('@')[0]}</span>
-                            {a.user_email === userEmail && (
-                                <button onClick={(e) => { e.stopPropagation(); handleDelete(a.id) }} className="text-red-400/60 hover:text-red-400 p-0.5 rounded hover:bg-white/5 transition-colors">
-                                    <Trash2 size={12} />
-                                </button>
+                        <div className="absolute annotation-toolbar -top-9 left-1/2 -translate-x-1/2 bg-[#111] border border-white/10 rounded-lg px-3 py-2 flex flex-col gap-2 z-[60] shadow-2xl min-w-[150px]" style={{ pointerEvents: 'auto' }}>
+                            <div className="flex items-center justify-between gap-4">
+                                <div className="flex items-center gap-2">
+                                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: a.user_color }} />
+                                    <span className="text-[10px] text-white/60 font-bold">{a.user_name || a.user_email.split('@')[0]}</span>
+                                </div>
+                                {a.user_email === userEmail && (
+                                    <button onClick={(e) => { e.stopPropagation(); handleDelete(a.id) }} className="text-red-400/60 hover:text-red-400 p-0.5 rounded hover:bg-white/5 transition-colors">
+                                        <Trash2 size={12} />
+                                    </button>
+                                )}
+                            </div>
+                            {a.text && (
+                                <div className="text-xs text-white/80 max-w-xs break-words whitespace-normal border-t border-white/5 pt-1.5">
+                                    {a.text}
+                                </div>
                             )}
                         </div>
                     )}

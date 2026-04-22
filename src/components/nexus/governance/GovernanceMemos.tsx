@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { FileText, Plus, X, Trash2, Send, Filter, Clock, AlertTriangle, CheckCircle, Eye, Paperclip, Users, Bell, ChevronDown, Upload, Loader2, MessageCircle, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, Highlighter, Download } from 'lucide-react'
+import { FileText, Plus, X, Trash2, Send, Filter, Clock, AlertTriangle, CheckCircle, Eye, Paperclip, Users, Bell, ChevronDown, Upload, Loader2, MessageCircle, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, Highlighter, Download, Layout, LayoutList } from 'lucide-react'
 import { Document, Page, pdfjs } from 'react-pdf'
 import 'react-pdf/dist/Page/AnnotationLayer.css'
 import 'react-pdf/dist/Page/TextLayer.css'
@@ -112,8 +112,8 @@ export default function GovernanceMemos({ isAdmin = false, userEmail = '', userN
     const [pdfPages, setPdfPages] = useState(0)
     const [pdfPage, setPdfPage] = useState(1)
     const [pdfScale, setPdfScale] = useState(1.0)
-    const [pageDims, setPageDims] = useState({ width: 0, height: 0 })
-    const [annotTool, setAnnotTool] = useState<'none' | 'highlight' | 'text-highlight' | 'comment'>('none')
+    const [viewMode, setViewMode] = useState<'single' | 'scroll'>('scroll')
+    const [annotTool, setAnnotTool] = useState<'none' | 'highlight'>('none')
     const myColor = userColor(userEmail)
     const [form, setForm] = useState({
         title: '', type: 'memo' as 'memo' | 'proposal' | 'report',
@@ -731,7 +731,7 @@ export default function GovernanceMemos({ isAdmin = false, userEmail = '', userN
             )}
             {/* Full-screen PDF Viewer Modal */}
             {viewingPdf && (
-                <div className="fixed inset-0 z-[60] bg-black/95 backdrop-blur-md flex flex-col animate-fadeIn" onClick={() => { setViewingPdf(null); setAnnotTool('none'); setPageDims({ width: 0, height: 0 }) }}>
+                <div className="fixed inset-0 z-[60] bg-black/95 backdrop-blur-md flex flex-col animate-fadeIn" onClick={() => { setViewingPdf(null); setAnnotTool('none'); }}>
                     {/* Header */}
                     <div className="flex items-center justify-between px-6 py-3 border-b border-white/10 bg-[#0A0A0A]/80" onClick={e => e.stopPropagation()}>
                         <div className="flex items-center gap-3">
@@ -741,8 +741,18 @@ export default function GovernanceMemos({ isAdmin = false, userEmail = '', userN
                             </span>
                         </div>
                         <div className="flex items-center gap-4">
+                            {/* View Mode Toggle */}
+                            <div className="flex items-center bg-white/5 border border-white/10 rounded-lg p-0.5">
+                                <button onClick={() => setViewMode('single')} className={`p-1.5 rounded-md transition-all ${viewMode === 'single' ? 'bg-[#119dff]/20 text-[#119dff]' : 'text-white/40 hover:text-white'}`} title="Single Page View">
+                                    <Layout size={14} />
+                                </button>
+                                <button onClick={() => setViewMode('scroll')} className={`p-1.5 rounded-md transition-all ${viewMode === 'scroll' ? 'bg-[#119dff]/20 text-[#119dff]' : 'text-white/40 hover:text-white'}`} title="Continuous Scroll View">
+                                    <LayoutList size={14} />
+                                </button>
+                            </div>
+
                             {/* Page Navigation */}
-                            {pdfPages > 1 && (
+                            {pdfPages > 1 && viewMode === 'single' && (
                                 <div className="flex items-center gap-2">
                                     <button onClick={() => setPdfPage(p => Math.max(1, p - 1))} disabled={pdfPage <= 1}
                                         className="w-7 h-7 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-white disabled:opacity-30 transition-all">
@@ -774,26 +784,21 @@ export default function GovernanceMemos({ isAdmin = false, userEmail = '', userN
                                 className="w-7 h-7 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 hover:bg-emerald-500 hover:text-white transition-all ml-4">
                                 <Download size={14} />
                             </a>
-                            <button onClick={() => { setViewingPdf(null); setAnnotTool('none'); setPageDims({ width: 0, height: 0 }) }} className="text-white/40 hover:text-white transition-colors">
+                            <button onClick={() => { setViewingPdf(null); setAnnotTool('none'); }} className="text-white/40 hover:text-white transition-colors">
                                 <X size={20} />
                             </button>
                         </div>
                     </div>
                     {/* Annotation Toolbar */}
                     <div className="flex items-center gap-2 px-6 py-2 border-b border-white/5 bg-[#0A0A0A]/60" onClick={e => e.stopPropagation()}>
-                        <span className="text-[9px] text-white/30 uppercase tracking-wider mr-2">Annotate:</span>
-                        <button onClick={() => setAnnotTool(t => t === 'text-highlight' ? 'none' : 'text-highlight')}
-                            className={`flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider rounded-lg border transition-all ${annotTool === 'text-highlight' ? 'bg-amber-500/10 border-amber-500/30 text-amber-400' : 'bg-white/[0.03] border-white/5 text-white/30 hover:text-white'}`}>
-                            <Highlighter size={12} /> Text Highlight
-                        </button>
+                        <span className="text-[9px] text-white/30 uppercase tracking-wider mr-2">Drawing Tools:</span>
                         <button onClick={() => setAnnotTool(t => t === 'highlight' ? 'none' : 'highlight')}
                             className={`flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider rounded-lg border transition-all ${annotTool === 'highlight' ? 'bg-amber-500/10 border-amber-500/30 text-amber-400' : 'bg-white/[0.03] border-white/5 text-white/30 hover:text-white'}`}>
                             <Plus size={12} /> Area Highlight
                         </button>
-                        <button onClick={() => setAnnotTool(t => t === 'comment' ? 'none' : 'comment')}
-                            className={`flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider rounded-lg border transition-all ${annotTool === 'comment' ? 'bg-blue-500/10 border-blue-500/30 text-blue-400' : 'bg-white/[0.03] border-white/5 text-white/30 hover:text-white'}`}>
-                            <MessageCircle size={12} /> Comment
-                        </button>
+                        <div className="w-[1px] h-4 bg-white/10 mx-2" />
+                        <span className="text-[9px] text-white/30 italic mr-2">Pro Tip: Select text to automatically add highlights & comments.</span>
+                        
                         <div className="flex items-center gap-1 ml-auto">
                             <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: myColor }} />
                             <span className="text-[9px] text-white/30">Your color</span>
@@ -821,28 +826,46 @@ export default function GovernanceMemos({ isAdmin = false, userEmail = '', userN
                                 </div>
                             }
                         >
-                            <div className="relative" style={{ width: pageDims.width || 'auto', height: pageDims.height || 'auto' }}>
-                                <Page
-                                    pageNumber={pdfPage}
-                                    scale={pdfScale}
-                                    renderTextLayer={true}
-                                    renderAnnotationLayer={true}
-                                    onRenderSuccess={() => {
-                                        // Get rendered page dimensions for the overlay
-                                        const canvas = document.querySelector('.react-pdf__Page__canvas') as HTMLCanvasElement
-                                        if (canvas) setPageDims({ width: canvas.offsetWidth, height: canvas.offsetHeight })
-                                    }}
-                                />
-                                {pageDims.width > 0 && (
+                            {viewMode === 'single' ? (
+                                <div className="relative inline-block mx-auto mb-8 bg-white" style={{ boxShadow: '0 0 20px rgba(0,0,0,0.5)' }}>
+                                    <Page
+                                        pageNumber={pdfPage}
+                                        scale={pdfScale}
+                                        renderTextLayer={true}
+                                        renderAnnotationLayer={true}
+                                    />
                                     <PdfAnnotationOverlay
                                         documentKey={viewingPdf}
                                         pageNumber={pdfPage}
                                         userEmail={userEmail}
                                         userName={userName}
-                                        activeTool={annotTool}
+                                        activeTool={annotTool as any}
                                     />
-                                )}
-                            </div>
+                                </div>
+                            ) : (
+                                <div className="flex flex-col gap-16 pb-32">
+                                    {Array.from(new Array(pdfPages), (el, index) => {
+                                        const p = index + 1;
+                                        return (
+                                            <div key={`page_${p}`} className="relative inline-block mx-auto bg-white" style={{ boxShadow: '0 0 20px rgba(0,0,0,0.5)' }}>
+                                                <Page
+                                                    pageNumber={p}
+                                                    scale={pdfScale}
+                                                    renderTextLayer={true}
+                                                    renderAnnotationLayer={true}
+                                                />
+                                                <PdfAnnotationOverlay
+                                                    documentKey={viewingPdf}
+                                                    pageNumber={p}
+                                                    userEmail={userEmail}
+                                                    userName={userName}
+                                                    activeTool={annotTool as any}
+                                                />
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                            )}
                         </Document>
                     </div>
                 </div>
