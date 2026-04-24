@@ -81,8 +81,9 @@ export async function POST(req: NextRequest) {
             await Notification.insertMany(notifications)
 
             // SES: email each recipient
+            const docId = doc._id.toString();
             for (const email of body.notify_recipients) {
-                sendDocumentUploadedEmail(email, body.title, body.uploaded_by || 'Admin', body.description)
+                sendDocumentUploadedEmail(email, body.title, body.uploaded_by || 'Admin', body.description, docId)
                     .catch(err => console.error(`[SES] Doc upload notification to ${email} failed:`, err));
             }
         }
@@ -120,7 +121,7 @@ export async function PATCH(req: NextRequest) {
         // SES: notify the document uploader that someone commented
         const doc = await CorporateDocument.findById(id).lean() as any;
         if (doc?.uploaded_by && doc.uploaded_by !== comment.user_email) {
-            sendDocumentCommentEmail(doc.uploaded_by, doc.title, comment.user_name || comment.user_email, comment.text)
+            sendDocumentCommentEmail(doc.uploaded_by, doc.title, comment.user_name || comment.user_email, comment.text, id)
                 .catch(err => console.error('[SES] Doc comment email failed:', err));
         }
 

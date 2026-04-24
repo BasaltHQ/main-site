@@ -137,8 +137,9 @@ export async function POST(req: NextRequest) {
             await Notification.insertMany(notifications)
 
             // SES: email each recipient
+            const memoId = memo._id.toString();
             for (const email of recipientEmails) {
-                sendMemoNotificationEmail(email, body.type, body.title, body.department, body.author_name || 'Unknown', body.summary)
+                sendMemoNotificationEmail(email, body.type, body.title, body.department, body.author_name || 'Unknown', body.summary, memoId)
                     .catch(err => console.error(`[SES] Memo notification to ${email} failed:`, err));
             }
         }
@@ -173,7 +174,7 @@ export async function PATCH(req: NextRequest) {
             // SES: notify the author that someone responded
             const memo = await GovernanceMemo.findById(body.id).lean() as any;
             if (memo?.author_email && memo.author_email !== body.response.user_email) {
-                sendMemoResponseEmail(memo.author_email, memo.type, memo.title, body.response.user_name || body.response.user_email, body.response.response, body.response.comment)
+                sendMemoResponseEmail(memo.author_email, memo.type, memo.title, body.response.user_name || body.response.user_email, body.response.response, body.response.comment, body.id)
                     .catch(err => console.error('[SES] Memo response email failed:', err));
             }
         } else if (body.message) {
@@ -193,7 +194,7 @@ export async function PATCH(req: NextRequest) {
             // SES: notify the author that someone commented
             const memoForComment = await GovernanceMemo.findById(body.id).lean() as any;
             if (memoForComment?.author_email && memoForComment.author_email !== body.message.user_email) {
-                sendMemoCommentEmail(memoForComment.author_email, memoForComment.type, memoForComment.title, body.message.user_name || body.message.user_email, body.message.text)
+                sendMemoCommentEmail(memoForComment.author_email, memoForComment.type, memoForComment.title, body.message.user_name || body.message.user_email, body.message.text, body.id)
                     .catch(err => console.error('[SES] Memo comment email failed:', err));
             }
         } else if (body.status) {
@@ -205,7 +206,7 @@ export async function PATCH(req: NextRequest) {
             if (['published', 'approved', 'rejected'].includes(body.status)) {
                 const memo = await GovernanceMemo.findById(body.id).lean() as any;
                 if (memo?.author_email) {
-                    sendMemoStatusUpdateEmail(memo.author_email, memo.type, memo.title, body.status)
+                    sendMemoStatusUpdateEmail(memo.author_email, memo.type, memo.title, body.status, body.id)
                         .catch(err => console.error('[SES] Memo status email failed:', err));
                 }
             }

@@ -88,8 +88,9 @@ export async function POST(req: NextRequest) {
         }
 
         // SES: email each signatory
+        const srId = sr._id.toString();
         for (const s of (signatories || [])) {
-            sendSignatureRequestEmail(s.email, s.name, document_title, requested_by.name || requested_by.email, s.capacity, message)
+            sendSignatureRequestEmail(s.email, s.name, document_title, requested_by.name || requested_by.email, s.capacity, message, srId)
                 .catch(err => console.error(`[SES] Signature request to ${s.email} failed:`, err));
         }
 
@@ -216,8 +217,9 @@ export async function PATCH(req: NextRequest) {
                 await Notification.insertMany(completionNotifs)
 
                 // SES: notify all parties of full execution
+                const srIdCompleted = sr._id.toString();
                 for (const email of completionEmails) {
-                    sendDocumentFullyExecutedEmail(email, sr.document_title, sr.signatories.length)
+                    sendDocumentFullyExecutedEmail(email, sr.document_title, sr.signatories.length, srIdCompleted)
                         .catch(err => console.error(`[SES] Fully executed to ${email} failed:`, err));
                 }
             } else {
@@ -235,7 +237,7 @@ export async function PATCH(req: NextRequest) {
 
                 // SES: notify requester of signing progress
                 const signedCount = sr.signatories.filter((s: any) => s.status === 'signed').length;
-                sendSignatureCompletedEmail(sr.requested_by.email, actor_name || actor_email, sr.document_title, signedCount, sr.signatories.length)
+                sendSignatureCompletedEmail(sr.requested_by.email, actor_name || actor_email, sr.document_title, signedCount, sr.signatories.length, sr._id.toString())
                     .catch(err => console.error('[SES] Signature progress email failed:', err));
             }
 
@@ -280,7 +282,7 @@ export async function PATCH(req: NextRequest) {
             })
 
             // SES: notify requester of decline
-            sendSignatureDeclinedEmail(sr.requested_by.email, actor_name || actor_email, sr.document_title, reason)
+            sendSignatureDeclinedEmail(sr.requested_by.email, actor_name || actor_email, sr.document_title, reason, sr._id.toString())
                 .catch(err => console.error('[SES] Signature declined email failed:', err));
 
             sr.updated_at = new Date()
@@ -346,7 +348,7 @@ export async function PATCH(req: NextRequest) {
 
             // SES: email pending signatories with reminder
             for (const s of pendingSignatories) {
-                sendSignatureReminderEmail(s.email, s.name, sr.document_title, actor_name || actor_email, s.capacity)
+                sendSignatureReminderEmail(s.email, s.name, sr.document_title, actor_name || actor_email, s.capacity, sr._id.toString())
                     .catch(err => console.error(`[SES] Reminder to ${s.email} failed:`, err));
             }
 

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { Users, Briefcase, Calendar, Gavel, BookOpen, Clock, Landmark, Scale, FileText } from 'lucide-react'
 import BoardDirectory from '@/components/nexus/governance/BoardDirectory'
 import OfficerRegistry from '@/components/nexus/governance/OfficerRegistry'
@@ -22,12 +23,23 @@ const TABS = [
 ]
 
 export default function GovernancePage() {
-    const [activeTab, setActiveTab] = useState('board')
+    const searchParams = useSearchParams()
+    const tabParam = searchParams.get('tab')
+    const focusId = searchParams.get('focus') || searchParams.get('sign') || ''
+
+    const [activeTab, setActiveTab] = useState(tabParam && TABS.some(t => t.id === tabParam) ? tabParam : 'board')
     const [role, setRole] = useState('investor')
     const [userEmail, setUserEmail] = useState('')
     const [userName, setUserName] = useState('')
     const [directors, setDirectors] = useState<{ name: string; email: string; title: string }[]>([])
     const [officers, setOfficers] = useState<{ name: string; email: string; title: string }[]>([])
+
+    // Sync tab from URL on navigation
+    useEffect(() => {
+        if (tabParam && TABS.some(t => t.id === tabParam)) {
+            setActiveTab(tabParam)
+        }
+    }, [tabParam])
 
     useEffect(() => {
         getCurrentProfile().then(p => {

@@ -250,7 +250,7 @@ export async function sendApplicationSuspendedEmail(to: string, fullName: string
 // 6. GOVERNANCE MEMOS / PROPOSALS / REPORTS
 // ============================================================================
 
-export async function sendMemoNotificationEmail(to: string, memoType: string, title: string, department: string, authorName: string, summary?: string) {
+export async function sendMemoNotificationEmail(to: string, memoType: string, title: string, department: string, authorName: string, summary?: string, sourceId?: string) {
     const typeLabel = memoType.charAt(0).toUpperCase() + memoType.slice(1);
     const subject = `New ${typeLabel}: ${title}`;
     const body = buildEmailHtml(
@@ -258,14 +258,14 @@ export async function sendMemoNotificationEmail(to: string, memoType: string, ti
         p(`A new ${memoType} has been submitted in the ${strong(department)} department.`) +
         p(`${strong('Title:')} ${title}<br/>${strong('Author:')} ${authorName}<br/>${strong('Type:')} ${badge(typeLabel)}`) +
         (summary ? p(`${strong('Summary:')} ${summary}`) : ''),
-        '/nexus/governance?tab=memos',
+        `/nexus/governance?tab=memos${sourceId ? `&focus=${sourceId}` : ''}`,
         `View ${typeLabel}`
     );
 
     return sendEmail(to, subject, body);
 }
 
-export async function sendMemoStatusUpdateEmail(to: string, memoType: string, title: string, newStatus: string) {
+export async function sendMemoStatusUpdateEmail(to: string, memoType: string, title: string, newStatus: string, sourceId?: string) {
     const typeLabel = memoType.charAt(0).toUpperCase() + memoType.slice(1);
     const statusColors: Record<string, string> = { published: '#119dff', approved: '#22c55e', rejected: '#ef4444', archived: '#71717a' };
     const color = statusColors[newStatus] || '#119dff';
@@ -274,29 +274,29 @@ export async function sendMemoStatusUpdateEmail(to: string, memoType: string, ti
     const body = buildEmailHtml(
         `${typeLabel} Status Updated`,
         p(`Your ${memoType} ${strong(`"${title}"`)} has been updated to: ${badge(newStatus, color)}`),
-        '/nexus/governance?tab=memos',
+        `/nexus/governance?tab=memos${sourceId ? `&focus=${sourceId}` : ''}`,
         `View ${typeLabel}`
     );
 
     return sendEmail(to, subject, body);
 }
 
-export async function sendMemoCommentEmail(to: string, memoType: string, title: string, commenterName: string, commentText: string) {
+export async function sendMemoCommentEmail(to: string, memoType: string, title: string, commenterName: string, commentText: string, sourceId?: string) {
     const typeLabel = memoType.charAt(0).toUpperCase() + memoType.slice(1);
     const subject = `New Comment on ${typeLabel}: ${title}`;
     const body = buildEmailHtml(
         `New Comment on Your ${typeLabel}`,
         p(`${strong(commenterName)} posted a comment on your ${memoType} ${strong(`"${title}"`)}.`) +
-        p(`<em style="color: #d4d4d8; border-left: 3px solid #119dff44; padding-left: 12px; display: block;">"${commentText.length > 200 ? commentText.substring(0, 200) + '…' : commentText}"</em>`) +
+        p(`<em style="color: #d4d4d8; border-left: 3px solid #119dff44; padding-left: 12px; display: block;">${commentText.length > 200 ? commentText.substring(0, 200) + '…' : commentText}</em>`) +
         p('Log in to view the full discussion and respond.'),
-        '/nexus/governance?tab=memos',
+        `/nexus/governance?tab=memos${sourceId ? `&focus=${sourceId}` : ''}`,
         `View ${typeLabel}`
     );
 
     return sendEmail(to, subject, body);
 }
 
-export async function sendMemoResponseEmail(to: string, memoType: string, title: string, responderName: string, response: string, comment?: string) {
+export async function sendMemoResponseEmail(to: string, memoType: string, title: string, responderName: string, response: string, comment?: string, sourceId?: string) {
     const typeLabel = memoType.charAt(0).toUpperCase() + memoType.slice(1);
     const responseColors: Record<string, string> = { acknowledged: '#119dff', approved: '#22c55e', rejected: '#ef4444', comment: '#f59e0b' };
     const color = responseColors[response] || '#119dff';
@@ -306,21 +306,21 @@ export async function sendMemoResponseEmail(to: string, memoType: string, title:
         `Response to Your ${typeLabel}`,
         p(`${strong(responderName)} responded to your ${memoType} ${strong(`"${title}"`)}: ${badge(response, color)}`) +
         (comment ? p(`${strong('Comment:')} ${comment}`) : ''),
-        '/nexus/governance?tab=memos',
+        `/nexus/governance?tab=memos${sourceId ? `&focus=${sourceId}` : ''}`,
         `View ${typeLabel}`
     );
 
     return sendEmail(to, subject, body);
 }
 
-export async function sendDocumentCommentEmail(to: string, documentTitle: string, commenterName: string, commentText: string) {
+export async function sendDocumentCommentEmail(to: string, documentTitle: string, commenterName: string, commentText: string, sourceId?: string) {
     const subject = `New Comment on Document: ${documentTitle}`;
     const body = buildEmailHtml(
         'New Comment on Your Document',
         p(`${strong(commenterName)} posted a comment on ${strong(`"${documentTitle}"`)}.`) +
-        p(`<em style="color: #d4d4d8; border-left: 3px solid #119dff44; padding-left: 12px; display: block;">"${commentText.length > 200 ? commentText.substring(0, 200) + '…' : commentText}"</em>`) +
+        p(`<em style="color: #d4d4d8; border-left: 3px solid #119dff44; padding-left: 12px; display: block;">${commentText.length > 200 ? commentText.substring(0, 200) + '…' : commentText}</em>`) +
         p('Log in to view the full discussion.'),
-        '/nexus/governance?tab=documents',
+        `/nexus/governance?tab=documents${sourceId ? `&focus=${sourceId}` : ''}`,
         'View Document'
     );
 
@@ -331,14 +331,14 @@ export async function sendDocumentCommentEmail(to: string, documentTitle: string
 // 7. CORPORATE DOCUMENT UPLOADED
 // ============================================================================
 
-export async function sendDocumentUploadedEmail(to: string, title: string, uploaderName: string, description?: string) {
+export async function sendDocumentUploadedEmail(to: string, title: string, uploaderName: string, description?: string, sourceId?: string) {
     const subject = `New Document: ${title}`;
     const body = buildEmailHtml(
         'New Corporate Document',
         p(`A new document has been uploaded to the corporate document vault.`) +
         p(`${strong('Document:')} ${title}<br/>${strong('Uploaded By:')} ${uploaderName}`) +
         (description ? p(`${strong('Description:')} ${description}`) : ''),
-        '/nexus/governance?tab=documents',
+        `/nexus/governance?tab=documents${sourceId ? `&focus=${sourceId}` : ''}`,
         'View Document'
     );
 
@@ -349,67 +349,67 @@ export async function sendDocumentUploadedEmail(to: string, title: string, uploa
 // 8. SIGNATURE CEREMONY
 // ============================================================================
 
-export async function sendSignatureRequestEmail(to: string, signerName: string, documentTitle: string, requesterName: string, capacity?: string, message?: string) {
+export async function sendSignatureRequestEmail(to: string, signerName: string, documentTitle: string, requesterName: string, capacity?: string, message?: string, sourceId?: string) {
     const subject = `Signature Requested: ${documentTitle}`;
     const body = buildEmailHtml(
         'Your Signature Is Requested',
         p(`${strong(requesterName)} is requesting your signature${capacity ? ` as ${strong(capacity)}` : ''} on the document ${strong(`"${documentTitle}"`)}.`) +
         (message ? p(`${strong('Message:')} ${message}`) : '') +
         p('Please log in to Basalt Nexus to review the document and complete the signing process.'),
-        '/nexus/governance?tab=documents',
+        `/nexus/governance?tab=documents${sourceId ? `&sign=${sourceId}` : ''}`,
         'Review & Sign'
     );
 
     return sendEmail(to, subject, body);
 }
 
-export async function sendSignatureCompletedEmail(to: string, signerName: string, documentTitle: string, completedCount: number, totalCount: number) {
+export async function sendSignatureCompletedEmail(to: string, signerName: string, documentTitle: string, completedCount: number, totalCount: number, sourceId?: string) {
     const subject = `${signerName} Signed: ${documentTitle}`;
     const body = buildEmailHtml(
         'Signature Progress Update',
         p(`${strong(signerName)} has signed ${strong(`"${documentTitle}"`)}.`) +
         p(`Signature progress: ${strong(`${completedCount}/${totalCount}`)} complete.`),
-        '/nexus/governance?tab=documents',
+        `/nexus/governance?tab=documents${sourceId ? `&sign=${sourceId}` : ''}`,
         'View Progress'
     );
 
     return sendEmail(to, subject, body);
 }
 
-export async function sendDocumentFullyExecutedEmail(to: string, documentTitle: string, signatoryCount: number) {
+export async function sendDocumentFullyExecutedEmail(to: string, documentTitle: string, signatoryCount: number, sourceId?: string) {
     const subject = `Document Fully Executed: ${documentTitle}`;
     const body = buildEmailHtml(
         'Document Fully Executed',
         p(`${strong(`"${documentTitle}"`)} has been signed by all ${strong(String(signatoryCount))} parties and is now ${badge('fully executed', '#22c55e')}.`) +
         p('A copy of the executed document is available in the corporate document vault.'),
-        '/nexus/governance?tab=documents',
+        `/nexus/governance?tab=documents${sourceId ? `&sign=${sourceId}` : ''}`,
         'View Executed Document'
     );
 
     return sendEmail(to, subject, body);
 }
 
-export async function sendSignatureDeclinedEmail(to: string, declinerName: string, documentTitle: string, reason?: string) {
+export async function sendSignatureDeclinedEmail(to: string, declinerName: string, documentTitle: string, reason?: string, sourceId?: string) {
     const subject = `Signature Declined: ${documentTitle}`;
     const body = buildEmailHtml(
         'Signature Declined',
         p(`${strong(declinerName)} has ${badge('declined', '#ef4444')} to sign ${strong(`"${documentTitle}"`)}.`) +
         (reason ? p(`${strong('Reason:')} ${reason}`) : '') +
         p('Please review the signature request and take appropriate action.'),
-        '/nexus/governance?tab=documents',
+        `/nexus/governance?tab=documents${sourceId ? `&sign=${sourceId}` : ''}`,
         'Review Request'
     );
 
     return sendEmail(to, subject, body);
 }
 
-export async function sendSignatureReminderEmail(to: string, signerName: string, documentTitle: string, requesterName: string, capacity?: string) {
+export async function sendSignatureReminderEmail(to: string, signerName: string, documentTitle: string, requesterName: string, capacity?: string, sourceId?: string) {
     const subject = `Reminder: Signature Pending on ${documentTitle}`;
     const body = buildEmailHtml(
         'Signature Reminder',
         p(`${strong(requesterName)} is reminding you to sign ${strong(`"${documentTitle}"`)}${capacity ? ` as ${strong(capacity)}` : ''}.`) +
         p('Please log in to complete the signing process at your earliest convenience.'),
-        '/nexus/governance?tab=documents',
+        `/nexus/governance?tab=documents${sourceId ? `&sign=${sourceId}` : ''}`,
         'Sign Now'
     );
 
@@ -433,26 +433,26 @@ export async function sendSignatureVoidedEmail(to: string, documentTitle: string
 // 9. RESOLUTIONS
 // ============================================================================
 
-export async function sendResolutionCreatedEmail(to: string, title: string, resolutionNumber: string, category: string, proposedBy: string) {
+export async function sendResolutionCreatedEmail(to: string, title: string, resolutionNumber: string, category: string, proposedBy: string, sourceId?: string) {
     const subject = `New Resolution: ${resolutionNumber} — ${title}`;
     const body = buildEmailHtml(
         'New Resolution Requires Your Review',
         p(`A new board resolution has been proposed and requires your attention.`) +
         p(`${strong('Resolution:')} ${resolutionNumber}<br/>${strong('Title:')} ${title}<br/>${strong('Category:')} ${badge(category)}<br/>${strong('Proposed By:')} ${proposedBy}`),
-        '/nexus/governance?tab=resolutions',
+        `/nexus/governance?tab=resolutions${sourceId ? `&focus=${sourceId}` : ''}`,
         'Review Resolution'
     );
 
     return sendEmail(to, subject, body);
 }
 
-export async function sendResolutionOutcomeEmail(to: string, title: string, resolutionNumber: string, outcome: 'approved' | 'rejected') {
+export async function sendResolutionOutcomeEmail(to: string, title: string, resolutionNumber: string, outcome: 'approved' | 'rejected', sourceId?: string) {
     const color = outcome === 'approved' ? '#22c55e' : '#ef4444';
     const subject = `Resolution ${outcome.charAt(0).toUpperCase() + outcome.slice(1)}: ${resolutionNumber}`;
     const body = buildEmailHtml(
         `Resolution ${outcome.charAt(0).toUpperCase() + outcome.slice(1)}`,
         p(`Board Resolution ${strong(resolutionNumber)} — ${strong(`"${title}"`)} — has been ${badge(outcome, color)}.`),
-        '/nexus/governance?tab=resolutions',
+        `/nexus/governance?tab=resolutions${sourceId ? `&focus=${sourceId}` : ''}`,
         'View Resolution'
     );
 

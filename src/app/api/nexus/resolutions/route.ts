@@ -67,10 +67,11 @@ export async function POST(req: NextRequest) {
             const res = await Resolution.create(body)
 
             // SES: notify all active directors of new resolution
+            const resId = res._id.toString();
             const directors = await BoardMember.find({ is_active: true }).lean();
             for (const d of directors as any[]) {
                 if (d.email) {
-                    sendResolutionCreatedEmail(d.email, body.title, body.resolution_number, body.category || 'general', body.proposed_by || 'Board')
+                    sendResolutionCreatedEmail(d.email, body.title, body.resolution_number, body.category || 'general', body.proposed_by || 'Board', resId)
                         .catch(err => console.error(`[SES] Resolution notification to ${d.email} failed:`, err));
                 }
             }
@@ -145,7 +146,7 @@ export async function PATCH(req: NextRequest) {
                     if (director?.email) voterEmails.add(director.email);
                 }
                 for (const email of voterEmails) {
-                    sendResolutionOutcomeEmail(email, resolution.title, resolution.resolution_number, resolution.status as 'approved' | 'rejected')
+                    sendResolutionOutcomeEmail(email, resolution.title, resolution.resolution_number, resolution.status as 'approved' | 'rejected', id)
                         .catch(err => console.error(`[SES] Resolution outcome to ${email} failed:`, err));
                 }
             }
