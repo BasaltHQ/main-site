@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import dbConnect from '@/lib/mongodb'
 import { CorporateDocument, Notification } from '@/lib/models'
+import { sendDocumentUploadedEmail, sendDocumentCommentEmail } from '@/lib/aws/ses'
 
 // GET — List corporate documents
 export async function GET(req: NextRequest) {
@@ -78,6 +79,12 @@ export async function POST(req: NextRequest) {
                 created_at: new Date()
             }))
             await Notification.insertMany(notifications)
+
+            // SES: email each recipient
+            for (const email of body.notify_recipients) {
+                sendDocumentUploadedEmail(email, body.title, body.uploaded_by || 'Admin', body.description)
+                    .catch(err => console.error(`[SES] Doc upload notification to ${email} failed:`, err));
+            }
         }
 
         return NextResponse.json({ success: true, id: doc._id.toString() })
@@ -109,6 +116,13 @@ export async function PATCH(req: NextRequest) {
             },
             $set: { updated_at: new Date() }
         })
+
+        // SES: notify the document uploader that someone commented
+        const doc = await CorporateDocument.findById(id).lean() as any;
+        if (doc?.uploaded_by && doc.uploaded_by !== comment.user_email) {
+            sendDocumentCommentEmail(doc.uploaded_by, doc.title, comment.user_name || comment.user_email, comment.text)
+                .catch(err => console.error('[SES] Doc comment email failed:', err));
+        }
 
         return NextResponse.json({ success: true })
     } catch (error: any) {

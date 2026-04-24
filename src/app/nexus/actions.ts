@@ -4,6 +4,7 @@ import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import dbConnect from '@/lib/mongodb'
 import { Profile, Integration, Campaign, InvestorProfile, Transaction } from '@/lib/models'
+import { sendInvestmentCommitmentEmail, sendInvestmentCommitmentAdminAlert, sendDirectMessageEmail } from '@/lib/aws/ses'
 
 export async function getSession() {
     return await getServerSession(authOptions)
@@ -224,6 +225,16 @@ export async function sendMessage(content: string, subject: string, receiverId?:
         content,
         subject
     })
+
+    // SES: notify receiver of new message
+    if (targetId) {
+        const receiver = await Profile.findById(targetId).lean() as any;
+        const sender = await Profile.findById((session.user as any).id).lean() as any;
+        if (receiver?.email) {
+            sendDirectMessageEmail(receiver.email, sender?.full_name || session.user?.email || 'Someone', subject)
+                .catch(err => console.error('[SES] Direct message email failed:', err));
+        }
+    }
 
     return { success: true }
 }
@@ -479,6 +490,19 @@ export async function createCommitmentTransaction(data: {
         status: data.payment_method === 'wire' ? 'pending_wire' : 'pending_crypto',
         created_at: new Date()
     })
+
+    // SES: confirm commitment to investor and alert admin
+    const investorProfile = await Profile.findById((session.user as any).id).lean() as any;
+    const campaign = await Campaign.findById(data.campaign_id).lean() as any;
+    const investorName = investorProfile?.full_name || investorProfile?.email || 'Investor';
+    const campaignName = campaign?.name || 'Unknown Campaign';
+
+    if (investorProfile?.email) {
+        sendInvestmentCommitmentEmail(investorProfile.email, investorName, campaignName, data.amount, data.instrument)
+            .catch(err => console.error('[SES] Investment commitment email failed:', err));
+    }
+    sendInvestmentCommitmentAdminAlert(campaignName, investorName, investorProfile?.email || '', data.amount)
+        .catch(err => console.error('[SES] Investment admin alert failed:', err));
 
     return JSON.parse(JSON.stringify(tx))
 }

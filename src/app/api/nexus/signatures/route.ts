@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import dbConnect from '@/lib/mongodb'
 import { SignatureRequest, Notification } from '@/lib/models'
+import { sendSignatureRequestEmail, sendSignatureCompletedEmail, sendDocumentFullyExecutedEmail, sendSignatureDeclinedEmail, sendSignatureReminderEmail, sendSignatureVoidedEmail } from '@/lib/aws/ses'
 
 // GET — List signature requests
 export async function GET(req: NextRequest) {
@@ -84,6 +85,12 @@ export async function POST(req: NextRequest) {
         }))
         if (notifications.length > 0) {
             await Notification.insertMany(notifications)
+        }
+
+        // SES: email each signatory
+        for (const s of (signatories || [])) {
+            sendSignatureRequestEmail(s.email, s.name, document_title, requested_by.name || requested_by.email, s.capacity, message)
+                .catch(err => console.error(`[SES] Signature request to ${s.email} failed:`, err));
         }
 
         return NextResponse.json({ success: true, id: sr._id.toString() })
@@ -207,6 +214,12 @@ export async function PATCH(req: NextRequest) {
                     created_at: new Date()
                 }))
                 await Notification.insertMany(completionNotifs)
+
+                // SES: notify all parties of full execution
+                for (const email of completionEmails) {
+                    sendDocumentFullyExecutedEmail(email, sr.document_title, sr.signatories.length)
+                        .catch(err => console.error(`[SES] Fully executed to ${email} failed:`, err));
+                }
             } else {
                 sr.status = 'in_progress'
                 // Notify requester that one signer completed
@@ -219,6 +232,11 @@ export async function PATCH(req: NextRequest) {
                     source_id: sr._id.toString(),
                     created_at: new Date()
                 })
+
+                // SES: notify requester of signing progress
+                const signedCount = sr.signatories.filter((s: any) => s.status === 'signed').length;
+                sendSignatureCompletedEmail(sr.requested_by.email, actor_name || actor_email, sr.document_title, signedCount, sr.signatories.length)
+                    .catch(err => console.error('[SES] Signature progress email failed:', err));
             }
 
             sr.updated_at = new Date()
@@ -261,6 +279,10 @@ export async function PATCH(req: NextRequest) {
                 created_at: new Date()
             })
 
+            // SES: notify requester of decline
+            sendSignatureDeclinedEmail(sr.requested_by.email, actor_name || actor_email, sr.document_title, reason)
+                .catch(err => console.error('[SES] Signature declined email failed:', err));
+
             sr.updated_at = new Date()
             await sr.save()
             return NextResponse.json({ success: true })
@@ -295,6 +317,12 @@ export async function PATCH(req: NextRequest) {
                 }))
             if (voidNotifs.length > 0) await Notification.insertMany(voidNotifs)
 
+            // SES: email pending signatories about voiding
+            for (const s of sr.signatories.filter((s: any) => s.status === 'pending' || s.status === 'in_progress')) {
+                sendSignatureVoidedEmail(s.email, sr.document_title, actor_name || actor_email)
+                    .catch(err => console.error(`[SES] Void notification to ${s.email} failed:`, err));
+            }
+
             sr.updated_at = new Date()
             await sr.save()
             return NextResponse.json({ success: true })
@@ -315,6 +343,12 @@ export async function PATCH(req: NextRequest) {
                 created_at: new Date()
             }))
             if (reminderNotifs.length > 0) await Notification.insertMany(reminderNotifs)
+
+            // SES: email pending signatories with reminder
+            for (const s of pendingSignatories) {
+                sendSignatureReminderEmail(s.email, s.name, sr.document_title, actor_name || actor_email, s.capacity)
+                    .catch(err => console.error(`[SES] Reminder to ${s.email} failed:`, err));
+            }
 
             sr.audit_trail.push({
                 action: 'reminder_sent',

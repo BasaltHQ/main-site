@@ -534,7 +534,7 @@ export const Bylaw = mongoose.models.Bylaw || mongoose.model('Bylaw', BylawSchem
 // ----------------------------------------------------------------------------
 const NotificationSchema = new mongoose.Schema({
     recipient_email: { type: String, required: true },
-    type: { type: String, enum: ['resolution', 'meeting', 'document', 'memo', 'proposal', 'report', 'signature', 'system'], default: 'system' },
+    type: { type: String, enum: ['resolution', 'meeting', 'document', 'memo', 'proposal', 'report', 'signature', 'system', 'investor_application', 'accreditation', 'investment', 'welcome', 'message'], default: 'system' },
     title: { type: String, required: true },
     body: { type: String },
     link: { type: String },

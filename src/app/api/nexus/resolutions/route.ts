@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import dbConnect from '@/lib/mongodb'
-import { Resolution } from '@/lib/models'
+import { Resolution, BoardMember } from '@/lib/models'
+import { sendResolutionCreatedEmail, sendResolutionOutcomeEmail } from '@/lib/aws/ses'
 
 // Categories that trigger §4.4 unanimous founder consent
 const PROTECTED_CATEGORIES = [
@@ -63,7 +64,16 @@ export async function POST(req: NextRequest) {
         if (body.id) {
             await Resolution.findByIdAndUpdate(body.id, { ...body, updated_at: new Date() })
         } else {
-            await Resolution.create(body)
+            const res = await Resolution.create(body)
+
+            // SES: notify all active directors of new resolution
+            const directors = await BoardMember.find({ is_active: true }).lean();
+            for (const d of directors as any[]) {
+                if (d.email) {
+                    sendResolutionCreatedEmail(d.email, body.title, body.resolution_number, body.category || 'general', body.proposed_by || 'Board')
+                        .catch(err => console.error(`[SES] Resolution notification to ${d.email} failed:`, err));
+                }
+            }
         }
 
         return NextResponse.json({ success: true })
@@ -125,6 +135,20 @@ export async function PATCH(req: NextRequest) {
 
             resolution.updated_at = new Date()
             await resolution.save()
+
+            // SES: if resolution reached a final outcome, notify all voters
+            if (resolution.status === 'approved' || resolution.status === 'rejected') {
+                const voterEmails = new Set<string>();
+                for (const v of resolution.votes) {
+                    // Resolve member_id to email via BoardMember
+                    const director = await BoardMember.findById(v.member_id).lean() as any;
+                    if (director?.email) voterEmails.add(director.email);
+                }
+                for (const email of voterEmails) {
+                    sendResolutionOutcomeEmail(email, resolution.title, resolution.resolution_number, resolution.status as 'approved' | 'rejected')
+                        .catch(err => console.error(`[SES] Resolution outcome to ${email} failed:`, err));
+                }
+            }
         } else {
             // General update (status, filing, etc.)
             await Resolution.findByIdAndUpdate(id, { ...data, updated_at: new Date() })

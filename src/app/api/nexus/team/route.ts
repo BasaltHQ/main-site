@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import dbConnect from '@/lib/mongodb'
 import { Profile, BoardMember, Officer } from '@/lib/models'
+import { sendApplicationApprovedEmail, sendApplicationSuspendedEmail } from '@/lib/aws/ses'
 
 export async function GET() {
     await dbConnect()
@@ -113,6 +114,11 @@ export async function PATCH(req: NextRequest) {
                 }
             }
 
+            // SES: notify the user they've been approved
+            if (profile.email) {
+                sendApplicationApprovedEmail(profile.email, profile.full_name || profile.email, profile.role).catch(err => console.error('[SES] Approval email failed:', err));
+            }
+
             return NextResponse.json({ success: true })
         }
 
@@ -141,6 +147,12 @@ export async function PATCH(req: NextRequest) {
             profile.status = 'suspended'
             profile.updated_at = new Date()
             await profile.save()
+
+            // SES: notify the user their account has been suspended
+            if (profile.email) {
+                sendApplicationSuspendedEmail(profile.email, profile.full_name || profile.email).catch(err => console.error('[SES] Suspension email failed:', err));
+            }
+
             return NextResponse.json({ success: true })
         }
 

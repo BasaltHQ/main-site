@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import dbConnect from '@/lib/mongodb'
-import { BoardMeeting } from '@/lib/models'
+import { BoardMeeting, BoardMember } from '@/lib/models'
+import { sendMeetingScheduledEmail } from '@/lib/aws/ses'
 
 export async function GET(req: NextRequest) {
     await dbConnect()
@@ -33,6 +34,16 @@ export async function POST(req: NextRequest) {
             await BoardMeeting.findByIdAndUpdate(body.id, { ...body, updated_at: new Date() })
         } else {
             await BoardMeeting.create(body)
+
+            // SES: notify all active directors of the scheduled meeting
+            const directors = await BoardMember.find({ is_active: true }).lean();
+            const dateStr = body.date ? new Date(body.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'TBD';
+            for (const d of directors as any[]) {
+                if (d.email) {
+                    sendMeetingScheduledEmail(d.email, body.title, body.meeting_type || 'regular', dateStr, body.time, body.location)
+                        .catch(err => console.error(`[SES] Meeting notification to ${d.email} failed:`, err));
+                }
+            }
         }
         return NextResponse.json({ success: true })
     } catch (error) {

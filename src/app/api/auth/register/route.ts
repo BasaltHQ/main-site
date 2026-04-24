@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import dbConnect from '@/lib/mongodb'
 import { Profile } from '@/lib/models'
 import bcrypt from 'bcryptjs'
+import { sendWelcomeEmail, sendNewApplicationAdminAlert } from '@/lib/aws/ses'
 
 export async function POST(req: Request) {
     try {
@@ -52,6 +53,11 @@ export async function POST(req: Request) {
                 verified_status: 'pending'
             });
         }
+
+        // Fire-and-forget SES notifications
+        const userName = full_name || email.split('@')[0];
+        sendWelcomeEmail(email, userName).catch(err => console.error('[SES] Welcome email failed:', err));
+        sendNewApplicationAdminAlert(email, userName, requested_role || 'investor').catch(err => console.error('[SES] Admin alert failed:', err));
 
         return NextResponse.json({
             message: "Your access request has been submitted. An administrator will review and approve your application.",
