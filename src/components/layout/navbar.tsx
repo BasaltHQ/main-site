@@ -134,31 +134,13 @@ export function Navbar() {
                 </>
               )}
 
-              {/* Suite Dropdown matched to template style */}
-              <div className="relative group">
-                <button className="flex items-center gap-1 px-4 py-2 text-xs font-mono tracking-wider text-gray-400 hover:text-white hover:bg-white/5 rounded-[10px] transition-all duration-200">
-                  SUITE
-                  <ChevronDown className="h-3 w-3" />
-                </button>
-                <div className="absolute top-full left-0 mt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pt-2">
-                  <div
-                    className="glass-pane rounded-lg shadow-xl ring-1 ring-white/10 p-2 bg-black/80 backdrop-blur-xl"
-                    style={{ borderColor: `${themeColor}40` }}
-                  >
-                    {products.map((product) => (
-                      <a
-                        key={product.name}
-                        href={product.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block px-4 py-2 text-xs font-mono tracking-wider text-gray-300 hover:text-white hover:bg-white/10 rounded-md transition-colors"
-                      >
-                        {product.name}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              </div>
+              {/* Suite Direct Link */}
+              <Link
+                href="/portal"
+                className="px-4 py-2 text-xs font-mono tracking-wider text-gray-400 hover:text-white hover:bg-white/5 rounded-[10px] transition-all duration-200"
+              >
+                SUITE
+              </Link>
             </div>
           </div>
 
@@ -225,22 +207,13 @@ export function Navbar() {
               )}
 
               <div className="border-t border-white/10 mt-2 pt-2">
-                <div className="text-[10px] font-mono text-gray-500 mb-2 px-4">SUITE</div>
-                {products.map((product) => (
-                  <a
-                    key={product.name}
-                    href={product.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block px-4 py-2 text-xs font-mono tracking-wider text-gray-400 hover:text-white transition-colors"
-                    onClick={() => setIsMenuOpen(false)}
-                    style={{ '--hover-color': themeColor } as React.CSSProperties}
-                    onMouseEnter={(e) => e.currentTarget.style.color = themeColor}
-                    onMouseLeave={(e) => e.currentTarget.style.color = '#9ca3af'}
-                  >
-                    {product.name}
-                  </a>
-                ))}
+                <Link
+                  href="/portal"
+                  className="block px-4 py-3 text-sm font-mono tracking-wider text-gray-300 hover:text-white transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  SUITE
+                </Link>
               </div>
 
               <div className="pt-2">

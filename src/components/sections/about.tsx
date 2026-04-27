@@ -7,13 +7,11 @@ export function AboutSection() {
   const { currentTheme } = useBrandTheme();
 
   return (
-    <section id="vision" className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24 bg-[#020609]">
+    <section id="vision" className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24">
       <div
-        className="glass-pane rounded-3xl ring-1 p-8 md:p-12 backdrop-blur-md"
+        className="relative rounded-3xl border border-white/[0.08] bg-black/40 backdrop-blur-xl p-8 md:p-12 shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
         style={{
-          backgroundColor: `${currentTheme.color}0D`, // 5% opacity
-          borderColor: `${currentTheme.color}33`, // 20% opacity
-          boxShadow: `0 0 40px ${currentTheme.color}1A` // 10% opacity
+          boxShadow: `0 8px 32px rgba(0,0,0,0.5), 0 0 40px ${currentTheme.color}1A` // Keep theme glow
         }}
       >
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-2">Democratizing the Ontology</h2>
@@ -39,9 +37,8 @@ export function AboutSection() {
 
         <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div
-            className="group rounded-xl p-6 border transition-all hover:-translate-y-1"
+            className="group relative rounded-xl p-6 border border-white/[0.05] bg-white/[0.01] backdrop-blur-md transition-all duration-500 hover:-translate-y-1 hover:bg-black/40 hover:border-white/[0.15] hover:shadow-[0_16px_48px_rgba(0,0,0,0.8)]"
             style={{
-              backgroundColor: `${currentTheme.color}0D`,
               borderColor: `${currentTheme.color}33`
             }}
           >
@@ -53,9 +50,8 @@ export function AboutSection() {
           </div>
 
           <div
-            className="group rounded-xl p-6 border transition-all hover:-translate-y-1"
+            className="group relative rounded-xl p-6 border border-white/[0.05] bg-white/[0.01] backdrop-blur-md transition-all duration-500 hover:-translate-y-1 hover:bg-black/40 hover:border-white/[0.15] hover:shadow-[0_16px_48px_rgba(0,0,0,0.8)]"
             style={{
-              backgroundColor: `${currentTheme.color}0D`,
               borderColor: `${currentTheme.color}33`
             }}
           >
@@ -67,9 +63,8 @@ export function AboutSection() {
           </div>
 
           <div
-            className="group rounded-xl p-6 border transition-all hover:-translate-y-1"
+            className="group relative rounded-xl p-6 border border-white/[0.05] bg-white/[0.01] backdrop-blur-md transition-all duration-500 hover:-translate-y-1 hover:bg-black/40 hover:border-white/[0.15] hover:shadow-[0_16px_48px_rgba(0,0,0,0.8)]"
             style={{
-              backgroundColor: `${currentTheme.color}0D`,
               borderColor: `${currentTheme.color}33`
             }}
           >
@@ -81,9 +76,8 @@ export function AboutSection() {
           </div>
 
           <div
-            className="group rounded-xl p-6 border transition-all hover:-translate-y-1"
+            className="group relative rounded-xl p-6 border border-white/[0.05] bg-white/[0.01] backdrop-blur-md transition-all duration-500 hover:-translate-y-1 hover:bg-black/40 hover:border-white/[0.15] hover:shadow-[0_16px_48px_rgba(0,0,0,0.8)]"
             style={{
-              backgroundColor: `${currentTheme.color}0D`,
               borderColor: `${currentTheme.color}33`
             }}
           >

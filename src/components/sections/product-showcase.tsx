@@ -37,8 +37,7 @@ export function ProductShowcase() {
       description: "The backbone of your ontology. Manage inventory, supply chain, and financials in one unified truth.",
       benefits: ["Predictive Inventory", "Automated Procurement", "Multi-Location Sync"],
       module_id: "MOD_CORE",
-      // href: "https://erp.basalthq.com/industries"
-      href: "#"
+      href: "https://erp.basalthq.com"
     },
     {
       id: "graph",

@@ -1,23 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { ThemeProvider as NextThemesProvider } from "next-themes";
 
 interface ThemeProviderProps {
   children: React.ReactNode;
 }
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
-  return (
-    <NextThemesProvider
-      attribute="class"
-      defaultTheme="dark"
-      forcedTheme="dark"
-      enableSystem={false}
-      disableTransitionOnChange
-      storageKey="basalthq-theme"
-    >
-      {children}
-    </NextThemesProvider>
-  );
+  // next-themes removed to fix React 19 script injection error
+  // Site is forced to dark mode natively via layout.tsx
+  return <>{children}</>;
 }

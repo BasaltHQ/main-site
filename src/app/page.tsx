@@ -1,4 +1,5 @@
 import { SuiteHero } from "@/components/hero/suite-hero";
+import { SuiteProducts } from "@/components/sections/suite-products";
 import { ProductShowcase } from "@/components/sections/product-showcase";
 import { AboutSection } from "@/components/sections/about";
 import { CTASection } from "@/components/sections/cta-section";
@@ -12,6 +13,7 @@ export default function Home() {
       <NeuromimeticSlideshow />
       <OntologyExplainer />
       <ProductShowcase />
+      <SuiteProducts />
       <AboutSection />
       <CTASection />
     </div>

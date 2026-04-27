@@ -1,6 +1,7 @@
 'use client';
 
-// ThirdWeb provider stubbed out — install `thirdweb` package to restore wallet features
+import { ThirdwebProvider } from "thirdweb/react";
+
 export default function ThirdWebProviderWrapper({ children }: { children: React.ReactNode }) {
-    return <>{children}</>;
+    return <ThirdwebProvider>{children}</ThirdwebProvider>;
 }
