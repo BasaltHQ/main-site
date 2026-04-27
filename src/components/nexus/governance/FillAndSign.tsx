@@ -117,6 +117,8 @@ export default function FillAndSign({
     const [requestId, setRequestId] = useState(existingRequest?._id || '')
     const [showAuditTrail, setShowAuditTrail] = useState(false)
     const [showSignatoryPicker, setShowSignatoryPicker] = useState(false)
+    const [addressFieldId, setAddressFieldId] = useState<string | null>(null)
+    const [textFieldId, setTextFieldId] = useState<string | null>(null)
 
     // Refetch latest data on mount for sign/view modes (snapshot from card may be stale)
     useEffect(() => {
@@ -342,6 +344,9 @@ export default function FillAndSign({
     const getSignerName = (email: string) => signatories.find(s => s.email === email)?.name || email
     const myFields = fields.filter(f => f.assigned_to === userEmail)
     const myFilledCount = myFields.filter(f => f.value).length
+    const myRequiredFields = myFields.filter(f => f.required !== false)
+    const myIncompleteFields = myRequiredFields.filter(f => !f.value)
+    const isAllComplete = myIncompleteFields.length === 0
     const mySignatory = signatories.find(s => s.email === userEmail)
     const currentPageFields = fields.filter(f => f.page === currentPage)
     const signedCount = signatories.filter(s => s.status === 'signed').length
@@ -386,10 +391,24 @@ export default function FillAndSign({
                     )}
                     {mode === 'sign' && mySignatory?.status !== 'signed' && mySignatory?.status !== 'declined' && (
                         <>
-                            <button onClick={() => setShowSignatureCapture(true)}
-                                className="px-5 py-2 bg-emerald-600 text-white text-xs font-bold uppercase tracking-wider rounded-lg hover:bg-emerald-500 transition-all flex items-center gap-2 shadow-[0_0_20px_rgba(16,185,129,0.3)]">
-                                <Pen size={14} /> Sign Document
-                            </button>
+                            {isAllComplete ? (
+                                <button onClick={() => {
+                                    const sigField = myFields.find(f => f.type === 'signature' && f.value)
+                                    const initField = myFields.find(f => f.type === 'initials' && f.value)
+                                    if (sigField) {
+                                        submitSignature({ signature: sigField.value, initials: initField?.value || '' })
+                                    } else {
+                                        setShowSignatureCapture(true)
+                                    }
+                                }}
+                                    className="px-5 py-2 bg-[#119dff] text-white text-xs font-bold uppercase tracking-wider rounded-lg hover:bg-[#119dff]/80 transition-all flex items-center gap-2 shadow-[0_0_20px_rgba(17,157,255,0.3)]">
+                                    <CheckCircle size={14} /> Confirm & Save
+                                </button>
+                            ) : (
+                                <div className="px-5 py-2 bg-emerald-600/10 text-emerald-500/50 text-xs font-bold uppercase tracking-wider rounded-lg flex items-center gap-2 cursor-not-allowed">
+                                    <Pen size={14} /> {myIncompleteFields.length} Required Field{myIncompleteFields.length !== 1 ? 's' : ''} Left
+                                </div>
+                            )}
                             <button onClick={handleDecline} className="px-4 py-2 text-red-400/60 hover:text-red-400 text-xs font-bold uppercase tracking-wider transition-all">Decline</button>
                         </>
                     )}
@@ -640,7 +659,7 @@ export default function FillAndSign({
                                 const isSelected = selectedFieldId === field.field_id
                                 const color = getSignerColor(field.assigned_to)
                                 const isMine = field.assigned_to === userEmail
-                                const isInteractive = mode === 'sign' && isMine && !field.value && mySignatory?.status !== 'signed'
+                                const isInteractive = mode === 'sign' && isMine && mySignatory?.status !== 'signed'
 
                                 return (
                                     <div
@@ -674,8 +693,12 @@ export default function FillAndSign({
                                                 } else if (field.type === 'checkbox') {
                                                     fillField(field.field_id, field.value === 'true' ? 'false' : 'true')
                                                 } else if (field.type === 'text') {
-                                                    const val = prompt(`Enter ${field.label || 'text'}:`)
-                                                    if (val) fillField(field.field_id, val)
+                                                    const label = field.label?.toLowerCase() || '';
+                                                    if (label.includes('address') && !label.includes('email')) {
+                                                        setAddressFieldId(field.field_id)
+                                                    } else {
+                                                        setTextFieldId(field.field_id)
+                                                    }
                                                 }
                                             }
                                         }}
@@ -688,7 +711,20 @@ export default function FillAndSign({
                                                     {field.value === 'true' && <CheckSquare size={14} className="text-white" />}
                                                 </div>
                                             ) : (
-                                                <span className="text-[11px] text-slate-800 font-medium px-1.5 truncate">{field.value}</span>
+                                                <span 
+                                                    className="text-slate-800 font-medium px-1.5 w-full text-center"
+                                                    style={{ 
+                                                        fontSize: field.value.length > 40 ? '7px' : field.value.length > 25 ? '8px' : field.value.length > 15 ? '9px' : '11px',
+                                                        lineHeight: '1.1',
+                                                        display: '-webkit-box',
+                                                        WebkitLineClamp: Math.max(1, Math.floor(field.height / 2)),
+                                                        WebkitBoxOrient: 'vertical',
+                                                        overflow: 'hidden',
+                                                        wordBreak: 'break-word'
+                                                    }}
+                                                >
+                                                    {field.value}
+                                                </span>
                                             )
                                         ) : (
                                             <div className="flex flex-col items-center justify-center gap-0.5 px-1 overflow-hidden">
@@ -782,6 +818,100 @@ export default function FillAndSign({
                     onClose={() => { setShowSignatureCapture(false); setSigningFieldId(null) }}
                 />
             )}
+            {/* ═══════ Address Modal ═══════ */}
+            {addressFieldId && (
+                <div className="fixed inset-0 z-[9995] flex items-center justify-center bg-black/80 backdrop-blur-sm" onClick={() => setAddressFieldId(null)}>
+                    <div className="bg-[#0a0a0f] border border-white/10 rounded-2xl w-full max-w-md mx-4 shadow-2xl" onClick={e => e.stopPropagation()}>
+                        <div className="p-5 border-b border-white/5 flex items-center justify-between">
+                            <h2 className="text-sm font-bold text-white font-rajdhani">Enter Address</h2>
+                            <button onClick={() => setAddressFieldId(null)} className="text-white/20 hover:text-white p-1"><X size={16} /></button>
+                        </div>
+                        <div className="p-5">
+                            <form onSubmit={(e) => {
+                                e.preventDefault();
+                                const fd = new FormData(e.currentTarget);
+                                const street = fd.get('street');
+                                const city = fd.get('city');
+                                const state = fd.get('state');
+                                const zip = fd.get('zip');
+                                const country = fd.get('country');
+                                
+                                const fullAddress = `${street}, ${city}, ${state} ${zip}, ${country}`.replace(/,\s*,/g, ',').trim();
+                                fillField(addressFieldId, fullAddress);
+                                setAddressFieldId(null);
+                            }} className="space-y-4">
+                                <div>
+                                    <label className="block text-xs text-white/50 mb-1">Street Address</label>
+                                    <input name="street" required defaultValue={fields.find(f => f.field_id === addressFieldId)?.value || ''} className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white outline-none focus:border-[#119dff]/40" />
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-xs text-white/50 mb-1">City</label>
+                                        <input name="city" required className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white outline-none focus:border-[#119dff]/40" />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs text-white/50 mb-1">State / Province</label>
+                                        <input name="state" required className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white outline-none focus:border-[#119dff]/40" />
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-xs text-white/50 mb-1">ZIP / Postal Code</label>
+                                        <input name="zip" required className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white outline-none focus:border-[#119dff]/40" />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs text-white/50 mb-1">Country</label>
+                                        <input name="country" required defaultValue="United States" className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white outline-none focus:border-[#119dff]/40" />
+                                    </div>
+                                </div>
+                                <div className="pt-4 flex justify-end gap-3">
+                                    <button type="button" onClick={() => setAddressFieldId(null)} className="px-4 py-2 text-xs text-white/50 hover:text-white transition-all">Cancel</button>
+                                    <button type="submit" className="px-4 py-2 bg-[#119dff] text-white text-xs font-bold rounded hover:bg-[#119dff]/80 transition-all">Save Address</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            )}
+            
+            {/* ═══════ Text Input Modal ═══════ */}
+            {textFieldId && (() => {
+                const field = fields.find(f => f.field_id === textFieldId);
+                return (
+                    <div className="fixed inset-0 z-[9995] flex items-center justify-center bg-black/80 backdrop-blur-sm" onClick={() => setTextFieldId(null)}>
+                        <div className="bg-[#0a0a0f] border border-white/10 rounded-2xl w-full max-w-sm mx-4 shadow-2xl" onClick={e => e.stopPropagation()}>
+                            <div className="p-5 border-b border-white/5 flex items-center justify-between">
+                                <h2 className="text-sm font-bold text-white font-rajdhani">Enter {field?.label || 'Text'}</h2>
+                                <button onClick={() => setTextFieldId(null)} className="text-white/20 hover:text-white p-1"><X size={16} /></button>
+                            </div>
+                            <div className="p-5">
+                                <form onSubmit={(e) => {
+                                    e.preventDefault();
+                                    const fd = new FormData(e.currentTarget);
+                                    const val = fd.get('text_value') as string;
+                                    if (val !== null) fillField(textFieldId, val);
+                                    setTextFieldId(null);
+                                }} className="space-y-4">
+                                    <div>
+                                        <input 
+                                            name="text_value" 
+                                            required 
+                                            autoFocus
+                                            defaultValue={field?.value || ''} 
+                                            className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white outline-none focus:border-[#119dff]/40" 
+                                            placeholder={`Enter ${field?.label || 'value'}...`}
+                                        />
+                                    </div>
+                                    <div className="pt-2 flex justify-end gap-3">
+                                        <button type="button" onClick={() => setTextFieldId(null)} className="px-4 py-2 text-xs text-white/50 hover:text-white transition-all">Cancel</button>
+                                        <button type="submit" className="px-4 py-2 bg-[#119dff] text-white text-xs font-bold rounded hover:bg-[#119dff]/80 transition-all">Save</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                );
+            })()}
         </div>
     )
 }
