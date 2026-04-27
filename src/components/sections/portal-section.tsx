@@ -405,7 +405,13 @@ function AppTile({ app, isLoggedIn, onLoginRequired }: {
             onLoginRequired();
             return;
         }
-        window.open(app.url, '_blank');
+
+        let targetUrl = app.url;
+        if (isLoggedIn && app.id === 'vigil') {
+            targetUrl = 'https://vigil.basalthq.com/chat';
+        }
+
+        window.open(targetUrl, '_blank');
     };
 
     return (
