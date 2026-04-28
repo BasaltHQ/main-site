@@ -6,10 +6,12 @@ import { Users, Briefcase, Calendar, Gavel, BookOpen, Clock, Landmark, Scale, Fi
 import BoardDirectory from '@/components/nexus/governance/BoardDirectory'
 import OfficerRegistry from '@/components/nexus/governance/OfficerRegistry'
 import MeetingManager from '@/components/nexus/governance/MeetingManager'
-import ResolutionCenter from '@/components/nexus/governance/ResolutionCenter'
-import CorporateDocuments from '@/components/nexus/governance/CorporateDocuments'
 import CorporateCalendar from '@/components/nexus/governance/CorporateCalendar'
-import GovernanceMemos from '@/components/nexus/governance/GovernanceMemos'
+import dynamic from 'next/dynamic'
+
+const ResolutionCenter = dynamic(() => import('@/components/nexus/governance/ResolutionCenter'), { ssr: false })
+const CorporateDocuments = dynamic(() => import('@/components/nexus/governance/CorporateDocuments'), { ssr: false })
+const GovernanceMemos = dynamic(() => import('@/components/nexus/governance/GovernanceMemos'), { ssr: false })
 
 import { getCurrentProfile } from '../../actions'
 

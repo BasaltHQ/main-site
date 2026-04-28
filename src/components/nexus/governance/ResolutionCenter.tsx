@@ -432,18 +432,7 @@ export default function ResolutionCenter({ isAdmin = false, userEmail, userName,
                                             </button>
                                         </div>
                                     )}
-                                    {isAdmin && r.status === 'voting' && (
-                                        <div className="flex gap-2">
-                                            <button onClick={() => updateStatus(r._id, 'approved')}
-                                                className="px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-emerald-500/20 transition-all">
-                                                Force Approve
-                                            </button>
-                                            <button onClick={() => updateStatus(r._id, 'rejected')}
-                                                className="px-4 py-2 bg-red-500/10 border border-red-500/20 text-red-400 rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-red-500/20 transition-all">
-                                                Force Reject
-                                            </button>
-                                        </div>
-                                    )}
+
 
                                     {r.filed_with_state && (
                                         <div className="flex items-center gap-2 text-xs text-emerald-400/60">

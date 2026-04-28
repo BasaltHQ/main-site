@@ -29,6 +29,35 @@ export async function GET(req: NextRequest) {
             .sort({ created_at: -1 })
             .lean()
 
+        // Self-healing check for prematurely approved/rejected resolutions
+        const activeDirectorsCount = await BoardMember.countDocuments({ is_active: true })
+        const totalEligibleVoters = Math.max(1, activeDirectorsCount)
+
+        for (const res of resolutions as any[]) {
+            if (res.status === 'approved' || res.status === 'rejected') {
+                const threshold = res.approval_threshold || 51
+                const forPercent = ((res.votes_for || 0) / totalEligibleVoters) * 100
+                const againstPercent = ((res.votes_against || 0) / totalEligibleVoters) * 100
+
+                let trueStatus = 'voting'
+                if (res.requires_unanimous_consent) {
+                    if (res.votes_against > 0) trueStatus = 'rejected'
+                    else if (res.votes_for === totalEligibleVoters) trueStatus = 'approved'
+                } else {
+                    if (forPercent >= threshold) trueStatus = 'approved'
+                    else if (againstPercent > (100 - threshold)) trueStatus = 'rejected'
+                }
+
+                // If it was supposed to still be in voting, fix it
+                if (res.status !== trueStatus && trueStatus === 'voting') {
+                    console.log(`[Self-Healing] Reverting prematurely ${res.status} resolution ${res._id} back to voting.`)
+                    await Resolution.updateOne({ _id: res._id }, { $set: { status: 'voting' }, $unset: { approved_at: "" } })
+                    res.status = 'voting'
+                    delete res.approved_at
+                }
+            }
+        }
+
         return NextResponse.json({ resolutions })
     } catch (error) {
         console.error('Resolutions GET error:', error)
@@ -120,17 +149,28 @@ export async function PATCH(req: NextRequest) {
             resolution.votes_abstain = resolution.votes.filter((v: any) => v.vote === 'abstain').length
 
             // Check if resolution should be auto-approved/rejected
-            const totalVotes = resolution.votes_for + resolution.votes_against
-            if (totalVotes > 0) {
-                const forPercent = (resolution.votes_for / totalVotes) * 100
-                if (resolution.requires_unanimous_consent) {
-                    // All must vote 'for', any 'against' = rejected
-                    if (resolution.votes_against > 0) {
-                        resolution.status = 'rejected'
-                    }
-                } else if (forPercent >= resolution.approval_threshold) {
+            const activeDirectorsCount = await BoardMember.countDocuments({ is_active: true })
+            const totalEligibleVoters = Math.max(1, activeDirectorsCount)
+
+            const threshold = resolution.approval_threshold || 51 // default to simple majority (>50%)
+            const forPercent = (resolution.votes_for / totalEligibleVoters) * 100
+            const againstPercent = (resolution.votes_against / totalEligibleVoters) * 100
+
+            if (resolution.requires_unanimous_consent) {
+                // All must vote 'for', any 'against' = rejected
+                if (resolution.votes_against > 0) {
+                    resolution.status = 'rejected'
+                } else if (resolution.votes_for === totalEligibleVoters) {
                     resolution.status = 'approved'
                     resolution.approved_at = new Date()
+                }
+            } else {
+                if (forPercent >= threshold) {
+                    resolution.status = 'approved'
+                    resolution.approved_at = new Date()
+                } else if (againstPercent > (100 - threshold)) {
+                    // Mathematically impossible to reach the approval threshold
+                    resolution.status = 'rejected'
                 }
             }
 
