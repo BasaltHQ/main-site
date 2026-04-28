@@ -34,26 +34,34 @@ export async function GET(req: NextRequest) {
         const totalEligibleVoters = Math.max(1, activeDirectorsCount)
 
         for (const res of resolutions as any[]) {
-            if (res.status === 'approved' || res.status === 'rejected') {
-                const threshold = res.approval_threshold || 51
-                const forPercent = ((res.votes_for || 0) / totalEligibleVoters) * 100
-                const againstPercent = ((res.votes_against || 0) / totalEligibleVoters) * 100
-
+            if (res.status === 'voting' || res.status === 'approved' || res.status === 'rejected') {
                 let trueStatus = 'voting'
-                if (res.requires_unanimous_consent) {
-                    if (res.votes_against > 0) trueStatus = 'rejected'
-                    else if (res.votes_for === totalEligibleVoters) trueStatus = 'approved'
-                } else {
-                    if (forPercent >= threshold) trueStatus = 'approved'
-                    else if (againstPercent > (100 - threshold)) trueStatus = 'rejected'
+                
+                // Fixed Algebra: Unanimous consent required for ALL resolutions
+                if (res.votes_against > 0) {
+                    trueStatus = 'rejected'
+                } else if (res.votes_for >= totalEligibleVoters) {
+                    trueStatus = 'approved'
                 }
 
-                // If it was supposed to still be in voting, fix it
-                if (res.status !== trueStatus && trueStatus === 'voting') {
-                    console.log(`[Self-Healing] Reverting prematurely ${res.status} resolution ${res._id} back to voting.`)
-                    await Resolution.updateOne({ _id: res._id }, { $set: { status: 'voting' }, $unset: { approved_at: "" } })
-                    res.status = 'voting'
-                    delete res.approved_at
+                // If the current status doesn't match the mathematical reality, heal it
+                if (res.status !== trueStatus) {
+                    console.log(`[Self-Healing] Reverting prematurely ${res.status} resolution ${res._id} to ${trueStatus}.`)
+                    
+                    if (trueStatus === 'voting') {
+                        await Resolution.updateOne({ _id: res._id }, { $set: { status: 'voting' }, $unset: { approved_at: "" } })
+                        res.status = 'voting'
+                        delete res.approved_at
+                    } else if (trueStatus === 'approved') {
+                        const d = new Date()
+                        await Resolution.updateOne({ _id: res._id }, { $set: { status: 'approved', approved_at: d } })
+                        res.status = 'approved'
+                        res.approved_at = d
+                    } else if (trueStatus === 'rejected') {
+                        await Resolution.updateOne({ _id: res._id }, { $set: { status: 'rejected' }, $unset: { approved_at: "" } })
+                        res.status = 'rejected'
+                        delete res.approved_at
+                    }
                 }
             }
         }
@@ -152,26 +160,12 @@ export async function PATCH(req: NextRequest) {
             const activeDirectorsCount = await BoardMember.countDocuments({ is_active: true })
             const totalEligibleVoters = Math.max(1, activeDirectorsCount)
 
-            const threshold = resolution.approval_threshold || 51 // default to simple majority (>50%)
-            const forPercent = (resolution.votes_for / totalEligibleVoters) * 100
-            const againstPercent = (resolution.votes_against / totalEligibleVoters) * 100
-
-            if (resolution.requires_unanimous_consent) {
-                // All must vote 'for', any 'against' = rejected
-                if (resolution.votes_against > 0) {
-                    resolution.status = 'rejected'
-                } else if (resolution.votes_for === totalEligibleVoters) {
-                    resolution.status = 'approved'
-                    resolution.approved_at = new Date()
-                }
-            } else {
-                if (forPercent >= threshold) {
-                    resolution.status = 'approved'
-                    resolution.approved_at = new Date()
-                } else if (againstPercent > (100 - threshold)) {
-                    // Mathematically impossible to reach the approval threshold
-                    resolution.status = 'rejected'
-                }
+            // Fixed Algebra: Unanimous consent required for ALL resolutions
+            if (resolution.votes_against > 0) {
+                resolution.status = 'rejected'
+            } else if (resolution.votes_for >= totalEligibleVoters) {
+                resolution.status = 'approved'
+                resolution.approved_at = new Date()
             }
 
             resolution.updated_at = new Date()
