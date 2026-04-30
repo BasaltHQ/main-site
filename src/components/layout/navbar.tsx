@@ -78,7 +78,7 @@ export function Navbar() {
           <div className="flex items-center gap-8">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3 group">
-              <div className="relative w-10 h-10 transform group-hover:scale-110 transition-transform duration-300">
+              <div className="relative w-12 h-12 transform group-hover:scale-110 transition-transform duration-300">
                 <Image
                   src={currentTheme.icon}
                   alt={currentTheme.name}

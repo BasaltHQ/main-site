@@ -64,11 +64,11 @@ export function Footer() {
   return (
     <footer className="relative pt-6 pb-4 border-t border-border/10 mt-24 bg-background/50 backdrop-blur-sm">
       <div className="max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-8 mb-16">
           {/* Brand Column */}
           <div>
-            <div className="flex items-center gap-3 mb-6">
-              <div className="relative w-12 h-12">
+            <div className="flex flex-col items-start gap-2 mb-6">
+              <div className="relative w-16 h-16 -ml-2">
                 <Image
                   src={currentTheme.icon}
                   alt={currentTheme.name}
@@ -83,7 +83,7 @@ export function Footer() {
                   }}
                 />
               </div>
-              <div className="flex flex-col">
+              <div className="flex flex-col z-10 relative">
                 <span className="text-foreground text-xl tracking-widest font-vox">
                   <span className="font-light">BASALT</span><span className="font-bold">HQ</span>
                 </span>
@@ -138,6 +138,38 @@ export function Footer() {
                 </li>
               ))}
             </ul>
+          </div>
+
+          {/* Global Network */}
+          <div>
+            <Link href="/locations">
+              <h4 className="text-xs font-mono tracking-wider text-primary mb-4 hover:underline cursor-pointer">GLOBAL NETWORK</h4>
+            </Link>
+            <ul className="space-y-2">
+              {[
+                { name: 'New York', slug: 'new-york-us' },
+                { name: 'London', slug: 'london-gb' },
+                { name: 'Tokyo', slug: 'tokyo-jp' },
+                { name: 'Dubai', slug: 'dubai-ae' },
+                { name: 'Singapore', slug: 'singapore-sg' },
+                { name: 'Paris', slug: 'paris-fr' }
+              ].map((loc) => (
+                <li key={loc.slug}>
+                  <Link
+                    href={`/locations/${loc.slug}`}
+                    className="text-muted-foreground text-sm hover:text-foreground transition-colors"
+                  >
+                    {loc.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <Link
+              href="/locations"
+              className="inline-block mt-4 text-xs font-mono text-muted-foreground hover:text-foreground transition-colors"
+            >
+              VIEW ALL 600+ HUBS →
+            </Link>
           </div>
 
           {/* Connect & Support */}
