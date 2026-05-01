@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { validateSession } from '@/lib/cosmos/auth';
 import { initializeCosmosDB, getContainer } from '@/lib/cosmos/client';
 import { helpArticles, documentation, videos, careers } from '@/lib/cms/data';
-import { posts } from '@/lib/blog/posts';
+import { BLOG_POSTS } from '@/lib/blog/posts';
 
 export async function POST(request: NextRequest) {
   try {
@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Seed Blog Posts (use slug as id)
-    for (const post of posts) {
+    for (const post of BLOG_POSTS) {
       try {
         await getContainer().items.upsert({ id: post.slug, ...post, docType: 'blog-post' });
         blogSeeded++;

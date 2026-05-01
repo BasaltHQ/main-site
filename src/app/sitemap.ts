@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next'
 import { getAllPosts } from '@/lib/blog/posts'
 import LOCATIONS from '@/lib/data/locations.json'
+import { CODEX } from '@/lib/data/codex'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://basalthq.com'
@@ -42,6 +43,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/press`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.3 },
     { url: `${baseUrl}/status`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.7 },
     { url: `${baseUrl}/changelog`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.6 },
+    { url: `${baseUrl}/codex`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
   ]
 
   const postEntries: MetadataRoute.Sitemap = getAllPosts().map((post) => ({
@@ -58,5 +60,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }))
 
-  return [...staticEntries, ...postEntries, ...locationEntries]
+  const codexEntries: MetadataRoute.Sitemap = CODEX.map((term) => ({
+    url: `${baseUrl}/codex/${term.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.6,
+  }))
+
+  return [...staticEntries, ...postEntries, ...locationEntries, ...codexEntries]
 }

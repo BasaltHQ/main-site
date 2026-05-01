@@ -40,6 +40,7 @@ export function Navbar() {
   const pages = useMemo(() => [
     { path: "/about", label: "ABOUT" },
     { path: "/blog", label: "BLOG" },
+    { path: "/codex", label: "CODEX" },
     { path: "/careers", label: "CAREERS" },
     { path: "/press", label: "PRESS" },
     { path: "/contact", label: "CONTACT" },

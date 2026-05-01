@@ -12,6 +12,9 @@ export interface BlogPost {
     relatedSlugs: string[];
     metaDescription: string;
     content: string;
+    // Legacy CMS compatibility fields
+    description?: string;
+    tags?: string[];
 }
 
 export const BLOG_POSTS: BlogPost[] = [
