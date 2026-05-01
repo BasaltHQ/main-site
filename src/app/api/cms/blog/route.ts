@@ -66,7 +66,14 @@ export async function POST(request: NextRequest) {
       date: new Date().toISOString().split('T')[0],
       author: author || 'Ledger1 Team',
       tags: tags || [],
-      coverImage,
+      coverImage: coverImage || '',
+      excerpt: description || '',
+      category: 'Uncategorized',
+      readTime: '5 min read',
+      bodyImages: [],
+      isHub: false,
+      relatedSlugs: [],
+      metaDescription: description || ''
     });
 
     if (!created) {

@@ -147,6 +147,7 @@ const FinancialSnapshotSchema = new mongoose.Schema({
     cash_balance: { type: Number },
     monthly_burn_rate: { type: Number },
     runway_months: { type: Number },
+    expense_runway_months: { type: Number },
     total_users: { type: Number },
     paying_customers: { type: Number },
     cac: { type: Number },

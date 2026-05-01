@@ -45,3 +45,15 @@ export async function getProposalById(proposalId: string): Promise<Proposal | nu
         }
     }
 }
+
+export async function castVote(
+    proposalId: string,
+    vote: 'for' | 'against' | 'abstain',
+    acknowledgments: Record<string, boolean>,
+    signature: string,
+    rationale?: string
+) {
+    // Mock casting vote
+    console.log(`Vote cast for proposal ${proposalId}: ${vote}`);
+    return true;
+}

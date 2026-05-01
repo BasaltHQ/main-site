@@ -9,11 +9,11 @@ export interface Stakeholder {
     actualChange?: number;
 }
 
-export function getDilutionSeverity(dilutionPercent: number): { color: string, description: string } {
-    if (dilutionPercent < 5) return { color: 'green', description: 'Low Impact' };
-    if (dilutionPercent < 15) return { color: 'yellow', description: 'Moderate Impact' };
-    if (dilutionPercent < 30) return { color: 'orange', description: 'High Impact' };
-    return { color: 'red', description: 'Severe Impact' };
+export function getDilutionSeverity(dilutionPercent: number): { color: string, description: string, level: string } {
+    if (dilutionPercent < 5) return { color: 'green', description: 'Low Impact', level: 'low' };
+    if (dilutionPercent < 15) return { color: 'yellow', description: 'Moderate Impact', level: 'moderate' };
+    if (dilutionPercent < 30) return { color: 'orange', description: 'High Impact', level: 'high' };
+    return { color: 'red', description: 'Severe Impact', level: 'severe' };
 }
 
 export function formatDilution(dilution: number, dilutionPercent: number): string {

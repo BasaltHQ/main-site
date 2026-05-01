@@ -96,7 +96,7 @@ export async function validateSession(token: string): Promise<CMSUser | null> {
       ],
     };
 
-    const { resources: sessions } = await container.items.query(querySpec).fetchAll();
+    const { resources: sessions } = await getContainer().items.query(querySpec).fetchAll();
     if (sessions.length === 0) return null;
 
     const session = sessions[0];
@@ -139,7 +139,7 @@ export async function deleteSession(token: string): Promise<boolean> {
       ],
     };
 
-    const { resources: sessions } = await container.items.query(querySpec).fetchAll();
+    const { resources: sessions } = await getContainer().items.query(querySpec).fetchAll();
     if (sessions.length === 0) return false;
 
     await getContainer().item(sessions[0].id, 'session').delete();

@@ -13,6 +13,7 @@ interface FinancialSnapshot {
     cashBalance: number
     monthlyBurnRate: number
     runwayMonths: number
+    expenseRunwayMonths: number
     totalUsers: number
     payingCustomers: number
     cac: number
@@ -60,6 +61,7 @@ export default function FinancialDashboard({ subsidiaryId }: { subsidiaryId: str
                     cashBalance: data.snapshot.cash_balance || 0,
                     monthlyBurnRate: data.snapshot.monthly_burn_rate || 0,
                     runwayMonths: data.snapshot.runway_months || 0,
+                    expenseRunwayMonths: data.snapshot.expense_runway_months || ((data.snapshot.total_expenses || 0) > 0 ? (data.snapshot.cash_balance || 0) / (data.snapshot.total_expenses || 1) : 0),
                     totalUsers: data.snapshot.total_users || 0,
                     payingCustomers: data.snapshot.paying_customers || 0,
                     cac: data.snapshot.cac || 0,
@@ -181,14 +183,24 @@ export default function FinancialDashboard({ subsidiaryId }: { subsidiaryId: str
                                     <Zap className="text-blue-400" size={40} />
                                 </div>
                             </div>
-                            <div className="flex items-center justify-between">
-                                <span className="text-white/60 text-sm">Runway:</span>
-                                <span className={`font-bold ${snapshot.runwayMonths > 12 ? 'text-green-400' :
-                                    snapshot.runwayMonths > 6 ? 'text-yellow-400' :
-                                        'text-red-400'
-                                    }`}>
-                                    {snapshot.runwayMonths.toFixed(1)} months
-                                </span>
+                            <div className="space-y-2">
+                                <div className="flex items-center justify-between">
+                                    <span className="text-white/60 text-sm">Runway (Net Burn):</span>
+                                    <span className={`font-bold ${snapshot.runwayMonths >= 999 ? 'text-green-400' : snapshot.runwayMonths > 12 ? 'text-green-400' :
+                                        snapshot.runwayMonths > 6 ? 'text-yellow-400' :
+                                            'text-red-400'
+                                        }`}>
+                                        {snapshot.runwayMonths >= 999 ? '∞ (Profitable)' : `${snapshot.runwayMonths.toFixed(1)} mo`}
+                                    </span>
+                                </div>
+                                {snapshot.expenseRunwayMonths > 0 && (
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-white/40 text-xs">If Revenue Stops:</span>
+                                        <span className={`text-sm font-bold ${snapshot.expenseRunwayMonths < 3 ? 'text-red-400' : snapshot.expenseRunwayMonths < 6 ? 'text-amber-400' : 'text-green-400'}`}>
+                                            {snapshot.expenseRunwayMonths.toFixed(1)} mo
+                                        </span>
+                                    </div>
+                                )}
                             </div>
                         </div>
 
@@ -225,9 +237,13 @@ export default function FinancialDashboard({ subsidiaryId }: { subsidiaryId: str
 
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                             <div className="bg-white/5 rounded-lg p-6">
-                                <p className="text-white/60 text-xs uppercase tracking-wider mb-3">Monthly Burn</p>
-                                <p className="text-white text-3xl font-bold">{formatCurrency(snapshot.monthlyBurnRate)}</p>
-                                <p className="text-white/40 text-xs mt-2">Expenses - Revenue</p>
+                                <p className="text-white/60 text-xs uppercase tracking-wider mb-3">Net Burn Rate</p>
+                                <p className="text-white text-3xl font-bold">
+                                    {snapshot.monthlyBurnRate > 0 ? formatCurrency(snapshot.monthlyBurnRate) : '$0'}
+                                </p>
+                                <p className={`text-xs mt-2 ${snapshot.monthlyBurnRate > 0 ? 'text-red-400' : 'text-green-400'}`}>
+                                    {snapshot.monthlyBurnRate > 0 ? 'Expenses - Revenue' : 'Profitable — no net burn'}
+                                </p>
                             </div>
 
                             <div className="bg-white/5 rounded-lg p-6">
