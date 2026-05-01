@@ -1,14 +1,16 @@
+'use client';
+
+import dynamic from 'next/dynamic';
 import { PortalSection } from '@/components/sections/portal-section';
-import { ArrowRight, Shield, Clock, DollarSign, Users, Zap, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, Shield, Clock, DollarSign, Zap, CheckCircle2 } from 'lucide-react';
+
+const PortalBackground = dynamic(() => import('@/components/portal/PortalBackground'), { ssr: false });
 
 export default function PortalPage() {
     return (
-        <div className="min-h-screen flex flex-col bg-[#030303] text-white">
-            {/* Ambient background */}
-            <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-                <div className="absolute top-[-15%] left-[30%] w-[800px] h-[600px] rounded-full blur-[160px] bg-[hsl(171,65%,58%)] opacity-[0.03]" />
-                <div className="absolute bottom-[10%] right-[15%] w-[600px] h-[500px] rounded-full blur-[140px] bg-[hsl(220,70%,55%)] opacity-[0.02]" />
-            </div>
+        <div className="min-h-screen flex flex-col bg-[#030303] text-white relative overflow-hidden">
+            {/* ── Floating Shape Background ── */}
+            <PortalBackground />
 
             <div className="flex-grow relative z-10">
                 <PortalSection />
