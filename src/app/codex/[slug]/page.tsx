@@ -36,13 +36,24 @@ export default async function CodexPage({ params }: Props) {
         notFound();
     }
 
-    const jsonLd = {
-        '@context': 'https://schema.org',
-        '@type': 'DefinedTerm',
-        name: term.term,
-        description: term.definition,
-        inDefinedTermSet: 'https://basalthq.com/codex'
-    };
+    const jsonLd = [
+        {
+            '@context': 'https://schema.org',
+            '@type': 'DefinedTerm',
+            name: term.term,
+            description: term.definition,
+            inDefinedTermSet: 'https://basalthq.com/codex'
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+                { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://basalthq.com' },
+                { '@type': 'ListItem', position: 2, name: 'Codex', item: 'https://basalthq.com/codex' },
+                { '@type': 'ListItem', position: 3, name: term.term },
+            ]
+        }
+    ];
 
     return (
         <div className="min-h-screen bg-black text-white selection:bg-[#119dff] selection:text-white font-sans">

@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { BLOG_POSTS } from '@/lib/blog/posts';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Metadata } from 'next';
 import StructuredData from '@/components/StructuredData';
 
@@ -38,22 +39,33 @@ export default async function BlogPost({ params }: Props) {
 
     const related = BLOG_POSTS.filter(p => post.relatedSlugs.includes(p.slug));
 
-    const jsonLd = {
-        '@context': 'https://schema.org',
-        '@type': 'BlogPosting',
-        headline: post.title,
-        description: post.metaDescription,
-        author: {
-            '@type': 'Person',
-            name: post.author,
+    const jsonLd = [
+        {
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            headline: post.title,
+            description: post.metaDescription,
+            author: {
+                '@type': 'Person',
+                name: post.author,
+            },
+            datePublished: post.date,
+            image: `https://basalthq.com${post.coverImage}`,
+            publisher: {
+                '@type': 'Organization',
+                name: 'BasaltHQ',
+            }
         },
-        datePublished: post.date,
-        image: `https://basalthq.com${post.coverImage}`,
-        publisher: {
-            '@type': 'Organization',
-            name: 'BasaltHQ',
+        {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+                { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://basalthq.com' },
+                { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://basalthq.com/blog' },
+                { '@type': 'ListItem', position: 3, name: post.title },
+            ]
         }
-    };
+    ];
 
     // Split content into sections for image interleaving
     const sections = post.content.split('\n\n## ').map((s, i) => i === 0 ? s : '## ' + s);
@@ -135,11 +147,14 @@ export default async function BlogPost({ params }: Props) {
 
                                 {/* Interleave body images */}
                                 {index > 0 && index <= post.bodyImages.length && (
-                                    <div className="my-12 rounded-xl overflow-hidden border border-white/10">
-                                        <img
+                                    <div className="my-12 rounded-xl overflow-hidden border border-white/10 relative">
+                                        <Image
                                             src={post.bodyImages[index - 1]}
                                             alt={`${post.title} illustration ${index}`}
+                                            width={896}
+                                            height={504}
                                             className="w-full h-auto"
+                                            loading="lazy"
                                         />
                                     </div>
                                 )}
@@ -170,16 +185,20 @@ export default async function BlogPost({ params }: Props) {
                     )}
 
                     {/* Back to Hub CTA */}
-                    {!post.isHub && (
-                        <div className="mt-12 mb-24 text-center">
-                            <Link
-                                href="/blog/the-enterprise-ai-infrastructure-mandate"
-                                className="inline-block px-8 py-4 bg-[#119dff]/10 border border-[#119dff]/30 rounded-xl text-[#119dff] font-mono text-sm tracking-wider hover:bg-[#119dff]/20 transition-all"
-                            >
-                                ← READ THE HUB ARTICLE: AI INFRASTRUCTURE MANDATE
-                            </Link>
-                        </div>
-                    )}
+                    {!post.isHub && (() => {
+                        const parentHub = BLOG_POSTS.find(p => p.isHub && post.relatedSlugs.includes(p.slug));
+                        if (!parentHub) return null;
+                        return (
+                            <div className="mt-12 mb-24 text-center">
+                                <Link
+                                    href={`/blog/${parentHub.slug}`}
+                                    className="inline-block px-8 py-4 bg-[#119dff]/10 border border-[#119dff]/30 rounded-xl text-[#119dff] font-mono text-sm tracking-wider hover:bg-[#119dff]/20 transition-all"
+                                >
+                                    ← READ THE HUB ARTICLE: {parentHub.title.toUpperCase()}
+                                </Link>
+                            </div>
+                        );
+                    })()}
                 </main>
             </div>
         </div>

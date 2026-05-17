@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import LOCATIONS from '@/lib/data/locations.json';
 import Link from 'next/link';
+import StructuredData from '@/components/StructuredData';
 
 interface Props {
     params: Promise<{ slug: string }>;
@@ -35,8 +36,19 @@ export default async function LocationPage({ params }: Props) {
         notFound();
     }
 
+    const breadcrumbLd = {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://basalthq.com' },
+            { '@type': 'ListItem', position: 2, name: 'Locations', item: 'https://basalthq.com/locations' },
+            { '@type': 'ListItem', position: 3, name: location.name },
+        ]
+    };
+
     return (
         <div className="min-h-screen bg-[#050505] text-white selection:bg-[#119dff] selection:text-white font-rajdhani">
+            <StructuredData data={breadcrumbLd} />
 
             {/* Hero Section */}
             <div className="relative pt-32 pb-24 px-6 overflow-hidden">

@@ -96,10 +96,9 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  verification: {
-    google: "your-google-site-verification-code",
-    yandex: "your-yandex-verification-code",
-  },
+  // verification: {
+  //   google: "ADD_REAL_CODE_AFTER_GSC_SETUP",
+  // },
   category: "business software suite",
 };
 
@@ -120,7 +119,7 @@ export default function RootLayout({
       "@type": "Offer",
       "price": "499",
       "priceCurrency": "USD",
-      "priceValidUntil": "2025-12-31",
+      "priceValidUntil": "2026-12-31",
       "description": "Guided demos and pilots available"
     },
     "creator": {
@@ -139,14 +138,7 @@ export default function RootLayout({
       "Role-based access and security",
       "Integrations and automation",
       "Enterprise-grade reliability"
-    ],
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "ratingCount": "500",
-      "bestRating": "5",
-      "worstRating": "1"
-    }
+    ]
   };
 
   return (

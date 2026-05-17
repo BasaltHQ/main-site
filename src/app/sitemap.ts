@@ -2,6 +2,7 @@ import { MetadataRoute } from 'next'
 import { getAllPosts } from '@/lib/blog/posts'
 import LOCATIONS from '@/lib/data/locations.json'
 import { CODEX } from '@/lib/data/codex'
+import { INDUSTRIES, FEATURES } from '@/lib/seo-taxonomy'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://basalthq.com'
@@ -32,6 +33,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/industries/hospitality`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${baseUrl}/industries/education`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${baseUrl}/industries/nonprofit`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${baseUrl}/palantir-alternative`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${baseUrl}/privacy`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.5 },
     { url: `${baseUrl}/terms`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.5 },
     { url: `${baseUrl}/security`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.5 },
@@ -44,6 +46,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/status`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.7 },
     { url: `${baseUrl}/changelog`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.6 },
     { url: `${baseUrl}/codex`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${baseUrl}/manifesto`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${baseUrl}/get-started`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${baseUrl}/investors`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
   ]
 
   const postEntries: MetadataRoute.Sitemap = getAllPosts().map((post) => ({
@@ -67,5 +72,26 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }))
 
-  return [...staticEntries, ...postEntries, ...locationEntries, ...codexEntries]
+  // ─── Solutions Matrix: Industry × Feature combinations ───
+  const solutionEntries: MetadataRoute.Sitemap = []
+  for (const industry of INDUSTRIES) {
+    // Industry-only page
+    solutionEntries.push({
+      url: `${baseUrl}/solutions/${industry.slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    })
+    // Industry × Feature combinations
+    for (const feature of FEATURES) {
+      solutionEntries.push({
+        url: `${baseUrl}/solutions/${industry.slug}/${feature.slug}`,
+        lastModified: new Date(),
+        changeFrequency: 'monthly',
+        priority: 0.6,
+      })
+    }
+  }
+
+  return [...staticEntries, ...postEntries, ...locationEntries, ...codexEntries, ...solutionEntries]
 }

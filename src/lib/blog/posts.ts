@@ -542,6 +542,326 @@ A legacy dashboard would just show a downward graph. The BasaltHQ agent analyzes
 *"European revenue is down due to a 12% drop in conversion rates for the new premium software tier. This correlates directly with a known latency issue in the EU-West cloud cluster reported by engineering on Tuesday, which caused checkout timeouts. I have already flagged this to the DevOps lead and drafted an apology email offering a 10% discount to all 412 affected users. Would you like me to deploy it?"*
 
 The CEO Dashboard transforms executive leadership from a reactive, reporting-based discipline into a proactive, real-time command center.`
+    },
+    // ─────────────────────────────────────────────────────────────────────────
+    // CLUSTER 2: THE AI WORKFORCE TRANSFORMATION BLUEPRINT
+    // ─────────────────────────────────────────────────────────────────────────
+    {
+        slug: 'the-ai-workforce-transformation-blueprint',
+        title: 'The AI Workforce Transformation Blueprint: From Automation to Autonomy',
+        excerpt: 'The question is no longer whether AI will transform your workforce—it is whether you will architect the transformation, or be consumed by it.',
+        category: 'Strategy',
+        date: '2026-05-15',
+        readTime: '14 min read',
+        author: 'Krishna Patel',
+        coverImage: '/blog/hub2_cover_1779059826077.png',
+        bodyImages: [
+            '/blog/body_workforce_1_1779059946709.png',
+            '/blog/body_workforce_2_1779059977746.png',
+            '/blog/body_workforce_3_1779059997445.png'
+        ],
+        isHub: true,
+        relatedSlugs: ['voice-agents-replacing-call-centers', 'ai-powered-hiring-talent-acquisition', 'autonomous-finance-ai-accounting', 'enterprise-knowledge-graphs-institutional-memory', 'ai-supply-chain-orchestration'],
+        metaDescription: 'The definitive guide to AI workforce transformation. Learn how agentic AI replaces entire operational departments—from voice agents to autonomous finance—while amplifying human decision-making.',
+        content: `## The Third Industrial Transition
+
+We are living through the third great transition in how enterprises organize labor. The first was mechanization—replacing human muscle with machines on the factory floor. The second was digitization—replacing paper ledgers with databases and spreadsheets. The third, now underway, is **autonomization**—replacing human cognitive routines with agentic AI systems that observe, reason, and execute.
+
+This transition is different from the first two in a critical way: it does not merely change the *tools* workers use. It changes the *nature* of the work itself. When an AI agent can autonomously process invoices, screen job candidates, answer customer calls, and forecast demand, the human role shifts permanently from *execution* to *architecture*.
+
+## The Anatomy of an Autonomous Department
+
+A fully autonomous department is not a single monolithic AI. It is a coordinated swarm of specialized agents, each responsible for a narrow operational function, communicating through a shared context bus and governed by strict role-based access controls.
+
+Consider the modern Finance department:
+- The **Accounts Payable Agent** ingests invoices from email attachments and supplier portals, matches them against purchase orders in [BASALTERP](https://erp.basalthq.com), flags discrepancies, and schedules payments within contractual terms.
+- The **Revenue Recognition Agent** continuously monitors deal closures in [BASALTCRM](https://crm.basalthq.com), applies ASC 606 rules, and generates journal entries.
+- The **Treasury Agent** monitors cash positions across all bank accounts, predicts upcoming cash needs based on AP and payroll schedules, and recommends optimal inter-account transfers.
+- The **Audit Agent** via [BASALTONYX](https://onyx.basalthq.com) continuously validates that every autonomous action complies with GAAP, SOX, and internal controls.
+
+No single agent has the full picture. But the swarm, collectively, operates the department at a speed and accuracy level that no human team can match.
+
+## The Five Domains of Transformation
+
+Through our work deploying agentic AI across hundreds of enterprise functions, we have identified five domains where the transformation is most immediate and most impactful:
+
+1. **[Voice \u0026 Communication](/blog/voice-agents-replacing-call-centers):** AI voice agents that conduct natural conversations, handle inbound support, and make outbound sales calls—24/7, in any language.
+2. **[Talent Acquisition](/blog/ai-powered-hiring-talent-acquisition):** Agentic systems that source candidates, screen resumes, conduct initial assessments, and coordinate interviews autonomously.
+3. **[Finance \u0026 Accounting](/blog/autonomous-finance-ai-accounting):** Autonomous AP/AR, real-time financial close, and predictive treasury management.
+4. **[Knowledge Management](/blog/enterprise-knowledge-graphs-institutional-memory):** Enterprise knowledge graphs that capture, preserve, and make searchable the institutional memory that typically walks out the door when employees leave.
+5. **[Supply Chain](/blog/ai-supply-chain-orchestration):** End-to-end supply chain orchestration from demand sensing to last-mile delivery, with real-time contingency planning.
+
+## The Human Elevation Principle
+
+BasaltHQ does not believe in replacing humans with AI. We believe in **elevating** humans by replacing their most tedious, error-prone, and soul-crushing tasks with autonomous agents.
+
+When your finance team no longer spends 80% of their time on invoice processing, they can focus on strategic capital allocation. When your HR team no longer manually screens 500 resumes per opening, they can focus on culture-building and leadership development. When your support team no longer answers the same 50 questions on repeat, they can focus on solving the genuinely novel problems that build customer loyalty.
+
+The transformation is not about fewer humans. It is about *better-deployed* humans.
+
+## The Architecture of Inevitability
+
+The enterprises that will dominate the next decade are those that begin architecting their autonomous departments today. The technology is mature. The ROI is proven. The only remaining variable is organizational courage.
+
+BasaltHQ provides the complete infrastructure stack—from [agentic CRM](https://crm.basalthq.com) and [intelligent ERP](https://erp.basalthq.com) to [physical kiosks](https://surge.basalthq.com) and [legal automation](https://onyx.basalthq.com)—required to execute this transformation. The blueprint is ready. The question is whether you will use it.`
+    },
+    {
+        slug: 'voice-agents-replacing-call-centers',
+        title: 'Voice AI Agents: The End of the Traditional Call Center',
+        excerpt: 'AI voice agents now handle inbound and outbound calls with human-level fluency. The $400B call center industry will never be the same.',
+        category: 'Voice AI',
+        date: '2026-05-13',
+        readTime: '10 min read',
+        author: 'Voice Engineering',
+        coverImage: '/blog/spoke_voice_cover_1779059840063.png',
+        bodyImages: [
+            '/blog/body_workforce_2_1779059977746.png',
+            '/blog/body_workforce_4_1779060011353.png',
+            '/blog/body_workforce_1_1779059946709.png'
+        ],
+        isHub: false,
+        relatedSlugs: ['the-ai-workforce-transformation-blueprint', 'ai-powered-hiring-talent-acquisition'],
+        metaDescription: 'Discover how BasaltHQ Voice AI agents handle inbound support and outbound sales calls with human-level fluency, 24/7, at a fraction of traditional call center costs.',
+        content: `## The $400 Billion Problem
+
+The global call center industry employs over 17 million people and costs enterprises approximately $400 billion annually. Despite decades of IVR improvements, chatbot deployments, and offshore outsourcing, customer satisfaction scores have remained stubbornly flat. The fundamental problem is structural: human agents are expensive, inconsistent, limited to one conversation at a time, and unavailable outside business hours.
+
+Meanwhile, customers' expectations have been trained by instant digital experiences. They expect immediate resolution, personalized context, and 24/7 availability. The gap between expectation and delivery widens every year.
+
+## The Voice Agent Architecture
+
+BasaltHQ's Voice AI Agents are not glorified IVR trees or pre-scripted chatbots given a synthetic voice. They are full-stack agentic systems built on real-time WebRTC audio streams, connected directly to your enterprise data layer.
+
+### Real-Time Speech Processing
+When a customer calls, the audio stream is processed by a sub-200ms speech-to-text pipeline that converts spoken language into a structured transcript. This transcript is injected into the agent's context window alongside the caller's full CRM profile from [BASALTCRM](https://crm.basalthq.com), their recent order history from [BASALTERP](https://erp.basalthq.com), and any open support tickets.
+
+### Contextual Reasoning
+The agent doesn't just pattern-match against a FAQ database. It *reasons* about the customer's situation. If a caller says "I got charged twice for my last order," the agent instantly queries the ERP for duplicate transaction records, checks the payment gateway logs, and determines whether the issue is a genuine double-charge or an authorization hold. It then explains the finding in natural language and, if warranted, initiates the refund autonomously.
+
+### Multilingual Fluency
+A single BasaltHQ Voice Agent operates fluently in 40+ languages. When a Spanish-speaking customer calls your English-language support line, the agent seamlessly switches to Spanish without requiring a language selection menu. It maintains the same enterprise context, the same CRM access, and the same authority to resolve issues.
+
+## Outbound Intelligence
+
+Voice AI is not limited to inbound support. BasaltHQ deploys outbound voice agents for:
+
+- **Appointment Scheduling:** The agent calls customers to confirm, reschedule, or remind them of upcoming appointments, handling objections and calendar conflicts conversationally.
+- **Collections:** For overdue invoices, the agent makes professional, empathetic collection calls, offering payment plans and processing payments in real-time via [BASALTSURGE](https://surge.basalthq.com) payment infrastructure.
+- **Lead Qualification:** The agent conducts initial discovery calls with inbound leads, asking qualifying questions, gauging interest level through sentiment analysis, and routing qualified prospects directly to human sales reps with a pre-populated dossier.
+
+## The Server Assistant: A Case Study
+
+In the restaurant vertical, we have deployed what we call the **Server Assistant**—a voice agent that operates alongside waitstaff during service. When a customer at a BasaltHQ-powered restaurant asks their server about wine pairings for a specific dish, the server can silently invoke the voice agent through a discreet earpiece. The agent, armed with the restaurant's complete wine inventory, tasting notes, and margin data from the ERP, whispers the perfect recommendation. The server delivers it as their own expertise.
+
+This is the future of voice AI: not replacing the human, but making every human interaction supernaturally informed.`
+    },
+    {
+        slug: 'ai-powered-hiring-talent-acquisition',
+        title: 'AI-Powered Hiring: Autonomous Talent Acquisition at Scale',
+        excerpt: 'Your HR team spends 23 hours screening resumes for every hire. Agentic AI reduces that to 23 minutes while eliminating unconscious bias.',
+        category: 'HR Tech',
+        date: '2026-05-10',
+        readTime: '9 min read',
+        author: 'People Operations',
+        coverImage: '/blog/spoke_hiring_cover_1779059857974.png',
+        bodyImages: [
+            '/blog/body_workforce_3_1779059997445.png',
+            '/blog/body_workforce_1_1779059946709.png',
+            '/blog/body_workforce_2_1779059977746.png'
+        ],
+        isHub: false,
+        relatedSlugs: ['the-ai-workforce-transformation-blueprint', 'enterprise-knowledge-graphs-institutional-memory'],
+        metaDescription: 'Learn how BasaltHQ automates talent acquisition with AI agents that source candidates, screen resumes, conduct assessments, and eliminate unconscious hiring bias.',
+        content: `## The Hiring Bottleneck
+
+The average corporate job posting receives 250 applications. A diligent recruiter spends approximately 6 minutes per resume for an initial screen, totaling 25 hours of manual screening per opening. For a company hiring 100 positions per year, that is 2,500 hours—more than an entire full-time headcount—spent on a task that is repetitive, error-prone, and demonstrably biased.
+
+Studies consistently show that identical resumes with different names receive wildly different callback rates. The human screening process is not just slow; it is systematically unfair.
+
+## The Agentic Talent Pipeline
+
+BasaltHQ's AI-powered hiring infrastructure transforms talent acquisition from a manual, biased bottleneck into an autonomous, equitable pipeline.
+
+### Blind Competency Extraction
+When resumes are ingested into the system, the first agent performs **Blind Competency Extraction**. It strips all personally identifiable information—name, age, gender, photo, university name, graduation year—and converts the resume into a structured competency graph. The graph maps skills, years of experience per skill, complexity of projects delivered, and leadership scope.
+
+This competency graph is what the scoring agent evaluates. It has no concept of the candidate's identity. It cannot be biased because it never sees the attributes that trigger bias.
+
+### Semantic Job-Candidate Matching
+Legacy Applicant Tracking Systems (ATS) use keyword matching. If your job description says "Python" and the resume says "Django," a keyword matcher might miss the connection. BasaltHQ's semantic matching engine understands that Django implies Python proficiency, that "P\u0026L ownership" implies financial leadership, and that "managed a team of 12" implies senior management experience.
+
+The matching engine scores candidates on a 0-100 scale across multiple competency dimensions, providing a transparent, auditable breakdown of why each score was assigned.
+
+### Autonomous Assessment Deployment
+For candidates who pass the initial screen, the agent autonomously deploys role-specific assessments. A software engineering candidate receives a timed coding challenge. A sales candidate receives a simulated customer objection scenario. A finance candidate receives a case study involving financial statement analysis.
+
+The assessments are generated dynamically by the AI based on the specific job requirements, preventing candidates from finding answers online. Results are scored automatically and appended to the candidate's competency graph.
+
+### Interview Coordination
+Once a candidate is deemed qualified, the agent coordinates the interview process entirely autonomously. It accesses the hiring manager's calendar via the ERP integration, proposes available time slots to the candidate, handles rescheduling requests, sends preparation materials, and even generates a customized interview guide for the hiring manager that highlights the specific areas to probe based on the candidate's competency gaps.
+
+## The Diversity Dividend
+
+By removing human bias from the screening stage, enterprises using BasaltHQ's hiring infrastructure consistently report a 40% increase in demographic diversity among final-round candidates. This is not achieved through quotas or targets; it is achieved by simply evaluating competency without prejudice.
+
+The result is a faster, fairer, and fundamentally better hiring process that identifies the best talent regardless of background.`
+    },
+    {
+        slug: 'autonomous-finance-ai-accounting',
+        title: 'Autonomous Finance: AI That Closes Your Books in Real-Time',
+        excerpt: 'The monthly financial close takes 10 days on average. Agentic AI reduces it to zero by maintaining a continuous, real-time close.',
+        category: 'Finance',
+        date: '2026-05-07',
+        readTime: '10 min read',
+        author: 'Financial Engineering',
+        coverImage: '/blog/spoke_finance_cover_1779059879421.png',
+        bodyImages: [
+            '/blog/body_workforce_4_1779060011353.png',
+            '/blog/body_workforce_3_1779059997445.png',
+            '/blog/body_workforce_1_1779059946709.png'
+        ],
+        isHub: false,
+        relatedSlugs: ['the-ai-workforce-transformation-blueprint', 'the-ceo-dashboard-realtime-telemetry'],
+        metaDescription: 'Discover how BasaltHQ eliminates the monthly financial close with autonomous AI agents that process invoices, reconcile accounts, and maintain continuous GAAP compliance.',
+        content: `## The 10-Day Tax on Decision-Making
+
+The average mid-market company takes 10 business days to close its books at the end of each month. For large enterprises, it can stretch to 15 or 20 days. During this period, the finance team is locked in a frantic cycle of journal entries, account reconciliations, intercompany eliminations, and variance analyses.
+
+The real cost is not the labor—it is the **information blackout**. For two to three weeks every month, the executive team is flying blind. They cannot accurately assess profitability, cash position, or operational performance because the numbers are still being assembled. Decisions that should be made on Day 1 are delayed until Day 15.
+
+## The Continuous Close
+
+BasaltHQ's Autonomous Finance engine eliminates the concept of a "monthly close" entirely. By deploying specialized AI agents to every stage of the accounting cycle, the books are maintained in a state of continuous close—accurate to the minute, compliant with GAAP, and auditable at any moment.
+
+### The Accounts Payable Agent
+Every invoice that arrives—whether via email attachment, EDI feed, or supplier portal—is immediately ingested by the AP Agent. It performs three-way matching against the purchase order in [BASALTERP](https://erp.basalthq.com) and the receiving report. If all three match within tolerance, the invoice is approved, coded to the correct GL accounts, and scheduled for payment within the optimal payment terms (maximizing early-payment discounts or preserving cash as directed by treasury policy).
+
+If a discrepancy is found—a price variance, a quantity mismatch, or a missing PO—the agent autonomously routes the exception to the appropriate human approver with a pre-populated resolution recommendation.
+
+### The Revenue Recognition Agent
+Revenue recognition under ASC 606 is notoriously complex, especially for SaaS companies with multi-element arrangements. The Revenue Agent monitors every deal closure in [BASALTCRM](https://crm.basalthq.com), parses the contract terms, identifies distinct performance obligations, allocates the transaction price, and generates the appropriate journal entries on the exact date that revenue is earned.
+
+No more end-of-quarter scrambles. No more audit findings. The revenue is recognized correctly, continuously, in real-time.
+
+### The Reconciliation Agent
+Bank reconciliations, intercompany reconciliations, and sub-ledger-to-GL reconciliations are performed continuously. The agent matches transactions, identifies unmatched items, and either auto-resolves them (for common patterns like timing differences) or escalates them with a recommended journal entry.
+
+### The Compliance Guardian
+Every autonomous action is simultaneously validated by [BASALTONYX](https://onyx.basalthq.com) against the enterprise's internal control matrix. Separation of duties is enforced algorithmically—the agent that creates a journal entry cannot be the same agent that approves it. Every action is logged to an immutable audit trail with full provenance.
+
+## The CFO's New Reality
+
+With the Continuous Close, the CFO no longer waits for month-end to understand the business. They open their dashboard and see today's actual revenue, today's actual expenses, today's actual cash position, and today's actual profitability—not estimates, not projections, but audited-quality actuals updated in real-time.
+
+The 10-day information blackout is over. The age of autonomous finance has begun.`
+    },
+    {
+        slug: 'enterprise-knowledge-graphs-institutional-memory',
+        title: 'Enterprise Knowledge Graphs: Preserving Institutional Memory with AI',
+        excerpt: 'When a 20-year veteran leaves your company, they take decades of undocumented knowledge with them. AI knowledge graphs ensure that never happens again.',
+        category: 'Knowledge',
+        date: '2026-05-04',
+        readTime: '9 min read',
+        author: 'Knowledge Architecture',
+        coverImage: '/blog/spoke_knowledge_cover_1779059900834.png',
+        bodyImages: [
+            '/blog/body_workforce_1_1779059946709.png',
+            '/blog/body_workforce_4_1779060011353.png',
+            '/blog/body_workforce_3_1779059997445.png'
+        ],
+        isHub: false,
+        relatedSlugs: ['the-ai-workforce-transformation-blueprint', 'mastering-erp-data-migration'],
+        metaDescription: 'Learn how BasaltHQ builds enterprise knowledge graphs that capture, preserve, and make searchable all institutional memory — ensuring critical knowledge never leaves with departing employees.',
+        content: `## The Knowledge Attrition Crisis
+
+Every enterprise has experienced it: a senior engineer who has been with the company for 15 years retires, and suddenly no one knows why the billing system handles European VAT the way it does. A sales director leaves for a competitor, and the nuanced relationship history with your three largest accounts evaporates overnight. A plant manager transfers to another division, and the tribal knowledge of which specific machine configurations produce optimal yield disappears.
+
+Research by the Workforce Institute estimates that organizations lose approximately $47 billion annually in the United States alone due to knowledge attrition. The institutional memory that took decades to accumulate walks out the door every time an experienced employee leaves.
+
+## The Living Knowledge Graph
+
+[BASALTECHO](https://echo.basalthq.com) constructs what we call a **Living Knowledge Graph**—a continuously growing, AI-curated representation of everything your organization knows.
+
+### Passive Knowledge Capture
+The most valuable institutional knowledge is rarely written down. It exists in email threads, Slack conversations, meeting transcripts, and the heads of experienced employees. BasaltHQ's knowledge capture agents passively monitor organizational communication channels (with explicit consent and privacy controls) and extract structured knowledge.
+
+When an engineer writes in Slack: "The reason we use a 7-day cache TTL for the pricing API is because the upstream vendor only updates their rate sheet on Mondays," the agent extracts a knowledge triple: [Pricing API] → [cache TTL: 7 days] → [reason: vendor updates weekly on Mondays]. This triple is indexed, linked to the relevant codebase, and made permanently searchable.
+
+### The Expertise Map
+Beyond capturing explicit knowledge, the Knowledge Graph maintains an **Expertise Map**—a real-time understanding of who knows what. By analyzing communication patterns, code contributions, document authorship, and meeting participation, the system constructs a detailed topography of expertise across the organization.
+
+When a critical production issue emerges with the European payment gateway at 2 AM, the system doesn't just search documentation. It identifies the three people in the organization who have the deepest expertise with that specific system—across any department, any timezone—and recommends escalation paths.
+
+### Semantic Question-Answering
+Once the Knowledge Graph reaches critical mass, it becomes the most powerful asset in the enterprise. Any employee can query it in natural language:
+
+- *"Why did we switch from PostgreSQL to Cosmos DB for the inventory module in 2024?"*
+- *"What were the specific objections raised by Acme Corp during their last contract negotiation?"*
+- *"What is the maximum throughput of Assembly Line 3 when running the carbon fiber composite?"*
+
+The agent retrieves the answer from the graph, cites the original sources (the specific Slack message, email, or document), and presents it with full provenance. Knowledge that previously existed only in one person's head is now permanently available to the entire organization.
+
+## Onboarding at Light Speed
+
+The Knowledge Graph transforms employee onboarding. Instead of spending six months learning the undocumented quirks of internal systems through trial and error, a new hire can query the graph on Day 1 and receive the same institutional wisdom that took their predecessor a decade to accumulate.
+
+Knowledge is no longer trapped in human brains. With BasaltHQ, it is captured, structured, and made immortal.`
+    },
+    {
+        slug: 'ai-supply-chain-orchestration',
+        title: 'AI Supply Chain Orchestration: From Demand Sensing to Last-Mile Delivery',
+        excerpt: 'Global supply chains are too complex for spreadsheets and too volatile for static planning. Agentic AI orchestrates the entire chain in real-time.',
+        category: 'Operations',
+        date: '2026-05-01',
+        readTime: '11 min read',
+        author: 'Supply Chain Intelligence',
+        coverImage: '/blog/spoke_supply_cover_1779059922858.png',
+        bodyImages: [
+            '/blog/body_workforce_2_1779059977746.png',
+            '/blog/body_workforce_3_1779059997445.png',
+            '/blog/body_workforce_4_1779060011353.png'
+        ],
+        isHub: false,
+        relatedSlugs: ['the-ai-workforce-transformation-blueprint', 'digital-twin-factory-simulating-success'],
+        metaDescription: 'Learn how BasaltHQ deploys agentic AI to orchestrate global supply chains end-to-end — from demand sensing and procurement to warehouse optimization and last-mile delivery.',
+        content: `## The Fragility Exposed
+
+The global supply chain crises of 2020-2023 exposed a fundamental truth: modern supply chains are extraordinarily complex, deeply interconnected, and terrifyingly fragile. A single container ship blocking the Suez Canal paralyzed $9.6 billion in daily trade. A semiconductor shortage in Taiwan shut down automotive production lines in Detroit. A drought in the Panama Canal reduced global shipping capacity by 40%.
+
+Traditional supply chain management—built on static safety stock formulas, quarterly demand planning cycles, and manual vendor negotiations—cannot cope with this level of volatility. The planning cycle is too slow, the data is too siloed, and the humans are too overwhelmed.
+
+## The Autonomous Supply Chain
+
+BasaltHQ's Supply Chain Orchestration engine, built on [BASALTERP](https://erp.basalthq.com), deploys specialized agentic AI to every link in the chain—from raw material sourcing to the customer's doorstep.
+
+### Demand Sensing
+Traditional demand forecasting uses historical sales data and seasonal patterns. BasaltHQ's Demand Sensing agent goes far beyond. It ingests:
+
+- **Real-time POS data** from [BASALTSURGE](https://surge.basalthq.com) kiosks and terminals across all retail locations
+- **Social sentiment signals** detected by [BASALTCRM](https://crm.basalthq.com) from customer feedback and social media
+- **Macroeconomic indicators** including commodity prices, currency fluctuations, and trade policy changes
+- **Weather and event data** that historically correlate with demand shifts
+
+By synthesizing these signals, the agent generates demand forecasts that are updated hourly—not quarterly—and adjust dynamically to emerging conditions.
+
+### Autonomous Procurement
+When the Demand Sensing agent detects that demand for a specific SKU will spike in 14 days (based on a trending social media campaign mentioning the product), the Procurement Agent activates. It queries all approved suppliers for current availability and pricing, negotiates optimal terms based on historical pricing data and volume commitments, generates purchase orders, and routes them for approval—all before a human procurement manager has even noticed the trend.
+
+If the primary supplier cannot meet the volume, the agent autonomously identifies and qualifies secondary suppliers from a pre-vetted registry, comparing lead times, quality certifications, and total landed costs.
+
+### Warehouse Optimization
+Inside the warehouse, agentic AI optimizes every movement. The Warehouse Agent determines optimal storage locations based on pick frequency, manages wave planning for order fulfillment, orchestrates autonomous mobile robots (AMRs) for goods-to-person picking, and dynamically adjusts labor allocation based on real-time order volume.
+
+When an unexpected surge of orders arrives—say, from a flash sale triggered by the marketing team—the Warehouse Agent doesn't panic. It recalculates the pick plan, reprioritizes routes, and if necessary, requests additional temporary labor through the HR system, providing the exact number of workers needed for the exact number of hours.
+
+### Last-Mile Intelligence
+The final and most expensive link in the supply chain—last-mile delivery—is orchestrated by a routing agent that optimizes delivery sequences across thousands of variables: traffic patterns, delivery time windows, vehicle capacity, fuel costs, and driver availability. It re-optimizes routes in real-time as conditions change, rerouting around traffic accidents and accommodating last-minute customer reschedules.
+
+## The Resilient Chain
+
+The ultimate value of AI-orchestrated supply chains is not just efficiency—it is resilience. When a port closure disrupts inbound shipments, the agent doesn't wait for a crisis meeting. It instantly models alternative routing options, calculates the cost and time impact of each, selects the optimal contingency, and begins executing—switching suppliers, rerouting shipments, and adjusting downstream production schedules—all within minutes of the disruption.
+
+The supply chain of the future is not a chain at all. It is a living, adaptive network, orchestrated by intelligence that never sleeps.`
     }
 ];
 
