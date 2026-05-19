@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props) {
 
     return {
         title: `Premier AI Agency in ${location.name} | BasaltHQ`,
-        description: `Looking for an AI agency in ${location.name}? BasaltHQ specializes in agentic AI implementations, process automation, and autonomous workforce solutions for businesses in ${location.name}, ${location.country}.`,
+        description: `BasaltHQ specializes in agentic AI implementations for ${location.name}, ${location.country}. We architect autonomous workforce solutions aligned with ${location.complianceRegime || 'local'} compliance and ${location.primaryIndustry || 'enterprise'} focus.`,
     };
 }
 
@@ -98,12 +98,20 @@ export default async function LocationPage({ params }: Props) {
                                     <div className="text-lg font-bold font-mono text-[#119dff]">{location.lat.toFixed(2)}, {location.lng.toFixed(2)}</div>
                                 </div>
                                 <div>
-                                    <div className="text-xs text-white/40 font-mono uppercase tracking-wider mb-1">Target ROI</div>
-                                    <div className="text-2xl font-bold text-green-500">300%+</div>
+                                    <div className="text-xs text-white/40 font-mono uppercase tracking-wider mb-1">AI Readiness</div>
+                                    <div className="text-2xl font-bold text-green-500">{location.aiReadinessScore}/100</div>
                                 </div>
                                 <div>
-                                    <div className="text-xs text-white/40 font-mono uppercase tracking-wider mb-1">Deployment Time</div>
-                                    <div className="text-2xl font-bold text-white">4-6 Weeks</div>
+                                    <div className="text-xs text-white/40 font-mono uppercase tracking-wider mb-1">Proximity Hub</div>
+                                    <div className="text-lg font-bold text-white">{location.nearestTechHub} ({location.distanceToHubKm}km)</div>
+                                </div>
+                                <div>
+                                    <div className="text-xs text-white/40 font-mono uppercase tracking-wider mb-1">Compliance</div>
+                                    <div className="text-sm font-bold text-white">{location.complianceRegime}</div>
+                                </div>
+                                <div>
+                                    <div className="text-xs text-white/40 font-mono uppercase tracking-wider mb-1">Projected ROI</div>
+                                    <div className="text-2xl font-bold text-white">{location.projectedRoi}</div>
                                 </div>
                             </div>
                         </div>
@@ -129,9 +137,9 @@ export default async function LocationPage({ params }: Props) {
                         </div>
                         <div className="bg-black/40 p-8 rounded-2xl border border-white/5 hover:border-[#119dff]/30 transition-all">
                             <div className="w-12 h-12 rounded-xl bg-[#119dff]/10 border border-[#119dff]/20 flex items-center justify-center mb-6 text-[#119dff] font-bold text-xl">2</div>
-                            <h3 className="text-xl font-bold mb-4 text-white">Custom LLM Architectures</h3>
+                            <h3 className="text-xl font-bold mb-4 text-white">{location.complianceRegime} Native</h3>
                             <p className="text-white/60 text-sm font-sans leading-relaxed">
-                                Using our proprietary Dynamic Phenomenology Framework (DPF), we train and deploy AI systems that perfectly mimic your best employees' decision-making capabilities.
+                                Our agentic deployments in {location.country} are architected from the ground up to respect local data sovereignty laws and compliance frameworks.
                             </p>
                         </div>
                         <div className="bg-black/40 p-8 rounded-2xl border border-white/5 hover:border-[#119dff]/30 transition-all">
@@ -151,13 +159,13 @@ export default async function LocationPage({ params }: Props) {
                             <div>
                                 <h3 className="text-4xl font-bold mb-6 text-white">Dominate the {location.name} Market.</h3>
                                 <p className="text-xl text-white/60 font-sans leading-relaxed mb-8">
-                                    The businesses that survive the next decade will be those that embrace autonomous systems first. We are implementing AI for forward-thinking enterprises across every sector.
+                                    The {location.region || 'global'} market requires specialized architectures. Our deployments in {location.name} are heavily indexed on <strong>{location.primaryIndustry}</strong>, ensuring your agentic infrastructure is perfectly aligned with regional economic advantages.
                                 </p>
                                 <ul className="space-y-4">
-                                    <li className="flex items-center gap-3 text-white/80"><div className="w-2 h-2 bg-[#119dff] rounded-full" /> Legal & Compliance Automation</li>
+                                    <li className="flex items-center gap-3 text-white/80"><div className="w-2 h-2 bg-[#119dff] rounded-full" /> {location.complianceRegime} Automated Compliance</li>
                                     <li className="flex items-center gap-3 text-white/80"><div className="w-2 h-2 bg-[#119dff] rounded-full" /> Agentic Customer Support</li>
                                     <li className="flex items-center gap-3 text-white/80"><div className="w-2 h-2 bg-[#119dff] rounded-full" /> Financial Data Parsing & Reasoning</li>
-                                    <li className="flex items-center gap-3 text-white/80"><div className="w-2 h-2 bg-[#119dff] rounded-full" /> Autonomous Lead Generation</li>
+                                    <li className="flex items-center gap-3 text-white/80"><div className="w-2 h-2 bg-[#119dff] rounded-full" /> Localized Talent Augmentation</li>
                                 </ul>
                             </div>
                             <div className="grid grid-cols-2 gap-4">
