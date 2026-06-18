@@ -237,9 +237,7 @@ function PortalSectionInner() {
                 </h1>
 
                 <p className="mt-5 text-white/40 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed">
-                    CRM, legal, payments, voice AI, ERP — seven tools that actually
-                    <br className="hidden sm:block" />
-                    talk to each other. Free to start. Unfair to compete against.
+                    CRM, legal, payments, voice AI, ERP — seven tools that actually talk to each other. Free to start. Unfair to compete against.
                 </p>
 
                 {/* CTA / User State */}
