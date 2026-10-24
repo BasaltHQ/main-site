@@ -85,8 +85,8 @@ export function Footer() {
                 />
               </div>
               <div className="flex flex-col z-10 relative">
-                <span className="text-foreground text-xl tracking-widest font-vox">
-                  <span className="font-light">BASALT</span><span className="font-bold">HQ</span>
+                <span className="basalt-wordmark text-foreground text-xl tracking-widest" style={{ fontFamily: '"BasaltVox", "vox", sans-serif', fontSynthesis: 'none' }}>
+                  <span className="basalt-wordmark-base" style={{ fontWeight: 300 }}>BASALT</span><span className="basalt-wordmark-product" style={{ fontWeight: 700 }}>HQ</span>
                 </span>
                 <p className="text-[10px] font-mono mt-1 whitespace-nowrap transition-colors duration-500" style={{ color: currentTheme.color }}>NEUROMIMETIC BUSINESS ARCHITECTURE</p>
               </div>

@@ -7,6 +7,8 @@ import { inAppWallet, createWallet } from 'thirdweb/wallets';
 import { base } from 'thirdweb/chains';
 import Image from 'next/image';
 import { LogOut, ChevronRight, ArrowRight, Check, X } from 'lucide-react';
+import { ecosystem } from '@/components/basalt-marketing/ecosystem';
+import '@/components/basalt-marketing/marketing.css';
 
 // ─── App Registry (normie-friendly) ──────────────────────────────────────────
 
@@ -136,6 +138,13 @@ const APPS: AppCard[] = [
     },
 ];
 
+const PORTAL_APPS = APPS.map(app => {
+    const brand = ecosystem.find(product => product.id === (app.id === 'forms' || app.id === 'signature' ? 'crm' : app.id));
+    if (!brand) return app;
+    const accentRGB = [1, 3, 5].map(offset => parseInt(brand.accent.slice(offset, offset + 2), 16)).join(', ');
+    return { ...app, icon: brand.shield, accent: brand.accent, accentRGB };
+});
+
 // ─── Wallet Config ───────────────────────────────────────────────────────────
 
 const wallets = [
@@ -158,15 +167,16 @@ const wallets = [
     createWallet("io.rabby"),
 ];
 
-export function PortalSection() {
+export function PortalSection({ embedded = false }: { embedded?: boolean }) {
     return (
         <ThirdwebProvider>
-            <PortalSectionInner />
+            <PortalSectionInner embedded={embedded} />
         </ThirdwebProvider>
     );
 }
 
-function PortalSectionInner() {
+function PortalSectionInner({ embedded }: { embedded: boolean }) {
+    const Heading = embedded ? 'h2' : 'h1';
     const account = useActiveAccount();
     const { data: profiles } = useProfiles({ client });
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -230,11 +240,11 @@ function PortalSectionInner() {
                     7 tools live — all free to start
                 </div>
 
-                <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight leading-[1.1]">
+                <Heading className="text-4xl sm:text-6xl font-extrabold tracking-tight leading-[1.1]">
                     Your whole company,
                     <br />
                     <span style={{ color: 'hsl(171, 65%, 58%)' }}>one login.</span>
-                </h1>
+                </Heading>
 
                 <p className="mt-5 text-white/40 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed">
                     CRM, legal, payments, voice AI, ERP — seven tools that actually
@@ -283,7 +293,7 @@ function PortalSectionInner() {
             {/* ── App Cards ── */}
             <div className="relative z-10 max-w-6xl mx-auto px-6 pb-20">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {APPS.map((app, i) => (
+                    {PORTAL_APPS.map((app, i) => (
                         <AppCard
                             key={app.id}
                             app={app}
@@ -355,7 +365,7 @@ function AppCard({ app, index, isLoggedIn, onLoginRequired }: {
                             <Image src={app.icon} alt={app.name} width={40} height={40} className="object-contain" />
                         </div>
                         <div>
-                            <h3 className="text-lg font-bold text-white">{app.name}</h3>
+                            <h3 className="text-lg font-bold text-white">{app.name.startsWith('Basalt') ? <span className="basalt-wordmark"><span className="basalt-wordmark-base">BASALT</span><strong className="basalt-wordmark-product">{app.name.slice(6).toUpperCase()}</strong></span> : app.name}</h3>
                             <p className="text-sm font-medium" style={{ color: app.accent }}>{app.headline}</p>
                         </div>
                     </div>

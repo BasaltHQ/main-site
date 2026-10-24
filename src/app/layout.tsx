@@ -8,6 +8,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { DemoVideoProvider } from "@/components/providers/demo-video-provider";
 import { BrandThemeProvider } from "@/components/providers/brand-theme-provider";
+import { LegacyMarketingChrome, LegacyPageFrame } from "@/components/basalt-marketing/LegacyMarketingChrome";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -160,9 +161,8 @@ export default function RootLayout({
         <ThemeProvider>
           <DemoVideoProvider>
             <BrandThemeProvider>
-              <div className="app-accent-bg animate-gradient-drift" />
-              <Navbar />
-              <main className="relative z-10">{children}</main>
+              <LegacyMarketingChrome><div className="app-accent-bg animate-gradient-drift" /><Navbar /></LegacyMarketingChrome>
+              <LegacyPageFrame className="relative z-10">{children}</LegacyPageFrame>
               <Footer />
             </BrandThemeProvider>
           </DemoVideoProvider>
